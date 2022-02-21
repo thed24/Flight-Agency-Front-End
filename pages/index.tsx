@@ -116,7 +116,7 @@ const Home: NextPage = () => {
         >
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: "AIzaSyAfKe7R1ITZKFywEhondr6dpV7QffY5A18",
+              key: "",
             }}
             defaultCenter={center}
             defaultZoom={zoom}
