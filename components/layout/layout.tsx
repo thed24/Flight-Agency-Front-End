@@ -1,3 +1,5 @@
+import style from "./layout.module.css";
+
 import { Typography } from "@mui/material";
 import React from "react";
 import { User } from "../../types/models";
@@ -12,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
   const loggedInUser = getFromStorage<User>("loggedInUser");
 
   const authMessage = (
-    <div>
+    <div className={style.container}>
       <Typography variant="h4"> Welcome to the Flight Agency </Typography>
 
       <Typography variant="subtitle1" style={{ paddingBottom: "20px" }}>

@@ -12,3 +12,6 @@ export { AuthLayout };
 
 import AlertBar from "./alertBar/alertBar";
 export { AlertBar };
+
+import StopModal from "./stopModal/stopModal";
+export { StopModal };

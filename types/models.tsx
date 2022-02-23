@@ -15,7 +15,7 @@ export interface Trip {
 
 export interface Stop {
   Name: string;
-  Location: Location;
+  Time: Date;
 }
 
 export interface Country {

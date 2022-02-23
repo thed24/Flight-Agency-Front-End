@@ -36,8 +36,6 @@ export async function RequestLocationData(
 ): Promise<PlacesNearbyResponseData> {
   const url = "http://localhost:7071/api/places/nearBy";
 
-  console.log(data);
-
   const response = await axios
     .get(url, { params: data })
     .then((res: AxiosResponse) => res.data)
