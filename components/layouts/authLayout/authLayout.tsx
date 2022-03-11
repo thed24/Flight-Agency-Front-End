@@ -1,12 +1,12 @@
 import React from "react";
-import NavBar from "../navbar/navbar";
+import { NavBar } from "../../";
 import styles from "./authLayout.module.css";
 
 export type LayoutProps = {
   children: React.ReactNode;
 };
 
-export default function AuthLayout({ children }: LayoutProps) {
+export function AuthLayout({ children }: LayoutProps) {
   return (
     <>
       <NavBar />

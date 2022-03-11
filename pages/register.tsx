@@ -1,8 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
-import AlertBar, { AlertDetails } from "../components/alertBar/alertBar";
-import AuthLayout from "../components/authLayout/authLayout";
+import AlertBar, { AlertDetails } from "../components/misc/alertBar/alertBar";
+import { AuthLayout } from "../components/";
 import style from "../styles/auth.module.css";
 import { RequestRegister } from "../utilities/api";
 

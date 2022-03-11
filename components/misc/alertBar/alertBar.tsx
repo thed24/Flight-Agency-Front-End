@@ -10,7 +10,7 @@ export interface AlertBarProps {
   callback: () => void;
 }
 
-export default function AlertBar({ details, callback }: AlertBarProps) {
+export function AlertBar({ details, callback }: AlertBarProps) {
   const { message, type } = details;
 
   return (

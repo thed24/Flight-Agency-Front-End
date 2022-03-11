@@ -15,4 +15,5 @@ export interface PlacesRequest {
   location: Location;
   zoom: number;
   radius: number;
+  keyword: string;
 }

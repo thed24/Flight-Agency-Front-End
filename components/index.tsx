@@ -1,17 +1,17 @@
-import NavBar from "./navbar/navbar";
-export { NavBar };
+export { NavBar } from "./misc/navbar/navbar";
 
-import Marker from "./marker/marker";
-export { Marker };
+export { Marker } from "./misc/marker/marker";
+export { FilledInMarker } from "./misc/marker/filledInMarker";
 
-import Layout from "./layout/layout";
-export { Layout };
+export { Layout } from "./layouts/layout/layout";
 
-import AuthLayout from "./authLayout/authLayout";
-export { AuthLayout };
+export { AuthLayout } from "./layouts/authLayout/authLayout";
 
-import AlertBar from "./alertBar/alertBar";
-export { AlertBar };
+export { AlertBar } from "./misc/alertBar/alertBar";
+export type { AlertDetails } from "./misc/alertBar/alertBar";
 
-import StopModal from "./stopModal/stopModal";
-export { StopModal };
+export { StopModal } from "./modals/stopModal/stopModal";
+export { StepButton } from "./misc/stepButton/stepButton";
+export { StopStep } from "./steps/stopStep/stopStep";
+export { DestinationStep } from "./steps/destinationStep/destinationStep";
+export { FillerStep } from "./steps/fillerStep/fillerStep";

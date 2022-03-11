@@ -2,15 +2,15 @@ import style from "./layout.module.css";
 
 import { Typography } from "@mui/material";
 import React from "react";
-import { User } from "../../types/models";
-import { getFromStorage } from "../../utilities/storage";
-import NavBar from "../navbar/navbar";
+import { User } from "../../../types/models";
+import { getFromStorage } from "../../../utilities/storage";
+import { NavBar } from "../../";
 
 export type LayoutProps = {
   children: React.ReactNode;
 };
 
-export default function Layout({ children }: LayoutProps) {
+export function Layout({ children }: LayoutProps) {
   const loggedInUser = getFromStorage<User>("loggedInUser");
 
   const authMessage = (

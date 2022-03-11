@@ -1,16 +1,21 @@
+import { PlaceData } from "@googlemaps/google-maps-services-js";
 import { Card, CardContent, Typography } from "@mui/material";
 import React, { MouseEventHandler, useState } from "react";
 
 export type LayoutProps = {
   lat: number;
   lng: number;
-  text: string;
+  place: PlaceData;
   onClick: MouseEventHandler;
 };
 
-export default function Marker({ lat, lng, text, onClick }: LayoutProps) {
+export function Marker({ lat, lng, place, onClick }: LayoutProps) {
   const [raised, setRaised] = useState<boolean>(false);
   const toggleRaised = () => setRaised(!raised);
+
+  const text = place.name;
+  const address = place.formatted_address;
+  const rating = place.rating;
 
   return (
     <Card
@@ -21,6 +26,8 @@ export default function Marker({ lat, lng, text, onClick }: LayoutProps) {
     >
       <CardContent>
         <Typography color={"secondary"}> {text} </Typography>
+        <Typography color={"secondary"}> {address} </Typography>
+        <Typography color={"secondary"}> {rating} </Typography>
       </CardContent>
     </Card>
   );

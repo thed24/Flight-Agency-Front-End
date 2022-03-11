@@ -5,15 +5,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import { User } from "../../types/models";
-import { clearItemInStorage, getFromStorage } from "../../utilities/storage";
+import { User } from "../../../types";
+import { clearItemInStorage, getFromStorage } from "../../../utilities/storage";
 
 const logOut = () => {
   clearItemInStorage("loggedInUser");
   window.location.href = "/";
 };
 
-export default function NavBar() {
+export function NavBar() {
   const loggedInUser = getFromStorage<User>("loggedInUser");
 
   const buttons = loggedInUser ? (

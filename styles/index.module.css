@@ -1,21 +1,3 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.maps {
-  height: 50vh;
-  width: 75vh;
-  flex: 1;
-  margin-left: 100px;
-}
-
-.stopStep {
-  display: flex;
-  flex-direction: row;
-}
-
 .centeredText {
   display: flex;
   justify-content: center;

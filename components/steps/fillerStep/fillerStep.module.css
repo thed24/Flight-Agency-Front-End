@@ -1,0 +1,12 @@
+.maps {
+  height: 50vh;
+  width: 75vh;
+  flex: 1;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.stopStep {
+  display: flex;
+  flex-direction: row;
+}

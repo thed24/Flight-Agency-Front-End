@@ -3,6 +3,22 @@ import * as Types from "../types";
 
 import * as CSV from "csv-string";
 
+export const Categories = [
+  "Accommodation",
+  "Food",
+  "Transport",
+  "Shopping",
+  "Entertainment",
+  "Bars",
+  "Restaurants",
+  "Cafes",
+  "Nightlife",
+  "Museums",
+  "Parks",
+  "Theatre",
+  "Art",
+];
+
 export const LoadCountries = (): Types.Country[] => {
   const parsedCsv = CSV.parse(countriesAsCsv);
   const countries: Types.Country[] = [];
