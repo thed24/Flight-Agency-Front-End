@@ -14,13 +14,16 @@ const Home: NextPage = () => {
   const countries = Types.LoadCountries();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalValue, setModalValue] = useState<Date>(new Date());
+  const [modalValue, setModalValue] = useState<Types.DateRange>({
+    start: new Date(),
+    end: new Date(),
+  });
   const [modalPlace, setModalPlace] = useState<PlaceData | null>(null);
 
   const [category, setCategory] = useState<string>("Food");
   const [step, setStep] = useState<number>(0);
   const [destination, setDestination] = useState<string>("");
-  const [trip, setTrip] = useState<Types.Trip>({ Stops: [] });
+  const [trip, setTrip] = useState<Types.Trip>({ Stops: [], Destination: "" });
   const [zoom, setZoom] = useState<number>(15);
   const [places, setPlaces] = useState<PlaceData[]>([]);
   const [center, setCenter] = useState<Types.Location>({
@@ -43,6 +46,14 @@ const Home: NextPage = () => {
     CallApi();
   }, [category, center, zoom]);
 
+  useEffect((): void => {
+    async function CallApi() {
+      await Api.CreateTrip({ ...trip });
+    }
+
+    if (step === 4) CallApi(); // todo: fix
+  }, [step, category, center, zoom, trip]);
+
   const confirmDestinationOnClick = useCallback(() => {
     const currentCountry = countries.find(
       (country) => country.name === destination
@@ -58,11 +69,13 @@ const Home: NextPage = () => {
     if (modalPlace !== null) {
       setTrip({
         ...trip,
+        Destination: destination,
         Stops: [
           ...trip.Stops,
           {
             Name: modalPlace.name,
             Time: modalValue,
+            Address: modalPlace.vicinity,
             Location: {
               lat: modalPlace.geometry.location.lat,
               lng: modalPlace.geometry.location.lng,
@@ -72,17 +85,23 @@ const Home: NextPage = () => {
       });
     }
     setModalOpen(!modalOpen);
-  }, [modalPlace, modalOpen, modalValue, trip]);
+  }, [modalPlace, modalOpen, trip, destination, modalValue]);
 
   const modalCancel = useCallback(() => {
     setModalOpen(!modalOpen);
-    setModalValue(new Date());
+    setModalValue({
+      start: new Date(),
+      end: new Date(),
+    });
     setModalPlace(null);
   }, [modalOpen]);
 
   function OpenModalWithPlace(place: PlaceData): void {
     setModalOpen(true);
-    setModalValue(new Date());
+    setModalValue({
+      start: new Date(),
+      end: new Date(),
+    });
     setModalPlace(place);
   }
 
@@ -112,6 +131,7 @@ const Home: NextPage = () => {
             <Step label="Select your destination" />
             <Step label="Select your stops" />
             <Step label="Connect your stops" />
+            <Step label="Confirm your trip" />
           </Stepper>
         </div>
 
@@ -137,6 +157,8 @@ const Home: NextPage = () => {
         {step === 2 && (
           <Components.FillerStep center={center} zoom={zoom} trip={trip} />
         )}
+
+        {step === 3 && <Components.ConfirmationStep trip={trip} />}
 
         <Components.StepButton
           step={step}

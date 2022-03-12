@@ -2,6 +2,9 @@ import * as Types from "../types";
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { PlacesNearbyResponseData } from "@googlemaps/google-maps-services-js";
+import { getFromStorage } from "./storage";
+
+const loggedInUser = getFromStorage<Types.User>("loggedInUser");
 
 export async function RequestLogin(
   data: Types.LoginRequest
@@ -42,10 +45,8 @@ export async function RequestLocationData(
   return response;
 }
 
-export async function CreateTrip(
-  data: Types.PlacesRequest
-): Promise<PlacesNearbyResponseData> {
-  const url = "http://localhost:7071/api/places/nearBy";
+export async function CreateTrip(data: Types.Trip): Promise<Types.Trip> {
+  const url = `http://localhost:7071/api/1/trips`;
 
   const response = await axios
     .get(url, { params: data })

@@ -10,13 +10,15 @@ export interface Location {
 }
 
 export interface Trip {
+  Destination: string;
   Stops: Stop[];
 }
 
 export interface Stop {
   Name: string;
-  Time: Date;
+  Time: DateRange;
   Location: Location;
+  Address: string;
 }
 
 export interface Country {
@@ -25,3 +27,15 @@ export interface Country {
   lat: number;
   lng: number;
 }
+
+export interface DateRange {
+  start: Date;
+  end: Date;
+}
+
+export interface Entry {
+  header: string;
+  content: string;
+}
+
+export type Entries = Entry[];

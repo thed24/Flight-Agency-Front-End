@@ -1,8 +1,14 @@
-import { LoadCountries, Categories } from "./data";
-export { LoadCountries, Categories };
+export { LoadCountries, Categories } from "./data";
 
-import { User, Location, Trip, Stop, Country } from "./models";
-export type { User, Location, Trip, Stop, Country };
+export type {
+  User,
+  Location,
+  Trip,
+  Stop,
+  Country,
+  DateRange,
+  Entry,
+  Entries,
+} from "./models";
 
-import { RegisterRequest, LoginRequest, PlacesRequest } from "./requests";
-export type { RegisterRequest, LoginRequest, PlacesRequest };
+export type { RegisterRequest, LoginRequest, PlacesRequest } from "./requests";

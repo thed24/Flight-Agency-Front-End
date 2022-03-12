@@ -4,6 +4,8 @@ import { Modal, TextField, Typography, Button } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import { PlaceData } from "@googlemaps/google-maps-services-js";
 import DateFnsUtils from "@date-io/date-fns";
+import { DateRange } from "../../../types";
+import styles from "./stopModal.module.css";
 
 const style = {
   position: "absolute" as "absolute",
@@ -20,10 +22,10 @@ const style = {
 
 export interface Props {
   place: PlaceData | null;
-  value: Date;
+  value: DateRange;
   open: boolean;
   setOpen: (val: boolean) => void;
-  setValue: (val: Date) => void;
+  setValue: (val: DateRange) => void;
   confirm: () => void;
   cancel: () => void;
 }
@@ -37,9 +39,20 @@ export function StopModal({
   confirm,
   cancel,
 }: Props) {
-  function handleChange(event: string | null) {
-    setValue(event === null ? new Date() : new Date(event));
-  }
+  const [start, setStart] = React.useState(value.start);
+  const [end, setEnd] = React.useState(value.end);
+
+  const handleChangeStart = React.useCallback((event: string | null) => {
+    setStart(event === null ? new Date() : new Date(event));
+  }, []);
+
+  const handleChangeEnd = React.useCallback((event: string | null) => {
+    setEnd(event === null ? new Date() : new Date(event));
+  }, []);
+
+  React.useEffect(() => {
+    setValue({ start, end });
+  }, [start, end, setValue]);
 
   return (
     place && (
@@ -74,11 +87,23 @@ export function StopModal({
             Select a Time
           </Typography>
 
+          <div className={styles.dateTimePicker}>
+            <LocalizationProvider dateAdapter={DateFnsUtils}>
+              <DateTimePicker
+                className={styles.dateTimePicker}
+                label="Start Time"
+                value={start}
+                onChange={handleChangeStart}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </div>
+
           <LocalizationProvider dateAdapter={DateFnsUtils}>
             <DateTimePicker
               label="Stop Time"
-              value={value}
-              onChange={handleChange}
+              value={end}
+              onChange={handleChangeEnd}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

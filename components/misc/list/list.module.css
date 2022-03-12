@@ -1,0 +1,16 @@
+.entry {
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.list {
+  border: 2px solid #ccc;
+  padding: 20px;
+  margin-right: 100px;
+  margin-left: 100px;
+  width: 20%;
+  margin-bottom: 20px;
+  height: 50vh;
+  overflow: auto;
+}

@@ -2,7 +2,7 @@ import { Typography, Select, MenuItem } from "@mui/material";
 import style from "./stopStep.module.css";
 import { Categories, Location, Trip } from "../../../types";
 import GoogleMapReact from "google-map-react";
-import { Marker } from "../..";
+import { List, Marker } from "../..";
 import { PlaceData } from "@googlemaps/google-maps-services-js";
 import React from "react";
 
@@ -25,6 +25,15 @@ export const StopStep = ({
   onClickMarker,
   onChangeCategory,
 }: Props) => {
+  const entries = trip.Stops.map((stop, i) => {
+    return [
+      {
+        header: `${stop.Name}`,
+        content: `${stop.Time.start.toLocaleTimeString()} to ${stop.Time.end.toLocaleTimeString()}`,
+      },
+    ];
+  });
+
   return (
     <>
       <div className={style.stopStep}>
@@ -49,25 +58,12 @@ export const StopStep = ({
           </GoogleMapReact>
         </div>
 
-        <div style={{ marginRight: "100px", marginLeft: "100px" }}>
-          <Typography gutterBottom variant="h4">
-            Planned Stops
-          </Typography>
-          {trip.Stops.map((stop, i) => (
-            <Typography component={"div"} key={i}>
-              {stop.Name} at {stop.Time.toLocaleString()}
-            </Typography>
-          ))}
-        </div>
+        <List title="Stops" entries={entries} />
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      >
+      <div className={style.selector}>
+        <Typography gutterBottom variant="h6">
+          Select a category
+        </Typography>
         <Select
           placeholder="Select a category"
           value={category}

@@ -30,7 +30,14 @@ export const StepButton = ({
   const stepThreeButton = (
     <>
       <Button onClick={() => setStep(step - 1)}>Previous Step</Button>
-      <Button onClick={() => setStep(step + 1)}>Confirm</Button>
+      <Button onClick={() => setStep(step + 1)}>Confirm Trip</Button>
+    </>
+  );
+
+  const stepFourButton = (
+    <>
+      <Button onClick={() => setStep(step - 1)}>Previous Step</Button>
+      <Button onClick={() => setStep(step + 1)}>Submit</Button>
     </>
   );
 
@@ -39,6 +46,7 @@ export const StepButton = ({
       {step === 0 && stepOneButton}
       {step === 1 && stepTwoButton}
       {step === 2 && stepThreeButton}
+      {step === 3 && stepFourButton}
     </div>
   );
 };
