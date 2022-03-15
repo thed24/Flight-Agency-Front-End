@@ -46,12 +46,29 @@ export async function RequestLocationData(
 }
 
 export async function CreateTrip(data: Types.Trip): Promise<Types.Trip> {
-  const url = `http://localhost:7071/api/1/trips`;
+  const url = `http://localhost:7071/api/${loggedInUser?.id}/trips`;
 
   const response = await axios
-    .get(url, { params: data })
+    .post(url, data)
     .then((res: AxiosResponse) => res.data)
     .catch((err: AxiosError) => null);
 
   return response;
+}
+export function GetTrips(): Promise<Types.Trip[] | null> {
+  const url = `http://localhost:7071/api/${loggedInUser?.id}/trips/`;
+
+  return axios
+    .get(url)
+    .then((res: AxiosResponse<Types.Trip[]>) =>
+      res.data.map((trip) => {
+        trip.stops = trip.stops.map((stop) => {
+          stop.time.start = new Date(stop.time.start);
+          stop.time.end = new Date(stop.time.end);
+          return stop;
+        });
+        return trip;
+      })
+    )
+    .catch((err: AxiosError) => null);
 }

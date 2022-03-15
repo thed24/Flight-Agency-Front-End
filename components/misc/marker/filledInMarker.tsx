@@ -13,7 +13,7 @@ export function FilledInMarker({ lat, lng, stop }: LayoutProps) {
   const [raised, setRaised] = useState<boolean>(false);
   const toggleRaised = () => setRaised(!raised);
 
-  const text = stop.Name;
+  const text = stop.name;
 
   return (
     <Card onMouseOut={toggleRaised} raised={raised} sx={{ minWidth: 100 }}>

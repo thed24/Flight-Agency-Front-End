@@ -24,4 +24,8 @@ export { FillerStep } from "./steps/fillerStep/fillerStep";
 
 export { ConfirmationStep } from "./steps/confirmationStep/confirmationStep";
 
+export { SubmittedStep } from "./steps/submittedStep/submittedStep";
+
 export { List } from "./misc/list/list";
+
+export { ConfirmationList } from "./misc/confirmationList/confirmationList";

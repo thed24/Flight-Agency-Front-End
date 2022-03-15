@@ -1,4 +1,5 @@
 export interface User {
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -10,15 +11,17 @@ export interface Location {
 }
 
 export interface Trip {
-  Destination: string;
-  Stops: Stop[];
+  destination: string;
+  stops: Stop[];
 }
 
+export type Trips = Trip[];
+
 export interface Stop {
-  Name: string;
-  Time: DateRange;
-  Location: Location;
-  Address: string;
+  name: string;
+  time: DateRange;
+  location: Location;
+  address: string;
 }
 
 export interface Country {

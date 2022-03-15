@@ -42,12 +42,13 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
           )
         )
       ) {
-        const newTrip = {
-          Name: `Stop Over ${stopOvers.length + 1}`,
-          Time: { start: new Date(), end: new Date() },
-          Location: { lat: event.lat, lng: event.lng },
+        const newStop = {
+          name: `Stop Over ${stopOvers.length + 1}`,
+          time: { start: new Date(), end: new Date() },
+          location: { lat: event.lat, lng: event.lng },
+          address: "",
         };
-        setStopOver([...stopOvers, newTrip]);
+        setStopOver([...stopOvers, newStop]);
       }
     },
     [route, stopOvers]
@@ -61,19 +62,19 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
 
       const directionsRequest: google.maps.DirectionsRequest = {
         origin: {
-          lat: trip.Stops[0].Location.lat,
-          lng: trip.Stops[0].Location.lng,
+          lat: trip.stops[0].location.lat,
+          lng: trip.stops[0].location.lng,
         },
         destination: {
-          lat: trip.Stops[trip.Stops.length - 1].Location.lat,
-          lng: trip.Stops[trip.Stops.length - 1].Location.lng,
+          lat: trip.stops[trip.stops.length - 1].location.lat,
+          lng: trip.stops[trip.stops.length - 1].location.lng,
         },
         travelMode: google.maps.TravelMode.DRIVING,
-        waypoints: trip.Stops.slice(1, trip.Stops.length - 1).map((stop) => {
+        waypoints: trip.stops.slice(1, trip.stops.length - 1).map((stop) => {
           const stopOver: google.maps.DirectionsWaypoint = {
             location: new google.maps.LatLng(
-              stop.Location.lat,
-              stop.Location.lng
+              stop.location.lat,
+              stop.location.lng
             ),
             stopover: true,
           };
@@ -91,7 +92,7 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
         }
       });
     },
-    [trip.Stops]
+    [trip.stops]
   );
 
   const entries =
@@ -130,11 +131,11 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={handleGoogleMapApi}
           >
-            {stopOvers.concat(trip.Stops).map((stop, i) => (
+            {stopOvers.concat(trip.stops).map((stop, i) => (
               <FilledInMarker
                 key={i}
-                lat={stop.Location.lat}
-                lng={stop.Location.lng}
+                lat={stop.location.lat}
+                lng={stop.location.lng}
                 stop={stop}
               />
             ))}

@@ -3,3 +3,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+.destination {
+  align-items: left;
+  margin: 20px;
+}

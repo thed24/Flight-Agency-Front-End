@@ -25,11 +25,11 @@ export const StopStep = ({
   onClickMarker,
   onChangeCategory,
 }: Props) => {
-  const entries = trip.Stops.map((stop, i) => {
+  const entries = trip.stops.map((stop, i) => {
     return [
       {
-        header: `${stop.Name}`,
-        content: `${stop.Time.start.toLocaleTimeString()} to ${stop.Time.end.toLocaleTimeString()}`,
+        header: `${stop.name}`,
+        content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
       },
     ];
   });
