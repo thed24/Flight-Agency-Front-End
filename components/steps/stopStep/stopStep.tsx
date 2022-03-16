@@ -5,7 +5,7 @@ import GoogleMapReact from "google-map-react";
 import { List, Marker } from "../..";
 import { PlaceData } from "@googlemaps/google-maps-services-js";
 import React from "react";
-import { readApiKey } from "../../../utilities/secretManager";
+import { getFromStorage } from "../../../utilities/storage";
 
 interface Props {
   trip: Trip;
@@ -35,7 +35,7 @@ export const StopStep = ({
     ];
   });
 
-  const apiKey = readApiKey();
+  const key = getFromStorage<string>("apiKey");
 
   return (
     <>
@@ -43,7 +43,7 @@ export const StopStep = ({
         <div className={style.maps}>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: apiKey ?? process.env.NEXT_PUBLIC_API_KEY ?? "",
+              key: key ?? "",
             }}
             defaultCenter={center}
             defaultZoom={zoom}

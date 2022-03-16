@@ -29,3 +29,5 @@ export { SubmittedStep } from "./steps/submittedStep/submittedStep";
 export { List } from "./misc/list/list";
 
 export { ConfirmationList } from "./misc/confirmationList/confirmationList";
+
+export { SetApiKey } from "./misc/setApiKey/setApiKey";

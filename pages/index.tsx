@@ -3,16 +3,15 @@ import * as Types from "../types";
 import * as Api from "../utilities/api";
 
 import style from "../styles/index.module.css";
-import { Button, Divider, Typography } from "@mui/material";
+import { Button, Divider, Input, InputLabel, Typography } from "@mui/material";
 import { NextPage } from "next";
-import { getFromStorage } from "../utilities/storage";
+import { getFromStorage, setInStorage } from "../utilities/storage";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Types.Trip[] | null>(null);
   const loggedInUser = getFromStorage<Types.User>("loggedInUser");
-  console.log(trips);
 
   useEffect(() => {
     async function CallApi() {
@@ -21,7 +20,7 @@ const Home: NextPage = () => {
     }
 
     if (loggedInUser) CallApi();
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <>
@@ -52,6 +51,8 @@ const Home: NextPage = () => {
           <Link href={"createTrip"} passHref>
             <Button> Create a new trip </Button>
           </Link>
+
+          <Components.SetApiKey />
         </div>
       </Components.Layout>
     </>
