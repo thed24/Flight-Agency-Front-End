@@ -5,6 +5,7 @@ import { FilledInMarker } from "../../misc/marker/filledInMarker";
 import style from "./fillerStep.module.css";
 import { Box, Typography } from "@mui/material";
 import { List } from "../..";
+import { readApiKey } from "../../../utilities/secretManager";
 
 interface Props {
   trip: Trip;
@@ -117,13 +118,15 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
       })) ??
     [];
 
+  const apiKey = readApiKey();
+
   return (
     <>
       <div className={style.stopStep}>
         <div className={style.maps}>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: process.env.API_KEY ?? "",
+              key: apiKey ?? process.env.NEXT_PUBLIC_API_KEY ?? "",
             }}
             defaultCenter={center}
             defaultZoom={zoom}
