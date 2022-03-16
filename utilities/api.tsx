@@ -3,13 +3,15 @@ import * as Types from "../types";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { PlacesNearbyResponseData } from "@googlemaps/google-maps-services-js";
 import { getFromStorage } from "./storage";
+import { env } from "process";
 
+const urlBase = env.NEXT_PUBLIC_URL;
 const loggedInUser = getFromStorage<Types.User>("loggedInUser");
 
 export async function RequestLogin(
   data: Types.LoginRequest
 ): Promise<Types.User | null> {
-  const url = "http://localhost:7071/api/auth/login";
+  const url = `${urlBase}/api/auth/login`;
 
   const response = await axios
     .post(url, data)
@@ -22,7 +24,7 @@ export async function RequestLogin(
 export async function RequestRegister(
   data: Types.RegisterRequest
 ): Promise<Types.User | null> {
-  const url = "http://localhost:7071/api/auth/register";
+  const url = `${urlBase}/api/auth/register`;
 
   const response = await axios
     .post(url, data)
@@ -35,7 +37,7 @@ export async function RequestRegister(
 export async function RequestLocationData(
   data: Types.PlacesRequest
 ): Promise<PlacesNearbyResponseData> {
-  const url = "http://localhost:7071/api/places/nearBy";
+  const url = `${urlBase}/api/places/nearBy`;
 
   const response = await axios
     .get(url, { params: data })
@@ -46,7 +48,7 @@ export async function RequestLocationData(
 }
 
 export async function CreateTrip(data: Types.Trip): Promise<Types.Trip> {
-  const url = `http://localhost:7071/api/${loggedInUser?.id}/trips`;
+  const url = `${urlBase}/api/${loggedInUser?.id}/trips`;
 
   const response = await axios
     .post(url, data)
@@ -56,7 +58,7 @@ export async function CreateTrip(data: Types.Trip): Promise<Types.Trip> {
   return response;
 }
 export function GetTrips(): Promise<Types.Trip[] | null> {
-  const url = `http://localhost:7071/api/${loggedInUser?.id}/trips/`;
+  const url = `${urlBase}/api/${loggedInUser?.id}/trips/`;
 
   return axios
     .get(url)

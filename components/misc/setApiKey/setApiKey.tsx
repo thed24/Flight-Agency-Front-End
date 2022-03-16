@@ -6,8 +6,6 @@ export const SetApiKey = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);
   const existingKey = getFromStorage<string>("apiKey");
 
-  console.log(existingKey);
-
   const updateApiKey = useCallback((value: string) => {
     setApiKey(value);
   }, []);
