@@ -1,8 +1,8 @@
 steps:
-  - name: "gcr.io/cloud-builders/gcloud"
+  - name: gcr.io/cloud-builders/gcloud
     id: "Read and store api url"
     entrypoint: "bash"
-    args: ["./build.sh"]
+    args: ["build.sh"]
   - name: gcr.io/cloud-builders/docker
     id: Build
     args:

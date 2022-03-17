@@ -1,5 +1,5 @@
-REGION=us-east1
-DEVSHELL_PROJECT_ID=sample-proj
+REGION=asia-southeast2
+PROJECT_ID=flight-agency-api
 
-API_URL=gcloud run services describe flight-agency-api --region asia-southeast2 --format 'value(status.url)'
+API_URL=gcloud run services describe $PROJECT_ID --region $REGION --format 'value(status.url)'
 echo $API_URL > /workspace/api_key
