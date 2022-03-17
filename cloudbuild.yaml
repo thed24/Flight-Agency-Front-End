@@ -1,0 +1,51 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Read and store api url"
+    entrypoint: "bash"
+    args: ["./build.sh"]
+  - name: gcr.io/cloud-builders/docker
+    id: Build
+    args:
+      - build
+      - "--no-cache"
+      - "-t"
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+      - .
+      - "-f"
+      - Dockerfile
+      - --build-arg
+      - arg=$(cat /workspace/api_key)
+  - name: gcr.io/cloud-builders/docker
+    id: Push
+    args:
+      - push
+      - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    id: Deploy
+    entrypoint: gcloud
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - "--platform=managed"
+      - "--image=$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS
+      - "--region=$_DEPLOY_REGION"
+      - "--quiet"
+images:
+  - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _SERVICE_NAME: flight-agency-site
+  _LABELS: gcb-trigger-id=72cee353-2dca-4656-968d-d2bf67636c74
+  _TRIGGER_ID: 72cee353-2dca-4656-968d-d2bf67636c74
+  _DEPLOY_REGION: asia-southeast2
+  _GCR_HOSTNAME: asia.gcr.io
+  _PLATFORM: managed
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - flight-agency-site
