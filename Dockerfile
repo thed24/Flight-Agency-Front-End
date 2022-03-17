@@ -5,7 +5,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 ARG URL
 COPY package.json /app/
 COPY package-lock.json /app/
-RUN echo "NEXT_PUBLIC_API_URL=${URL}" > /app/.env
+RUN echo "NEXT_PUBLIC_URL=${URL}" > /app/.env
 
 RUN npm install
 
