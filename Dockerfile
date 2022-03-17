@@ -2,9 +2,10 @@ FROM node:15.2.1-alpine
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
+ARG URL
 COPY package.json /app/
 COPY package-lock.json /app/
-RUN touch /app/.env.production
+RUN echo "NEXT_PUBLIC_API_URL=${URL}" > /app/.env
 
 RUN npm install
 

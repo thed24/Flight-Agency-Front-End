@@ -14,7 +14,7 @@ steps:
       - "-f"
       - Dockerfile
       - --build-arg
-      - arg=$(cat /workspace/api_key)
+      - URL=$(cat /workspace/api_key)
   - name: gcr.io/cloud-builders/docker
     id: Push
     args:
