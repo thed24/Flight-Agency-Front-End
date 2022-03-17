@@ -10,11 +10,11 @@ steps:
       - "--no-cache"
       - "-t"
       - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
+      - --build-arg
+      - URL=$(cat /workspace/api_key)
       - .
       - "-f"
       - Dockerfile
-      - --build-arg
-      - URL=$(cat /workspace/api_key)
   - name: gcr.io/cloud-builders/docker
     id: Push
     args:
