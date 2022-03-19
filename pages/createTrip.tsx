@@ -34,7 +34,8 @@ const CreateTrip: NextPage = () => {
   useEffect(() => {
     async function CallApi() {
       const response = await Api.RequestLocationData({
-        location: center,
+        lat: center.lat,
+        lng: center.lng,
         zoom: zoom,
         radius: 2000,
         keyword: `'${category}'`,

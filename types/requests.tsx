@@ -12,7 +12,8 @@ export interface LoginRequest {
 }
 
 export interface PlacesRequest {
-  location: Location;
+  lat: number;
+  lng: number;
   zoom: number;
   radius: number;
   keyword: string;
