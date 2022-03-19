@@ -19,8 +19,8 @@ const Home: NextPage = () => {
       if (response) setTrips(response);
     }
 
-    if (loggedInUser) CallApi();
-  }, [loggedInUser]);
+    if (loggedInUser && trips === null) CallApi();
+  }, [loggedInUser, trips]);
 
   return (
     <>

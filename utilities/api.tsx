@@ -7,7 +7,7 @@ import { getFromStorage } from "./storage";
 const loggedInUser = getFromStorage<Types.User>("loggedInUser");
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:3000",
+  baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:8080",
 });
 
 export async function RequestLogin(
