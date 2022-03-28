@@ -1,15 +1,15 @@
-FROM node:15.2.1-alpine
-WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
+FROM node:14.17.0-alpine
+
+WORKDIR /usr/app
+COPY . .
+
+ENV NODE_ENV production
 
 ARG URL
-COPY package.json /app/
-COPY package-lock.json /app/
-RUN echo "NEXT_PUBLIC_URL=${URL}" > /app/.env
+RUN echo "NEXT_PUBLIC_URL=${URL}" > .env
 
-RUN npm install
+RUN npm ci --only=production
 
-COPY . /app
 RUN npm run build
 
 CMD [ "npm", "start" ]
