@@ -1,11 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar } from "components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { useState } from "react";
 import { RegisterRequest, User } from "types";
 
-import style from "../styles/auth.module.css";
-import { SendData, RequestRegisterEndpoint } from "../utilities/api";
+import { SendData, RequestRegisterEndpoint } from "utilities/api";
 
 const Register: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
@@ -44,7 +43,6 @@ const Register: NextPage = () => {
       )}
       <h1> Register</h1>
       <TextField
-        className={style.authControl}
         id="outlined-basic"
         label="Email"
         variant="outlined"
@@ -52,7 +50,6 @@ const Register: NextPage = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <TextField
-        className={style.authControl}
         id="outlined-basic"
         label="User Name"
         variant="outlined"
@@ -60,7 +57,6 @@ const Register: NextPage = () => {
         onChange={(e) => setName(e.target.value)}
       />
       <TextField
-        className={style.authControl}
         id="outlined-basic"
         label="Password"
         variant="outlined"
@@ -70,7 +66,6 @@ const Register: NextPage = () => {
       <Button
         onClick={TryAndRegister}
         disabled={!email || !password || !name}
-        className={style.authControl}
         variant="contained"
       >
         Register!

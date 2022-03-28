@@ -1,10 +1,9 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar } from "components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { LoginRequest, User } from "types";
 import { RequestLoginEndpoint, SendData, setInStorage } from "utilities";
-import style from "../styles/auth.module.css";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
@@ -43,7 +42,6 @@ const Login: NextPage = () => {
       )}
       <h1> Login </h1>
       <TextField
-        className={style.authControl}
         id="outlined-basic"
         label="Email"
         variant="outlined"
@@ -51,7 +49,6 @@ const Login: NextPage = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <TextField
-        className={style.authControl}
         id="outlined-basic"
         label="Password"
         variant="outlined"
@@ -61,7 +58,6 @@ const Login: NextPage = () => {
       <Button
         onClick={TryAndLogin}
         disabled={!email || !password}
-        className={style.authControl}
         variant="contained"
       >
         Login!

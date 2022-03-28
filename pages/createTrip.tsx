@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { Typography } from "@mui/material";
 import { Step, Stepper } from "react-form-stepper";
 import {
   StopModal,
