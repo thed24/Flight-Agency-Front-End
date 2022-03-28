@@ -1,6 +1,5 @@
 import React from "react";
-import { Container, NavBar } from "../../";
-import styles from "./authLayout.module.css";
+import { Container, NavBar } from "components";
 
 export type LayoutProps = {
   children: React.ReactNode;

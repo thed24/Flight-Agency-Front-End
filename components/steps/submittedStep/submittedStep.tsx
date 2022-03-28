@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
-import styles from "./submittedStep.module.css";
-import { Trip } from "../../../types";
 import Link from "next/link";
+import styles from "./submittedStep.module.css";
 
 export const SubmittedStep = () => {
   return (

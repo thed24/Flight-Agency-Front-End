@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import styles from "./confirmationStep.module.css";
-import { Trip } from "../../../types";
-import { ConfirmationList } from "../../misc/confirmationList/confirmationList";
+import { Trip } from "types";
+import { ConfirmationList } from "components";
 
 interface Props {
   trip: Trip;

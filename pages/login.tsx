@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { AlertDetails, AuthLayout, AlertBar } from "components";
+import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { LoginRequest, User } from "types";
@@ -40,7 +40,7 @@ const Login: NextPage = () => {
       {alert && (
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}
-      <h1> Login </h1>
+      <Title> Login </Title>
       <TextField
         id="outlined-basic"
         label="Email"

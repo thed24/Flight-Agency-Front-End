@@ -1,10 +1,10 @@
 import { Typography, Select, MenuItem } from "@mui/material";
 import style from "./stopStep.module.css";
-import { Categories, Location, Trip, Place } from "../../../types";
+import { Categories, Location, Trip, Place } from "types";
 import GoogleMapReact from "google-map-react";
-import { List, Marker } from "../..";
+import { List, Marker } from "components";
 import React from "react";
-import { getFromStorage } from "../../../utilities/storage";
+import { getFromStorage } from "utilities";
 
 interface Props {
   trip: Trip;

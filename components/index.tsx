@@ -1,16 +1,16 @@
-export { NavBar } from "./misc/navbar/navbar";
+export { NavBar } from "./misc/navbar";
 
-export { Marker } from "./misc/marker/marker";
+export { Marker } from "./misc/marker";
 
-export { FilledInMarker } from "./misc/marker/filledInMarker";
+export { FilledInMarker } from "./misc/filledInMarker";
 
-export { Layout } from "./layouts/layout/layout";
+export { Layout } from "./layouts/layout";
 
-export { AuthLayout } from "./layouts/authLayout/authLayout";
+export { AuthLayout } from "./layouts/authLayout";
 
-export { AlertBar } from "./misc/alertBar/alertBar";
+export { AlertBar } from "./misc/alertBar";
 
-export type { AlertDetails } from "./misc/alertBar/alertBar";
+export type { AlertDetails } from "./misc/alertBar";
 
 export { StopModal } from "./modals/stopModal/stopModal";
 
@@ -30,10 +30,10 @@ export { List } from "./misc/list/list";
 
 export { ConfirmationList } from "./misc/confirmationList/confirmationList";
 
-export { SetApiKey } from "./misc/setApiKey/setApiKey";
+export { SetApiKey } from "./misc/setApiKey";
 
-export { Container } from "./styledComponents/container";
+export { Container } from "./misc/container";
 
-export { SubTitle } from "./styledComponents/subTitle";
+export { SubTitle } from "./misc/subTitle";
 
-export { Title } from "./styledComponents/title";
+export { Title } from "./misc/title";

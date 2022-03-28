@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Modal, TextField, Typography, Button } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import DateFnsUtils from "@date-io/date-fns";
-import { DateRange, Place } from "../../../types";
+import { DateRange, Place } from "types";
 import styles from "./stopModal.module.css";
 
 const style = {

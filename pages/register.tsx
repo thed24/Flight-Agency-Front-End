@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { AlertDetails, AuthLayout, AlertBar } from "components";
+import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
 import { NextPage } from "next";
 import { useState } from "react";
 import { RegisterRequest, User } from "types";
@@ -41,7 +41,7 @@ const Register: NextPage = () => {
       {alert && (
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}
-      <h1> Register</h1>
+      <Title> Register </Title>
       <TextField
         id="outlined-basic"
         label="Email"

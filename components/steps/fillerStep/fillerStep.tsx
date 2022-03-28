@@ -1,11 +1,10 @@
-import { Entries, Entry, Location, Stop, Trip } from "../../../types";
+import { Entries, Location, Stop, Trip } from "../../../types";
 import GoogleMapReact from "google-map-react";
 import React from "react";
-import { FilledInMarker } from "../../misc/marker/filledInMarker";
+import { FilledInMarker } from "components";
 import style from "./fillerStep.module.css";
-import { Box, Typography } from "@mui/material";
 import { List } from "../..";
-import { getFromStorage } from "../../../utilities/storage";
+import { getFromStorage } from "utilities";
 
 interface Props {
   trip: Trip;

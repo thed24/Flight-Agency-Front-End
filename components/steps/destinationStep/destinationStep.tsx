@@ -1,6 +1,6 @@
-import { Typography, Select, MenuItem, Button } from "@mui/material";
+import { Typography, Select, MenuItem } from "@mui/material";
 import styles from "./destinationStep.module.css";
-import { Country, LoadCountries } from "../../../types";
+import { LoadCountries } from "types";
 
 interface Props {
   destination: string;

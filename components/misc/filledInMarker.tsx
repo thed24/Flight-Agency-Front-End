@@ -1,7 +1,6 @@
-import { PlaceData } from "@googlemaps/google-maps-services-js";
 import { Card, CardContent, Typography } from "@mui/material";
-import React, { MouseEventHandler, useState } from "react";
-import { Stop } from "../../../types";
+import React, { useState } from "react";
+import { Stop } from "types";
 
 export type LayoutProps = {
   lat: number;
