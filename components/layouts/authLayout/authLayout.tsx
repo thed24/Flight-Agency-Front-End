@@ -1,5 +1,5 @@
 import React from "react";
-import { NavBar } from "../../";
+import { Container, NavBar } from "../../";
 import styles from "./authLayout.module.css";
 
 export type LayoutProps = {
@@ -10,7 +10,7 @@ export function AuthLayout({ children }: LayoutProps) {
   return (
     <>
       <NavBar />
-      <div className={styles.container}>{children}</div>
+      <Container>{children}</Container>
     </>
   );
 }

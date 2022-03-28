@@ -1,6 +1,6 @@
 import { Input, Button } from "@mui/material";
 import { useState, useCallback } from "react";
-import { getFromStorage, setInStorage } from "../../../utilities/storage";
+import { getFromStorage, setInStorage } from "utilities/storage";
 
 export const SetApiKey = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);

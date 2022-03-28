@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Link from "next/link";
 import { User } from "../../../types";
 import { clearItemInStorage, getFromStorage } from "../../../utilities/storage";
+import Link from "next/link";
 
 const logOut = () => {
   clearItemInStorage("loggedInUser");
