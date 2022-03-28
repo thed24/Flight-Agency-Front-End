@@ -8,7 +8,7 @@ ENV NODE_ENV production
 ARG URL
 RUN echo "NEXT_PUBLIC_URL=${URL}" > .env
 
-RUN npm ci --only=production
+RUN npm ci
 
 RUN npm run build
 
