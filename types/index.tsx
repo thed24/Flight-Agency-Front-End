@@ -9,6 +9,8 @@ export type {
   DateRange,
   Entry,
   Entries,
+  Places,
+  Place,
 } from "./models";
 
 export type { RegisterRequest, LoginRequest, PlacesRequest } from "./requests";

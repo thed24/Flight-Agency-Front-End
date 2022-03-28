@@ -2,9 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Modal, TextField, Typography, Button } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
-import { PlaceData } from "@googlemaps/google-maps-services-js";
 import DateFnsUtils from "@date-io/date-fns";
-import { DateRange } from "../../../types";
+import { DateRange, Place } from "../../../types";
 import styles from "./stopModal.module.css";
 
 const style = {
@@ -21,7 +20,7 @@ const style = {
 };
 
 export interface Props {
-  place: PlaceData | null;
+  place: Place | null;
   value: DateRange;
   open: boolean;
   setOpen: (val: boolean) => void;

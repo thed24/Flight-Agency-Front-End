@@ -1,47 +1,75 @@
-import * as Components from "../components";
-import * as Types from "../types";
-import * as Api from "../utilities/api";
-
-import style from "../styles/trip.module.css";
-
 import { useCallback, useEffect, useState } from "react";
-import { NextPage } from "next";
 import { Typography } from "@mui/material";
-import { PlaceData } from "@googlemaps/google-maps-services-js";
 import { Step, Stepper } from "react-form-stepper";
+import {
+  StopModal,
+  Layout,
+  DestinationStep,
+  StopStep,
+  FillerStep,
+  ConfirmationStep,
+  SubmittedStep,
+  StepButton,
+  Title,
+  SubTitle,
+  Container,
+} from "components";
+import {
+  DateRange,
+  Location,
+  LoadCountries,
+  Place,
+  Places,
+  PlacesRequest,
+  Trip,
+} from "types";
+import {
+  QueryData,
+  RequestLocationDataEndpoint,
+  SendData,
+  CreateTripEndpoint,
+} from "utilities";
+import { NextPage } from "next";
 
 const CreateTrip: NextPage = () => {
-  const countries = Types.LoadCountries();
+  const countries = LoadCountries();
 
+  const [modalPlace, setModalPlace] = useState<Place | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalValue, setModalValue] = useState<Types.DateRange>({
+  const [modalValue, setModalValue] = useState<DateRange>({
     start: new Date(),
     end: new Date(),
   });
-  const [modalPlace, setModalPlace] = useState<PlaceData | null>(null);
 
   const [category, setCategory] = useState<string>("Food");
   const [step, setStep] = useState<number>(0);
   const [destination, setDestination] = useState<string>("");
-  const [trip, setTrip] = useState<Types.Trip>({ stops: [], destination: "" });
+  const [trip, setTrip] = useState<Trip>({
+    id: 0,
+    stops: [],
+    destination: "",
+  });
   const [zoom, setZoom] = useState<number>(15);
-  const [places, setPlaces] = useState<PlaceData[]>([]);
-  const [center, setCenter] = useState<Types.Location>({
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [center, setCenter] = useState<Location>({
     lat: -37.840935,
     lng: 144.946457,
   });
 
   useEffect(() => {
     async function CallApi() {
-      const response = await Api.RequestLocationData({
-        lat: center.lat,
-        lng: center.lng,
-        zoom: zoom,
-        radius: 2000,
-        keyword: `'${category}'`,
-      });
+      const response = await QueryData<PlacesRequest, Places>(
+        RequestLocationDataEndpoint,
+        {
+          lat: center.lat,
+          lng: center.lng,
+          zoom: zoom,
+          radius: 2000,
+          keyword: `'${category}'`,
+        }
+      );
 
-      if (response) setPlaces(response.results as PlaceData[]);
+      if (response.data) setPlaces(response.data.results);
     }
 
     CallApi();
@@ -49,7 +77,7 @@ const CreateTrip: NextPage = () => {
 
   useEffect((): void => {
     async function CallApi() {
-      await Api.CreateTrip(trip);
+      await SendData<Trip, Trip>(CreateTripEndpoint, trip);
     }
 
     if (step === 4) {
@@ -80,8 +108,8 @@ const CreateTrip: NextPage = () => {
             time: modalValue,
             address: modalPlace.vicinity,
             location: {
-              lat: modalPlace.geometry.location.lat,
-              lng: modalPlace.geometry.location.lng,
+              lat: modalPlace.geometry.lat,
+              lng: modalPlace.geometry.lng,
             },
           },
         ],
@@ -99,7 +127,7 @@ const CreateTrip: NextPage = () => {
     setModalPlace(null);
   }, [modalOpen]);
 
-  function OpenModalWithPlace(place: PlaceData): void {
+  function OpenModalWithPlace(place: Place): void {
     setModalOpen(true);
     setModalValue({
       start: new Date(),
@@ -110,7 +138,7 @@ const CreateTrip: NextPage = () => {
 
   return (
     <>
-      <Components.StopModal
+      <StopModal
         place={modalPlace}
         value={modalValue}
         setValue={setModalValue}
@@ -120,16 +148,11 @@ const CreateTrip: NextPage = () => {
         cancel={modalCancel}
       />
 
-      <Components.Layout>
-        <Typography className={style.centeredHeader} variant="h4">
-          Welcome to the Flight Agency
-        </Typography>
+      <Layout>
+        <Title> Welcome to the Flight Agency </Title>
+        <SubTitle> Build your trip below </SubTitle>
 
-        <Typography className={style.centeredText} variant="subtitle1">
-          Build your trip below
-        </Typography>
-
-        <div style={{ display: "flex" }}>
+        <Container>
           <Stepper activeStep={step}>
             <Step label="Select your destination" />
             <Step label="Select your stops" />
@@ -137,17 +160,17 @@ const CreateTrip: NextPage = () => {
             <Step label="Confirm your trip" />
             <Step label="Trip confirmed" />
           </Stepper>
-        </div>
+        </Container>
 
         {step === 0 && (
-          <Components.DestinationStep
+          <DestinationStep
             destination={destination}
             onChange={setDestination}
           />
         )}
 
         {step === 1 && (
-          <Components.StopStep
+          <StopStep
             center={center}
             zoom={zoom}
             places={places}
@@ -158,21 +181,19 @@ const CreateTrip: NextPage = () => {
           />
         )}
 
-        {step === 2 && (
-          <Components.FillerStep center={center} zoom={zoom} trip={trip} />
-        )}
+        {step === 2 && <FillerStep center={center} zoom={zoom} trip={trip} />}
 
-        {step === 3 && <Components.ConfirmationStep trip={trip} />}
+        {step === 3 && <ConfirmationStep trip={trip} />}
 
-        {step === 4 && <Components.SubmittedStep />}
+        {step === 4 && <SubmittedStep />}
 
-        <Components.StepButton
+        <StepButton
           step={step}
           setStep={setStep}
           destination={destination}
           confirmDestination={confirmDestinationOnClick}
         />
-      </Components.Layout>
+      </Layout>
     </>
   );
 };

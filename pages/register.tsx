@@ -1,10 +1,11 @@
 import { Button, TextField } from "@mui/material";
+import { AlertDetails, AuthLayout, AlertBar } from "components";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { AlertBar, AlertDetails } from "../components/";
-import { AuthLayout } from "../components/";
+import { RegisterRequest, User } from "types";
+
 import style from "../styles/auth.module.css";
-import { RequestRegister } from "../utilities/api";
+import { SendData, RequestRegisterEndpoint } from "../utilities/api";
 
 const Register: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
@@ -14,16 +15,23 @@ const Register: NextPage = () => {
 
   async function TryAndRegister() {
     if (!email || !password || !name) return;
-    const response = await RequestRegister({ email, password, name });
+    const response = await SendData<RegisterRequest, User>(
+      RequestRegisterEndpoint,
+      {
+        name,
+        email,
+        password,
+      }
+    );
 
-    if (response) {
+    if (response.data) {
       setAlert({
         message: "Successfully registered! Please login.",
         type: "success",
       });
     } else {
       setAlert({
-        message: "The selected email was already registered.",
+        message: response.error ?? "The selected email was already registered.",
         type: "error",
       });
     }

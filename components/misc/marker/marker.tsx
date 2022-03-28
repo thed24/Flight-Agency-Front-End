@@ -1,11 +1,11 @@
-import { PlaceData } from "@googlemaps/google-maps-services-js";
 import { Card, CardContent, Typography } from "@mui/material";
 import React, { MouseEventHandler, useState } from "react";
+import { Place } from "types";
 
 export type LayoutProps = {
   lat: number;
   lng: number;
-  place: PlaceData;
+  place: Place;
   onClick: MouseEventHandler;
 };
 
@@ -14,7 +14,7 @@ export function Marker({ lat, lng, place, onClick }: LayoutProps) {
   const toggleRaised = () => setRaised(!raised);
 
   const text = place.name;
-  const address = place.formatted_address;
+  const address = place.vicinity;
   const rating = place.rating;
 
   return (

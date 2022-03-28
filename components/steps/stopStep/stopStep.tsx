@@ -1,9 +1,8 @@
 import { Typography, Select, MenuItem } from "@mui/material";
 import style from "./stopStep.module.css";
-import { Categories, Location, Trip } from "../../../types";
+import { Categories, Location, Trip, Place } from "../../../types";
 import GoogleMapReact from "google-map-react";
 import { List, Marker } from "../..";
-import { PlaceData } from "@googlemaps/google-maps-services-js";
 import React from "react";
 import { getFromStorage } from "../../../utilities/storage";
 
@@ -11,9 +10,9 @@ interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
-  places: PlaceData[];
+  places: Place[];
   category: string;
-  onClickMarker: (place: PlaceData) => void;
+  onClickMarker: (place: Place) => void;
   onChangeCategory: (category: string) => void;
 }
 
@@ -53,8 +52,8 @@ export const StopStep = ({
               <Marker
                 key={i}
                 onClick={() => onClickMarker(place)}
-                lat={place.geometry.location.lat}
-                lng={place.geometry.location.lng}
+                lat={place.geometry.lat}
+                lng={place.geometry.lng}
                 place={place}
               />
             ))}

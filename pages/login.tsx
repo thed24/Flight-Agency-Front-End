@@ -1,11 +1,10 @@
 import { Button, TextField } from "@mui/material";
+import { AlertDetails, AuthLayout, AlertBar } from "components";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { AlertBar, AlertDetails, AuthLayout } from "../components";
+import { LoginRequest, User } from "types";
+import { RequestLoginEndpoint, SendData, setInStorage } from "utilities";
 import style from "../styles/auth.module.css";
-import { RequestLogin } from "../utilities/api";
-import { setInStorage } from "../utilities/storage";
-import { User } from "../types/models";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
@@ -22,13 +21,16 @@ const Login: NextPage = () => {
 
   async function TryAndLogin() {
     if (!email || !password) return;
-    const response = await RequestLogin({ email, password });
+    const response = await SendData<LoginRequest, User>(RequestLoginEndpoint, {
+      email,
+      password,
+    });
 
-    if (response) {
-      setLoggedInUser(response);
+    if (response.data) {
+      setLoggedInUser(response.data);
     } else {
       setAlert({
-        message: "Invalid email or password",
+        message: response.error ?? "Invalid email or password",
         type: "error",
       });
     }

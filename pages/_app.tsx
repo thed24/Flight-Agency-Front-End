@@ -1,9 +1,9 @@
-import "../styles/globals.css";
+import "styles/globals.css";
 
-import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material";
-import { theme } from "../utilities/theme";
+import { theme } from "utilities/theme";
 import "@fontsource/roboto/700.css";
+import { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

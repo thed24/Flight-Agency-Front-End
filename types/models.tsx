@@ -11,6 +11,7 @@ export interface Location {
 }
 
 export interface Trip {
+  id: number;
   destination: string;
   stops: Stop[];
 }
@@ -42,3 +43,18 @@ export interface Entry {
 }
 
 export type Entries = Entry[];
+
+export interface Places {
+  results: Place[];
+}
+export interface Place {
+  name: string;
+  rating: number;
+  icon: string;
+  id?: any;
+  geometry: Location;
+  reference: string;
+  vicinity: string;
+  types: string[];
+  placeId: string;
+}

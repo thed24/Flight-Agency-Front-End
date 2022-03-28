@@ -31,3 +31,9 @@ export { List } from "./misc/list/list";
 export { ConfirmationList } from "./misc/confirmationList/confirmationList";
 
 export { SetApiKey } from "./misc/setApiKey/setApiKey";
+
+export { Container } from "./styledComponents/container";
+
+export { SubTitle } from "./styledComponents/subTitle";
+
+export { Title } from "./styledComponents/title";
