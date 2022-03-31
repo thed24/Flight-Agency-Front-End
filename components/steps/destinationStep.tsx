@@ -1,6 +1,7 @@
-import { Typography, Select, MenuItem } from "@mui/material";
-import styles from "./destinationStep.module.css";
+import * as React from "react";
+import { Typography, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { LoadCountries } from "types";
+import { Container } from "components";
 
 interface Props {
   destination: string;
@@ -8,8 +9,15 @@ interface Props {
 }
 
 export const DestinationStep = ({ destination, onChange }: Props) => {
+  const handleOnChange = React.useCallback(
+    (event: SelectChangeEvent<string>) => {
+      onChange(event.target.value);
+    },
+    [onChange]
+  );
+
   return (
-    <div className={styles.container}>
+    <Container>
       <Typography variant="h5">Please select your destination</Typography>
       <Select
         style={{
@@ -19,7 +27,7 @@ export const DestinationStep = ({ destination, onChange }: Props) => {
         placeholder="Select a country"
         value={destination}
         label="Destination"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleOnChange}
       >
         {LoadCountries().map((c, index) => {
           return (
@@ -29,6 +37,6 @@ export const DestinationStep = ({ destination, onChange }: Props) => {
           );
         })}
       </Select>
-    </div>
+    </Container>
   );
 };

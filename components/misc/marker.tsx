@@ -9,7 +9,7 @@ export type LayoutProps = {
   onClick: MouseEventHandler;
 };
 
-export function Marker({ lat, lng, place, onClick }: LayoutProps) {
+export function Marker({ place, onClick }: LayoutProps) {
   const [raised, setRaised] = useState<boolean>(false);
   const toggleRaised = () => setRaised(!raised);
 

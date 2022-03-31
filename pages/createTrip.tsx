@@ -22,13 +22,9 @@ import {
   PlacesRequest,
   Trip,
 } from "types";
-import {
-  QueryData,
-  RequestLocationDataEndpoint,
-  SendData,
-  CreateTripEndpoint,
-} from "utilities";
+import { RequestLocationDataEndpoint, CreateTripEndpoint } from "utilities";
 import { NextPage } from "next";
+import { useGet, usePost } from "hooks";
 
 const CreateTrip: NextPage = () => {
   const countries = LoadCountries();
@@ -55,34 +51,38 @@ const CreateTrip: NextPage = () => {
     lng: 144.946457,
   });
 
+  const {
+    loading: placesLoading,
+    payload: placesResult,
+    request: placesRequest,
+  } = useGet<Places>(RequestLocationDataEndpoint);
+
+  const { loading: createTripLoading, request: createTripRequest } = usePost<
+    Trip,
+    void
+  >(CreateTripEndpoint);
+
   useEffect(() => {
-    async function CallApi() {
-      const response = await QueryData<PlacesRequest, Places>(
-        RequestLocationDataEndpoint,
-        {
-          lat: center.lat,
-          lng: center.lng,
-          zoom: zoom,
-          radius: 2000,
-          keyword: `'${category}'`,
-        }
-      );
+    var request: PlacesRequest = {
+      lat: center.lat,
+      lng: center.lng,
+      zoom: zoom,
+      radius: 2000,
+      keyword: `'${category}'`,
+    };
 
-      if (response.data) setPlaces(response.data.results);
-    }
+    placesRequest(request);
+  }, [category]);
 
-    CallApi();
-  }, [category, center, zoom]);
+  useEffect(() => {
+    if (placesResult?.data) setPlaces(placesResult.data.results);
+  }, [placesResult]);
 
   useEffect((): void => {
-    async function CallApi() {
-      await SendData<Trip, Trip>(CreateTripEndpoint, trip);
-    }
-
     if (step === 4) {
-      CallApi();
+      createTripRequest(trip);
     }
-  }, [step, category, center, zoom, trip]);
+  }, [step]);
 
   const confirmDestinationOnClick = useCallback(() => {
     const currentCountry = countries.find(
@@ -107,8 +107,8 @@ const CreateTrip: NextPage = () => {
             time: modalValue,
             address: modalPlace.vicinity,
             location: {
-              lat: modalPlace.geometry.lat,
-              lng: modalPlace.geometry.lng,
+              lat: modalPlace.geometry.location.latitude,
+              lng: modalPlace.geometry.location.longitude,
             },
           },
         ],
@@ -147,7 +147,7 @@ const CreateTrip: NextPage = () => {
         cancel={modalCancel}
       />
 
-      <Layout>
+      <Layout loading={placesLoading || createTripLoading}>
         <Title> Welcome to the Flight Agency </Title>
         <SubTitle> Build your trip below </SubTitle>
 

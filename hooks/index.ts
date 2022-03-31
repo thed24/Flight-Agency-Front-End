@@ -1,2 +1,5 @@
-export type { Result } from "./useApi/useApi";
-export { useApi, Match } from "./useApi/useApi";
+export type { Result, PostResponse, GetResponse } from "./interfaces";
+export { IsError } from "./interfaces";
+
+export { useGet } from "./useGet/useGet";
+export { usePost } from "./usePost/usePost";

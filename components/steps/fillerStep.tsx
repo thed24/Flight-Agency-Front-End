@@ -1,10 +1,10 @@
-import { Entries, Location, Stop, Trip } from "../../../types";
+import { Entries, Location, Stop, Trip } from "types";
 import GoogleMapReact from "google-map-react";
 import React from "react";
-import { FilledInMarker } from "components";
-import style from "./fillerStep.module.css";
-import { List } from "../..";
+import { FilledInMarker, List } from "components";
 import { getFromStorage } from "utilities";
+import { Map, MapContainer } from "./steps.styles";
+import { Container } from "components/misc/container";
 
 interface Props {
   trip: Trip;
@@ -120,14 +120,14 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
   const key = getFromStorage<string>("apiKey");
 
   return (
-    <>
-      <div className={style.stopStep}>
-        <div className={style.maps}>
+    <Container>
+      <MapContainer>
+        <Map>
           <GoogleMapReact
             bootstrapURLKeys={{
               key: key ?? "",
             }}
-            defaultCenter={center}
+            defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
             onClick={onClickAddStop}
             yesIWantToUseGoogleMapApiInternals
@@ -142,18 +142,10 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
               />
             ))}
           </GoogleMapReact>
-        </div>
+        </Map>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: "20px",
-          }}
-        ></div>
-        <List title="Stops" entries={entries} />
-      </div>
-    </>
+        <List title="Stopss" entries={entries} />
+      </MapContainer>
+    </Container>
   );
 };

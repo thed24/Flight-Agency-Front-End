@@ -52,7 +52,12 @@ export interface Place {
   rating: number;
   icon: string;
   id?: any;
-  geometry: Location;
+  geometry: {
+    location: {
+      latitude: number;
+      longitude: number;
+    };
+  };
   reference: string;
   vicinity: string;
   types: string[];

@@ -1,15 +1,15 @@
-import style from "./layout.module.css";
-
 import React from "react";
 import { User } from "types";
 import { getFromStorage } from "utilities";
-import { Container, NavBar, SubTitle, Title } from "components";
+import { Container, LoadingOverlay, NavBar, SubTitle, Title } from "components";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export type LayoutProps = {
   children: React.ReactNode;
+  loading?: boolean;
 };
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, loading }: LayoutProps) {
   const loggedInUser = getFromStorage<User>("loggedInUser");
 
   const authMessage = (
@@ -23,6 +23,7 @@ export function Layout({ children }: LayoutProps) {
     <>
       <NavBar />
       {loggedInUser ? children : authMessage}
+      <LoadingOverlay loading={loading} />
     </>
   );
 }

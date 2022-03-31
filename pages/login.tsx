@@ -1,15 +1,23 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
+import { Match, usePost } from "hooks";
+import { IsError } from "hooks/interfaces";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { LoginRequest, User } from "types";
-import { RequestLoginEndpoint, SendData, setInStorage } from "utilities";
+import { RequestLoginEndpoint, setInStorage } from "utilities";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [alert, setAlert] = useState<AlertDetails | null>(null);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+
+  const {
+    request: requestLogin,
+    loading: loginLoading,
+    payload: loginResult,
+  } = usePost<User, LoginRequest>(RequestLoginEndpoint);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -18,25 +26,26 @@ const Login: NextPage = () => {
     }
   }, [loggedInUser]);
 
-  async function TryAndLogin() {
-    if (!email || !password) return;
-    const response = await SendData<LoginRequest, User>(RequestLoginEndpoint, {
-      email,
-      password,
-    });
+  useEffect(() => {
+    if (IsError(loginResult)) {
+      if (loginResult.error === "Undefined.") return;
 
-    if (response.data) {
-      setLoggedInUser(response.data);
-    } else {
       setAlert({
-        message: response.error ?? "Invalid email or password",
+        message: loginResult.error,
         type: "error",
       });
+    } else {
+      setLoggedInUser(loginResult.data);
     }
+  }, [loginResult]);
+
+  async function TryAndLogin() {
+    if (!email || !password) return;
+    requestLogin({ email, password });
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout loading={loginLoading}>
       {alert && (
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}

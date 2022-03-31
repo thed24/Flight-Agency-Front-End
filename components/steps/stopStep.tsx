@@ -1,10 +1,11 @@
 import { Typography, Select, MenuItem } from "@mui/material";
-import style from "./stopStep.module.css";
 import { Categories, Location, Trip, Place } from "types";
 import GoogleMapReact from "google-map-react";
 import { List, Marker } from "components";
 import React from "react";
 import { getFromStorage } from "utilities";
+import { Container } from "components/misc/container";
+import { Map, MapContainer } from "./steps.styles";
 
 interface Props {
   trip: Trip;
@@ -36,15 +37,17 @@ export const StopStep = ({
 
   const key = getFromStorage<string>("apiKey");
 
+  console.log(places);
+
   return (
-    <>
-      <div className={style.stopStep}>
-        <div className={style.maps}>
+    <Container>
+      <MapContainer>
+        <Map>
           <GoogleMapReact
             bootstrapURLKeys={{
               key: key ?? "",
             }}
-            defaultCenter={center}
+            defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
             yesIWantToUseGoogleMapApiInternals
           >
@@ -52,35 +55,35 @@ export const StopStep = ({
               <Marker
                 key={i}
                 onClick={() => onClickMarker(place)}
-                lat={place.geometry.lat}
-                lng={place.geometry.lng}
                 place={place}
+                lat={place.geometry.location.latitude}
+                lng={place.geometry.location.longitude}
               />
             ))}
           </GoogleMapReact>
-        </div>
+        </Map>
 
         <List title="Stops" entries={entries} />
-      </div>
-      <div className={style.selector}>
-        <Typography gutterBottom variant="h6">
-          Select a category
-        </Typography>
-        <Select
-          placeholder="Select a category"
-          value={category}
-          label="Category"
-          onChange={(e) => onChangeCategory(e.target.value)}
-        >
-          {Categories.map((category, index) => {
-            return (
-              <MenuItem value={category} key={index}>
-                {category}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </div>
-    </>
+      </MapContainer>
+
+      <Typography gutterBottom variant="h6">
+        Select a category
+      </Typography>
+
+      <Select
+        placeholder="Select a category"
+        value={category}
+        label="Category"
+        onChange={(e) => onChangeCategory(e.target.value)}
+      >
+        {Categories.map((category, index) => {
+          return (
+            <MenuItem value={category} key={index}>
+              {category}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </Container>
   );
 };

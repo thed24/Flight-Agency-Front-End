@@ -1,13 +1,12 @@
 import { Typography } from "@mui/material";
-import { Trip } from "../../../types";
-import styles from "./confirmationList.module.css";
+import { Trip } from "types";
 
 interface Props {
   trip: Trip;
 }
 export const ConfirmationList = ({ trip }: Props) => {
   return (
-    <div className={styles.destination}>
+    <div>
       {trip.stops.map((stop) => (
         <>
           <Typography variant="h6">{stop.name}</Typography>

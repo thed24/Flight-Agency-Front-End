@@ -15,6 +15,7 @@ export function AlertBar({ details, callback }: AlertBarProps) {
 
   return (
     <Alert
+      style={{ marginTop: "20px" }}
       severity={type}
       action={
         <Button onClick={callback} color="inherit" size="small">

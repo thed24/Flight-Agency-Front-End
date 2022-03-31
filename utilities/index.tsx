@@ -5,9 +5,6 @@ export {
   GetSuggestionsEndpoint,
   RequestRegisterEndpoint,
   RequestLocationDataEndpoint,
-  SendData,
-  UpdateData,
-  QueryData,
 } from "./api";
 
 export {

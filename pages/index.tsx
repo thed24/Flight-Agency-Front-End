@@ -2,11 +2,9 @@ import { Button, Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 
-import { useApi } from "hooks";
 import {
   GetTripsEndpoint,
   getFromStorage,
-  SendData,
   GetSuggestionsEndpoint,
 } from "utilities";
 import {
@@ -20,22 +18,25 @@ import {
 import { Stop, Trip, User } from "types";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useGet } from "hooks";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
   const loggedInUser = getFromStorage<User>("loggedInUser");
-  const tripsState = useApi<Trip[]>(GetTripsEndpoint);
+
+  const {
+    request: requestTrips,
+    loading: tripsLoading,
+    payload: tripsPayload,
+  } = useGet<Trip[]>(GetTripsEndpoint);
 
   useEffect(() => {
-    if (loggedInUser) tripsState.request();
+    if (loggedInUser) requestTrips();
   }, []);
 
   useEffect(() => {
-    setTrips(tripsState.data.data ? tripsState.data.data : []);
-
-    if (trips.length > 0)
-      SendData<Trip, Stop[]>(GetSuggestionsEndpoint, trips[0]);
-  }, [trips, tripsState.data]);
+    setTrips(tripsPayload?.data ? tripsPayload.data : []);
+  }, [tripsPayload]);
 
   return (
     <>

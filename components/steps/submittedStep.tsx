@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
+import { Container } from "components";
 import Link from "next/link";
-import styles from "./submittedStep.module.css";
 
 export const SubmittedStep = () => {
   return (
-    <div className={styles.container}>
+    <Container>
       <Typography variant="h5">
         Your trip has been submitted successfully
       </Typography>
@@ -13,6 +13,6 @@ export const SubmittedStep = () => {
           Head home
         </Link>
       </Typography>
-    </div>
+    </Container>
   );
 };
