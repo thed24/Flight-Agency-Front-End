@@ -17,7 +17,7 @@ const Register: NextPage = () => {
     request: requestRegister,
     loading: registerLoading,
     payload: registerResult,
-  } = usePost<User, RegisterRequest>(RequestRegisterEndpoint);
+  } = usePost<RegisterRequest, User>(RequestRegisterEndpoint);
 
   useEffect(() => {
     if (IsError(registerResult)) {
@@ -36,7 +36,6 @@ const Register: NextPage = () => {
   }, [registerResult]);
 
   async function TryAndRegister() {
-    if (!email || !password || !name) return;
     requestRegister({ name, email, password });
   }
 

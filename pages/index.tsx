@@ -2,23 +2,19 @@ import { Button, Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 
-import {
-  GetTripsEndpoint,
-  getFromStorage,
-  GetSuggestionsEndpoint,
-} from "utilities";
+import { GetTripsEndpoint, getFromStorage } from "utilities";
 import {
   Layout,
-  ConfirmationList,
   SetApiKey,
   SubTitle,
   Title,
   Container,
+  ConfirmationList,
 } from "components";
-import { Stop, Trip, User } from "types";
+import { Trip, User } from "types";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useGet } from "hooks";
+import { IsError, useGet } from "hooks";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -35,12 +31,12 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    setTrips(tripsPayload?.data ? tripsPayload.data : []);
+    setTrips(IsError(tripsPayload) ? [] : tripsPayload.data);
   }, [tripsPayload]);
 
   return (
     <>
-      <Layout>
+      <Layout loading={tripsLoading}>
         <Title>Welcome to the Flight Agency, {loggedInUser?.name}!</Title>
 
         <SubTitle>View your existing trip, or create a new one</SubTitle>

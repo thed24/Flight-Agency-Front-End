@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
-import { Match, usePost } from "hooks";
+import { usePost } from "hooks";
 import { IsError } from "hooks/interfaces";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ const Login: NextPage = () => {
     request: requestLogin,
     loading: loginLoading,
     payload: loginResult,
-  } = usePost<User, LoginRequest>(RequestLoginEndpoint);
+  } = usePost<LoginRequest, User>(RequestLoginEndpoint);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -40,7 +40,6 @@ const Login: NextPage = () => {
   }, [loginResult]);
 
   async function TryAndLogin() {
-    if (!email || !password) return;
     requestLogin({ email, password });
   }
 

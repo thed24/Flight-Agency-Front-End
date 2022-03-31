@@ -6,7 +6,7 @@ const httpClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:8080",
 });
 
-export function usePost<I, O>(url: string): PostResponse<I> {
+export function usePost<I, O>(url: string): PostResponse<O> {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Result<O>>({ error: "Undefined." });
 

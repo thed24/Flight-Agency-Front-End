@@ -2,7 +2,6 @@ import React from "react";
 import { User } from "types";
 import { getFromStorage } from "utilities";
 import { Container, LoadingOverlay, NavBar, SubTitle, Title } from "components";
-import { Backdrop, CircularProgress } from "@mui/material";
 
 export type LayoutProps = {
   children: React.ReactNode;

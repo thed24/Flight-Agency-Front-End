@@ -8,7 +8,7 @@ export type LayoutProps = {
   stop: Stop;
 };
 
-export function FilledInMarker({ lat, lng, stop }: LayoutProps) {
+export function FilledInMarker({ stop }: LayoutProps) {
   const [raised, setRaised] = useState<boolean>(false);
   const toggleRaised = () => setRaised(!raised);
 

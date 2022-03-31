@@ -24,7 +24,7 @@ import {
 } from "types";
 import { RequestLocationDataEndpoint, CreateTripEndpoint } from "utilities";
 import { NextPage } from "next";
-import { useGet, usePost } from "hooks";
+import { IsError, useGet, usePost } from "hooks";
 
 const CreateTrip: NextPage = () => {
   const countries = LoadCountries();
@@ -75,7 +75,7 @@ const CreateTrip: NextPage = () => {
   }, [category]);
 
   useEffect(() => {
-    if (placesResult?.data) setPlaces(placesResult.data.results);
+    if (!IsError(placesResult)) setPlaces(placesResult.data.results);
   }, [placesResult]);
 
   useEffect((): void => {
