@@ -1,5 +1,11 @@
-import { Button, TextField } from "@mui/material";
-import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
+import { Button, FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import {
+  AlertDetails,
+  AuthLayout,
+  AlertBar,
+  Title,
+  PasswordInput,
+} from "components";
 import { usePost } from "hooks";
 import { IsError, IsUnitializedError } from "hooks/interfaces";
 import { NextPage } from "next";
@@ -8,8 +14,8 @@ import { LoginRequest, User } from "types";
 import { RequestLoginEndpoint, setInStorage } from "utilities";
 
 const Login: NextPage = () => {
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [alert, setAlert] = useState<AlertDetails | null>(null);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
@@ -53,20 +59,19 @@ const Login: NextPage = () => {
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}
       <Title> Login </Title>
-      <TextField
-        id="outlined-basic"
-        label="Email"
-        variant="outlined"
-        value={email}
-        onChange={OnEmailChange}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Password"
-        variant="outlined"
-        value={password}
-        onChange={OnPasswordChange}
-      />
+
+      <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">
+        <InputLabel>Email</InputLabel>
+        <OutlinedInput
+          id="outlined-basic"
+          label="Email"
+          value={email}
+          onChange={OnEmailChange}
+        />
+      </FormControl>
+
+      <PasswordInput password={password} onPasswordChange={OnPasswordChange} />
+
       <Button
         onClick={OnLogin}
         disabled={!email || !password}

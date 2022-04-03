@@ -39,3 +39,5 @@ export { SubTitle } from "./misc/subTitle";
 export { Title } from "./misc/title";
 
 export { LoadingOverlay } from "./misc/loadingOverlay";
+
+export { PasswordInput } from "./misc/passwordInput";

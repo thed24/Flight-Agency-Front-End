@@ -1,16 +1,21 @@
-import { Button, TextField } from "@mui/material";
-import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
+import { Button, FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import {
+  AlertDetails,
+  AuthLayout,
+  AlertBar,
+  Title,
+  PasswordInput,
+} from "components";
 import { IsError, IsUnitializedError, usePost } from "hooks";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { RegisterRequest, User } from "types";
-
 import { RequestRegisterEndpoint } from "utilities/api";
 
 const Register: NextPage = () => {
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
-  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [alert, setAlert] = useState<AlertDetails | null>(null);
 
   const {
@@ -53,27 +58,29 @@ const Register: NextPage = () => {
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}
       <Title> Register </Title>
-      <TextField
-        id="outlined-basic"
-        label="Email"
-        variant="outlined"
-        value={email}
-        onChange={OnEmailChange}
-      />
-      <TextField
-        id="outlined-basic"
-        label="User Name"
-        variant="outlined"
-        value={name}
-        onChange={OnNameChange}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Password"
-        variant="outlined"
-        value={password}
-        onChange={OnPasswordChange}
-      />
+
+      <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">
+        <InputLabel>Email</InputLabel>
+        <OutlinedInput
+          id="outlined-basic"
+          label="Email"
+          value={email}
+          onChange={OnEmailChange}
+        />
+      </FormControl>
+
+      <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">
+        <InputLabel>User Name</InputLabel>
+        <OutlinedInput
+          id="outlined-basic"
+          label="User Name"
+          value={name}
+          onChange={OnNameChange}
+        />
+      </FormControl>
+
+      <PasswordInput password={password} onPasswordChange={OnPasswordChange} />
+
       <Button
         onClick={OnRegister}
         disabled={!email || !password || !name}

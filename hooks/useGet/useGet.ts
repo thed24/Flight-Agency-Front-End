@@ -19,7 +19,7 @@ export function useGet<T>(url: string): GetResponse<T> {
         setData({ data: response.data });
       })
       .catch((error: AxiosError) => {
-        setData({ error: error.message });
+        setData({ error: error.response?.data });
       })
       .then(() => {
         setLoading(false);
