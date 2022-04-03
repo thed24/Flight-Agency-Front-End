@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
 import { usePost } from "hooks";
-import { IsError } from "hooks/interfaces";
+import { IsError, IsUnitializedError } from "hooks/interfaces";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { LoginRequest, User } from "types";
@@ -28,20 +28,24 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (IsError(loginResult)) {
-      if (loginResult.error === "Undefined.") return;
-
-      setAlert({
-        message: loginResult.error,
-        type: "error",
-      });
+      if (IsUnitializedError(loginResult.error)) return;
+      setAlert({ message: loginResult.error, type: "error" });
     } else {
       setLoggedInUser(loginResult.data);
     }
   }, [loginResult]);
 
-  async function TryAndLogin() {
+  const OnLogin = () => {
     requestLogin({ email, password });
-  }
+  };
+
+  const OnEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const OnPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
 
   return (
     <AuthLayout loading={loginLoading}>
@@ -54,17 +58,17 @@ const Login: NextPage = () => {
         label="Email"
         variant="outlined"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={OnEmailChange}
       />
       <TextField
         id="outlined-basic"
         label="Password"
         variant="outlined"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={OnPasswordChange}
       />
       <Button
-        onClick={TryAndLogin}
+        onClick={OnLogin}
         disabled={!email || !password}
         variant="contained"
       >

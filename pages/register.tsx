@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { AlertDetails, AuthLayout, AlertBar, Title } from "components";
-import { IsError, usePost } from "hooks";
+import { IsError, IsUnitializedError, usePost } from "hooks";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { RegisterRequest, User } from "types";
@@ -21,12 +21,8 @@ const Register: NextPage = () => {
 
   useEffect(() => {
     if (IsError(registerResult)) {
-      if (registerResult.error === "Undefined.") return;
-
-      setAlert({
-        message: registerResult.error,
-        type: "error",
-      });
+      if (IsUnitializedError(registerResult.error)) return;
+      setAlert({ message: registerResult.error, type: "error" });
     } else {
       setAlert({
         message: "Successfully registered! Please login.",
@@ -35,9 +31,21 @@ const Register: NextPage = () => {
     }
   }, [registerResult]);
 
-  async function TryAndRegister() {
+  const OnRegister = () => {
     requestRegister({ name, email, password });
-  }
+  };
+
+  const OnEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const OnPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const OnNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
 
   return (
     <AuthLayout loading={registerLoading}>
@@ -50,24 +58,24 @@ const Register: NextPage = () => {
         label="Email"
         variant="outlined"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={OnEmailChange}
       />
       <TextField
         id="outlined-basic"
         label="User Name"
         variant="outlined"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={OnNameChange}
       />
       <TextField
         id="outlined-basic"
         label="Password"
         variant="outlined"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={OnPasswordChange}
       />
       <Button
-        onClick={TryAndRegister}
+        onClick={OnRegister}
         disabled={!email || !password || !name}
         variant="contained"
       >
