@@ -15,6 +15,7 @@ interface Props {
   category: string;
   onClickMarker: (place: Place) => void;
   onChangeCategory: (category: string) => void;
+  onMoveMap: (lat: number, lng: number) => void;
 }
 
 export const StopStep = ({
@@ -25,6 +26,7 @@ export const StopStep = ({
   category,
   onClickMarker,
   onChangeCategory,
+  onMoveMap,
 }: Props) => {
   const entries = trip.stops.map((stop, i) => {
     return [
@@ -35,9 +37,15 @@ export const StopStep = ({
     ];
   });
 
-  const key = getFromStorage<string>("apiKey");
+  const onDragEnd = React.useCallback(
+    (event: any) => {
+      console.log(event);
+      onMoveMap(event.center.lat(), event.center.lng());
+    },
+    [onMoveMap]
+  );
 
-  console.log(places);
+  const key = getFromStorage<string>("apiKey");
 
   return (
     <Container>
@@ -49,6 +57,7 @@ export const StopStep = ({
             }}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
+            onDragEnd={onDragEnd}
             yesIWantToUseGoogleMapApiInternals
           >
             {places.map((place, i) => (

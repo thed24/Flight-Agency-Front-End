@@ -11,6 +11,13 @@ export type {
   Entries,
   Places,
   Place,
+  Address,
+  Addresses,
 } from "./models";
 
-export type { RegisterRequest, LoginRequest, PlacesRequest } from "./requests";
+export type {
+  RegisterRequest,
+  LoginRequest,
+  PlacesRequest,
+  AddressRequest,
+} from "./requests";

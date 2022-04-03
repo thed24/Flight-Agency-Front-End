@@ -21,8 +21,8 @@ export function Layout({ children, loading }: LayoutProps) {
   return (
     <>
       <NavBar />
-      {loggedInUser ? children : authMessage}
       <LoadingOverlay loading={loading} />
+      {loggedInUser ? children : authMessage}
     </>
   );
 }

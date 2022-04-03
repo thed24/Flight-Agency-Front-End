@@ -47,9 +47,9 @@ const Home: NextPage = () => {
           {trips &&
             trips.map((trip, i) => (
               <div key={i}>
-                <Title>
+                <SubTitle>
                   Trip {i + 1}: {trip.destination}
-                </Title>
+                </SubTitle>
                 <ConfirmationList key={i} trip={trip} />
               </div>
             ))}
@@ -57,7 +57,10 @@ const Home: NextPage = () => {
           {trips.length > 0 && <Divider />}
 
           <Link href={"createTrip"} passHref>
-            <Button> Create a new trip </Button>
+            <Button style={{ marginBottom: "25px" }}>
+              {" "}
+              Create a new trip{" "}
+            </Button>
           </Link>
 
           <SetApiKey />

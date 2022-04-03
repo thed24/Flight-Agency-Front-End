@@ -1,6 +1,6 @@
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { Trip } from "types";
-import { ConfirmationList, Container } from "components";
+import { ConfirmationList, Container, SubTitle } from "components";
 
 interface Props {
   trip: Trip;
@@ -9,11 +9,13 @@ interface Props {
 export const ConfirmationStep = ({ trip }: Props) => {
   return (
     <Container>
-      <Typography variant="h5">
-        Your current trip itinary for your trip to {trip.destination}{" "}
-      </Typography>
+      <SubTitle>
+        Your current trip itinary for your trip to {trip.destination}
+      </SubTitle>
 
+      <Divider />
       <ConfirmationList trip={trip} />
+      <Divider />
     </Container>
   );
 };

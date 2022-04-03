@@ -1,4 +1,5 @@
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { Title } from "components";
 import React from "react";
 import { Entries } from "types";
 
@@ -9,12 +10,13 @@ export type LayoutProps = {
 
 export function List({ title, entries }: LayoutProps) {
   return (
-    <div>
-      <Typography gutterBottom variant="h4">
-        {title}
-      </Typography>
+    <div style={{ height: "40vh", width: "60vh", overflowY: "scroll" }}>
+      <Title>{title}</Title>
       {entries.map((entry, entryIndex) => (
-        <Card key={entryIndex}>
+        <div
+          key={entryIndex}
+          style={{ paddingBottom: "15px", marginRight: "15px" }}
+        >
           {entry.map((subEntry, subEntryIndex) => (
             <Typography
               component={"div"}
@@ -27,7 +29,7 @@ export function List({ title, entries }: LayoutProps) {
               {subEntry.content}
             </Typography>
           ))}
-        </Card>
+        </div>
       ))}
     </div>
   );

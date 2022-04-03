@@ -14,7 +14,7 @@ export const StepButton = ({
   confirmDestination,
 }: Props) => {
   const style = {
-    margin: "0 auto",
+    margin: "auto",
     display: "block",
   };
 

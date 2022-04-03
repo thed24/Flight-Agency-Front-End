@@ -21,8 +21,15 @@ import {
   Places,
   PlacesRequest,
   Trip,
+  Stop,
+  Addresses,
+  AddressRequest,
 } from "types";
-import { RequestLocationDataEndpoint, CreateTripEndpoint } from "utilities";
+import {
+  RequestLocationDataEndpoint,
+  CreateTripEndpoint,
+  RequestAddressEndpoint,
+} from "utilities";
 import { NextPage } from "next";
 import { IsError, useGet, usePost } from "hooks";
 
@@ -36,7 +43,7 @@ const CreateTrip: NextPage = () => {
     end: new Date(),
   });
 
-  const [category, setCategory] = useState<string>("Food");
+  const [category, setCategory] = useState<string>("");
   const [step, setStep] = useState<number>(0);
   const [destination, setDestination] = useState<string>("");
   const [trip, setTrip] = useState<Trip>({
@@ -57,10 +64,26 @@ const CreateTrip: NextPage = () => {
     request: placesRequest,
   } = useGet<Places>(RequestLocationDataEndpoint);
 
+  const {
+    loading: addressLoading,
+    payload: addressResult,
+    request: addressRequest,
+  } = useGet<Addresses>(RequestAddressEndpoint);
+
   const { loading: createTripLoading, request: createTripRequest } = usePost<
     Trip,
     void
   >(CreateTripEndpoint);
+
+  useEffect(() => {
+    if (step === 1) setCategory("Food");
+  }, [step]);
+
+  useEffect((): void => {
+    if (step === 4) {
+      createTripRequest(trip);
+    }
+  }, [step]);
 
   useEffect(() => {
     var request: PlacesRequest = {
@@ -72,17 +95,32 @@ const CreateTrip: NextPage = () => {
     };
 
     placesRequest(request);
-  }, [category]);
+  }, [category, center]);
 
   useEffect(() => {
     if (!IsError(placesResult)) setPlaces(placesResult.data.results);
   }, [placesResult]);
 
-  useEffect((): void => {
-    if (step === 4) {
-      createTripRequest(trip);
+  useEffect(() => {
+    if (!IsError(addressResult)) {
+      const address = addressResult.data.results[0];
+
+      const newStop: Stop = {
+        name: `Stop Over at ${address.formattedAddress}`,
+        time: { start: new Date(), end: new Date() },
+        location: {
+          lat: address.geometry.location.latitude,
+          lng: address.geometry.location.longitude,
+        },
+        address: address.formattedAddress,
+      };
+
+      setTrip((prevState) => ({
+        ...prevState,
+        stops: [...prevState.stops, newStop],
+      }));
     }
-  }, [step]);
+  }, [addressResult]);
 
   const confirmDestinationOnClick = useCallback(() => {
     const currentCountry = countries.find(
@@ -126,14 +164,27 @@ const CreateTrip: NextPage = () => {
     setModalPlace(null);
   }, [modalOpen]);
 
-  function OpenModalWithPlace(place: Place): void {
+  const openModalWithPlace = (place: Place) => {
     setModalOpen(true);
     setModalValue({
       start: new Date(),
       end: new Date(),
     });
     setModalPlace(place);
-  }
+  };
+
+  const onAddStopOver = (lat: number, lng: number) => {
+    var request: AddressRequest = {
+      lat: lat,
+      lng: lng,
+    };
+
+    addressRequest(request);
+  };
+
+  const onMoveMap = (lat: number, lng: number) => {
+    setCenter({ lat: lat, lng: lng });
+  };
 
   return (
     <>
@@ -147,7 +198,7 @@ const CreateTrip: NextPage = () => {
         cancel={modalCancel}
       />
 
-      <Layout loading={placesLoading || createTripLoading}>
+      <Layout loading={placesLoading || createTripLoading || addressLoading}>
         <Title> Welcome to the Flight Agency </Title>
         <SubTitle> Build your trip below </SubTitle>
 
@@ -174,13 +225,21 @@ const CreateTrip: NextPage = () => {
             zoom={zoom}
             places={places}
             trip={trip}
-            onClickMarker={OpenModalWithPlace}
+            onClickMarker={openModalWithPlace}
             onChangeCategory={setCategory}
             category={category}
+            onMoveMap={onMoveMap}
           />
         )}
 
-        {step === 2 && <FillerStep center={center} zoom={zoom} trip={trip} />}
+        {step === 2 && (
+          <FillerStep
+            addStopOver={onAddStopOver}
+            center={center}
+            zoom={zoom}
+            trip={trip}
+          />
+        )}
 
         {step === 3 && <ConfirmationStep trip={trip} />}
 

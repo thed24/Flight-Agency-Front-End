@@ -18,3 +18,8 @@ export interface PlacesRequest {
   radius: number;
   keyword: string;
 }
+
+export interface AddressRequest {
+  lat: number;
+  lng: number;
+}

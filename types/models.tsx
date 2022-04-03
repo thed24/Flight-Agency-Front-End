@@ -63,3 +63,17 @@ export interface Place {
   types: string[];
   placeId: string;
 }
+
+export interface Addresses {
+  results: Address[];
+}
+export interface Address {
+  match: boolean;
+  formattedAddress: string;
+  geometry: {
+    location: {
+      latitude: number;
+      longitude: number;
+    };
+  };
+}

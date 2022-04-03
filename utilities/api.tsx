@@ -10,3 +10,4 @@ export const CreateTripEndpoint = `/api/${loggedInUser?.id}/trips`;
 export const GetTripsEndpoint = `/api/${loggedInUser?.id}/trips`;
 export const RequestLocationDataEndpoint = `/api/places/nearBy`;
 export const GetSuggestionsEndpoint = `/api/places/suggest`;
+export const RequestAddressEndpoint = `/api/places/reverseGeocode`;

@@ -10,48 +10,42 @@ interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
+  addStopOver: (lat: number, lng: number) => void;
 }
 
-function arePointsNear(
-  checkPoint: Location,
-  centerPoint: Location,
-  km: number
-): boolean {
-  var ky = 40000 / 360;
-  var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
-  var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
-  var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
-  return Math.sqrt(dx * dx + dy * dy) <= km;
-}
-
-export const FillerStep = ({ center, zoom, trip }: Props) => {
-  const [stopOvers, setStopOver] = React.useState<Stop[]>([]);
+export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
   const [route, setRoute] = React.useState<google.maps.DirectionsRoute | null>(
     null
   );
 
+  function arePointsNear(
+    checkPoint: Location,
+    centerPoint: Location,
+    km: number
+  ): boolean {
+    var ky = 40000 / 360;
+    var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
+    var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+    var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+    return Math.sqrt(dx * dx + dy * dy) <= km;
+  }
+
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
-      if (
-        route &&
-        route.overview_path.some((p) =>
+      if (route) {
+        const nearestLocationOnPath = route.overview_path.find((p) =>
           arePointsNear(
             { lat: event.lat, lng: event.lng },
             { lat: p.lat(), lng: p.lng() },
-            0.01
+            0.02
           )
-        )
-      ) {
-        const newStop = {
-          name: `Stop Over ${stopOvers.length + 1}`,
-          time: { start: new Date(), end: new Date() },
-          location: { lat: event.lat, lng: event.lng },
-          address: "",
-        };
-        setStopOver([...stopOvers, newStop]);
+        );
+        if (nearestLocationOnPath) {
+          addStopOver(nearestLocationOnPath.lat(), nearestLocationOnPath.lng());
+        }
       }
     },
-    [route, stopOvers]
+    [addStopOver, route]
   );
 
   const handleGoogleMapApi = React.useCallback(
@@ -95,28 +89,6 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
     [trip.stops]
   );
 
-  const entries =
-    (route &&
-      route.legs.map((leg, i) => {
-        const entry: Entries = [
-          {
-            header: `Stop ${i + 1}`,
-            content: `${leg.start_address} to ${leg.end_address}`,
-          },
-          {
-            header: "Duration",
-            content: `${leg?.duration?.text}`,
-          },
-          {
-            header: "Distance",
-            content: `${leg?.distance?.text}`,
-          },
-        ];
-
-        return entry;
-      })) ??
-    [];
-
   const key = getFromStorage<string>("apiKey");
 
   return (
@@ -133,7 +105,7 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={handleGoogleMapApi}
           >
-            {stopOvers.concat(trip.stops).map((stop, i) => (
+            {trip.stops.map((stop, i) => (
               <FilledInMarker
                 key={i}
                 lat={stop.location.lat}
@@ -144,7 +116,31 @@ export const FillerStep = ({ center, zoom, trip }: Props) => {
           </GoogleMapReact>
         </Map>
 
-        <List title="Stopss" entries={entries} />
+        <List
+          title="Stops"
+          entries={
+            (route &&
+              route.legs.map((leg, i) => {
+                const entry: Entries = [
+                  {
+                    header: `Stop ${i + 1}`,
+                    content: `${leg.start_address} to ${leg.end_address}`,
+                  },
+                  {
+                    header: "Duration",
+                    content: `${leg?.duration?.text}`,
+                  },
+                  {
+                    header: "Distance",
+                    content: `${leg?.distance?.text}`,
+                  },
+                ];
+
+                return entry;
+              })) ??
+            []
+          }
+        />
       </MapContainer>
     </Container>
   );
