@@ -3,7 +3,6 @@ import { Categories, Location, Trip, Place } from "common/types";
 import GoogleMapReact from "google-map-react";
 import { Container, List, Marker } from "common/components";
 import React from "react";
-import { getFromStorage } from "common/utilities";
 import { SC } from "modules/createTrip";
 
 interface Props {
@@ -44,15 +43,13 @@ export const StopStep = ({
     [onMoveMap]
   );
 
-  const key = getFromStorage<string>("apiKey");
-
   return (
     <Container>
       <SC.MapContainer>
         <SC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: key ?? "",
+              key: "",
             }}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}

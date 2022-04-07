@@ -2,7 +2,7 @@ import { Entries, Location, Stop, Trip } from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { useEffect } from "react";
 import { FilledInMarker, List } from "common/components";
-import { getFromStorage, GetSuggestionsEndpoint } from "common/utilities";
+import { GetSuggestionsEndpoint } from "common/utilities";
 import { Container } from "common/components/container";
 import { SC } from "modules/createTrip";
 import { IsError, usePost } from "common/hooks";
@@ -102,15 +102,13 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
     }
   }, [trip]);
 
-  const key = getFromStorage<string>("apiKey");
-
   return (
     <Container>
       <SC.MapContainer>
         <SC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: key ?? "",
+              key: "",
             }}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}

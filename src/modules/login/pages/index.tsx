@@ -10,7 +10,7 @@ import { usePost, IsError, IsUnitializedError } from "common/hooks";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { LoginRequest, User } from "common/types";
-import { RequestLoginEndpoint, setInStorage } from "common/utilities";
+import { RequestLoginEndpoint } from "common/utilities";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -26,7 +26,6 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      setInStorage<User>("loggedInUser", loggedInUser);
       window.location.href = "/";
     }
   }, [loggedInUser]);
