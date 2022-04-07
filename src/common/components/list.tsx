@@ -25,7 +25,7 @@ export function List({ title, entries }: LayoutProps) {
             >
               <Box fontWeight="fontWeightMedium" display="inline">
                 {subEntry.header}:
-              </Box>{" "}
+              </Box>
               {subEntry.content}
             </Typography>
           ))}

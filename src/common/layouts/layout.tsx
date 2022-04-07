@@ -1,7 +1,5 @@
 import React from "react";
 import { signIn, useSession } from "next-auth/react";
-import { User } from "common/types";
-import { getFromStorage } from "common/utilities";
 import {
   Container,
   LoadingOverlay,

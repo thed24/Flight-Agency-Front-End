@@ -34,8 +34,11 @@ import {
   SubmittedStep,
   DestinationStep,
 } from "modules/createTrip";
+import { useSession } from "next-auth/react";
 
 const CreateTrip: NextPage = () => {
+  const { data: session } = useSession();
+
   const countries = LoadCountries();
 
   const [modalPlace, setModalPlace] = useState<Place | null>(null);
@@ -75,7 +78,7 @@ const CreateTrip: NextPage = () => {
   const { loading: createTripLoading, request: createTripRequest } = usePost<
     Trip,
     void
-  >(CreateTripEndpoint);
+  >(CreateTripEndpoint(session?.user?.email ?? ""));
 
   useEffect(() => {
     if (step === 1) setCategory("Food");

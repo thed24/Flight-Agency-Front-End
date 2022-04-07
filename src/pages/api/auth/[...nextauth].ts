@@ -1,31 +1,30 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { Sequelize } from "sequelize";
-import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 import SequelizeAdapter from "@next-auth/sequelize-adapter";
+import { getSecret } from "common/utilities";
 
-const client = new SecretManagerServiceClient({
-  projectId: "thinking-case-340611",
-});
+let dbConn: Sequelize | null = null;
 
-async function getSecret(name: string) {
-  const [version] = await client.accessSecretVersion({
-    name: name,
-  });
-
-  return version?.payload?.data?.toString() ?? "";
-}
-
-const getNextAuth = async () => {
+const setUpDb = async () => {
   const user = await getSecret("db_username");
   const pass = await getSecret("db_pass");
   const host = await getSecret("db_host");
-  const clientId = await getSecret("client_id");
-  const clientSecret = await getSecret("client_secret");
 
   const mysqlConnectionString = `mysql://${user}:${pass}@${host}:3306/auth`;
   const sequelize = new Sequelize(mysqlConnectionString);
   sequelize.sync();
+
+  return sequelize;
+};
+
+const getNextAuth = async () => {
+  const clientId = await getSecret("client_id");
+  const clientSecret = await getSecret("client_secret");
+
+  if (dbConn === null) {
+    dbConn = await setUpDb();
+  }
 
   const auth = NextAuth({
     providers: [
@@ -35,7 +34,7 @@ const getNextAuth = async () => {
       }),
     ],
     secret: "my-super-secret-key",
-    adapter: SequelizeAdapter(sequelize),
+    adapter: SequelizeAdapter(dbConn),
   });
 
   return auth;

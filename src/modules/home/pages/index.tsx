@@ -2,7 +2,7 @@ import { Button, Divider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 
-import { GetTripsEndpoint, getFromStorage } from "common/utilities";
+import { GetTripsEndpoint } from "common/utilities";
 import {
   Layout,
   SetApiKey,
@@ -15,19 +15,20 @@ import { Trip, User } from "common/types";
 import { NextPage } from "next";
 import Link from "next/link";
 import { IsError, useGet } from "common/hooks";
+import { useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
-  const loggedInUser = getFromStorage<User>("loggedInUser");
+  const { data: session } = useSession();
 
   const {
     request: requestTrips,
     loading: tripsLoading,
     payload: tripsPayload,
-  } = useGet<Trip[]>(GetTripsEndpoint);
+  } = useGet<Trip[]>(GetTripsEndpoint(session?.user?.email ?? ""));
 
   useEffect(() => {
-    if (loggedInUser) requestTrips();
+    if (session) requestTrips();
   }, []);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout loading={tripsLoading}>
-        <Title>Welcome to the Flight Agency, {loggedInUser?.name}!</Title>
+        <Title>Welcome to the Flight Agency, {session?.user?.name}!</Title>
 
         <SubTitle>View your existing trip, or create a new one</SubTitle>
 

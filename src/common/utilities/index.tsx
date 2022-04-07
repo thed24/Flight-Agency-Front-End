@@ -8,9 +8,4 @@ export {
   RequestAddressEndpoint,
 } from "./api";
 
-export {
-  getFromStorage,
-  setInStorage,
-  clearItemInStorage,
-  clearItemsInStorage,
-} from "./storage";
+export { getSecret } from "./auth";
