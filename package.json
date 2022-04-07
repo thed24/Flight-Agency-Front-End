@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.5.1",
     "@mui/lab": "^5.0.0-alpha.69",
     "@mui/material": "^5.4.3",
+    "@next-auth/sequelize-adapter": "^1.0.2",
     "axios": "^0.25.0",
     "csv-parser": "^3.0.0",
     "csv-string": "^4.0.1",
@@ -25,10 +26,13 @@
     "google-map-react": "^2.1.10",
     "google-places-web": "^2.0.1",
     "googleapis": "^95.0.0",
+    "mysql2": "^2.3.3",
     "next": "^12.1.1",
+    "next-auth": "^4.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-form-stepper": "^1.4.3"
+    "react-form-stepper": "^1.4.3",
+    "sequelize": "^6.18.0"
   },
   "devDependencies": {
     "@types/google-map-react": "^2.1.5",
