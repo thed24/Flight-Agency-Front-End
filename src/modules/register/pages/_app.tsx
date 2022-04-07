@@ -1,7 +1,7 @@
 import "styles/globals.css";
 
 import { ThemeProvider } from "@mui/material";
-import { theme } from "utilities/theme";
+import { theme } from "common/utilities";
 import "@fontsource/roboto/700.css";
 import { AppProps } from "next/app";
 

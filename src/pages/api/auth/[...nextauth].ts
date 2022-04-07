@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { Sequelize } from "sequelize";
 import SequelizeAdapter from "@next-auth/sequelize-adapter";
-import { getSecret } from "common/utilities";
+import { getSecret } from "./utilities/auth";
 
 let dbConn: Sequelize | null = null;
 

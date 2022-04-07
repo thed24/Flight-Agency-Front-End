@@ -8,4 +8,4 @@ export {
   RequestAddressEndpoint,
 } from "./api";
 
-export { getSecret } from "./auth";
+export { theme } from "./theme";

@@ -22,8 +22,6 @@ export { List } from "./list";
 
 export { ConfirmationList } from "./confirmationList";
 
-export { SetApiKey } from "./setApiKey";
-
 export { Container } from "./container";
 
 export { SubTitle } from "./subTitle";

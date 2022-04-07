@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { GetTripsEndpoint } from "common/utilities";
 import {
   Layout,
-  SetApiKey,
   SubTitle,
   Title,
   Container,
@@ -60,8 +59,6 @@ const Home: NextPage = () => {
           <Link href={"createTrip"} passHref>
             <Button style={{ marginBottom: "25px" }}>Create a new trip</Button>
           </Link>
-
-          <SetApiKey />
         </Container>
       </Layout>
     </>

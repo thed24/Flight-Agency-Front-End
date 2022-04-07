@@ -35,6 +35,7 @@ import {
   DestinationStep,
 } from "modules/createTrip";
 import { useSession } from "next-auth/react";
+import { Input } from "@mui/material";
 
 const CreateTrip: NextPage = () => {
   const { data: session } = useSession();
@@ -56,12 +57,15 @@ const CreateTrip: NextPage = () => {
     stops: [],
     destination: "",
   });
+
   const [zoom, setZoom] = useState<number>(15);
   const [places, setPlaces] = useState<Place[]>([]);
   const [center, setCenter] = useState<Location>({
     lat: -37.840935,
     lng: 144.946457,
   });
+
+  const [apiKey, setApiKey] = useState<string>("");
 
   const {
     loading: placesLoading,
@@ -191,6 +195,10 @@ const CreateTrip: NextPage = () => {
     setCenter({ lat: lat, lng: lng });
   };
 
+  const onChangeApiKey = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setApiKey(e.target.value);
+  };
+
   return (
     <>
       <StopModal
@@ -256,6 +264,8 @@ const CreateTrip: NextPage = () => {
           destination={destination}
           confirmDestination={confirmDestinationOnClick}
         />
+
+        <Input onChange={onChangeApiKey} />
       </Layout>
     </>
   );

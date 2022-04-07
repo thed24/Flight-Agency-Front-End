@@ -1,6 +1,11 @@
 {
   "name": "flight-agency-site",
   "private": true,
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
