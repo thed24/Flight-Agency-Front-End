@@ -44,7 +44,7 @@ const CreateTrip: NextPage = () => {
   const countries = LoadCountries();
 
   const [modalPlace, setModalPlace] = useState<Place | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [modalValue, setModalValue] = useState<DateRange>({
     start: new Date(),
     end: new Date(),

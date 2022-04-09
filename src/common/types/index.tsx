@@ -13,6 +13,7 @@ export type {
   Place,
   Address,
   Addresses,
+  Suggestions,
 } from "./models";
 
 export type {

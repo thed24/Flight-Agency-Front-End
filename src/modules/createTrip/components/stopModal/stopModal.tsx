@@ -1,8 +1,8 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { Title } from "@mui/icons-material";
-import { LocalizationProvider, DateTimePicker } from "@mui/lab";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateTimePicker from "@mui/lab/DateTimePicker";
 import { Modal, TextField, Button } from "@mui/material";
-import { SubTitle, Divider } from "common/components";
+import { Title, SubTitle } from "common/components";
 import { DateRange, Place } from "common/types";
 import { useState, useCallback, useEffect } from "react";
 import * as SC from "./stopModal.styles";
@@ -49,8 +49,6 @@ export function StopModal({
           <SubTitle> {place.vicinity} </SubTitle>
           <SubTitle> Rated {place.rating} / 5</SubTitle>
 
-          <Divider />
-
           <SubTitle> Select a Time </SubTitle>
 
           <LocalizationProvider dateAdapter={DateFnsUtils}>
@@ -70,8 +68,6 @@ export function StopModal({
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-
-          <Divider />
 
           <Button onClick={confirm}>Save Stop</Button>
           <Button onClick={cancel}>Cancel</Button>

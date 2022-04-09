@@ -2,7 +2,7 @@ import { Typography, Select, MenuItem } from "@mui/material";
 import { Categories, Location, Trip, Place } from "common/types";
 import GoogleMapReact from "google-map-react";
 import { Container, List, Marker } from "common/components";
-import React, { useCallback } from "react";
+import React from "react";
 import * as SC from "../steps.styles";
 
 interface Props {
@@ -37,13 +37,15 @@ export const StopStep = ({
     ];
   });
 
-  const onDragEnd = useCallback(
-    (event: any) => {
-      console.log(event);
-      onMoveMap(event.center.lat(), event.center.lng());
-    },
-    [onMoveMap]
-  );
+  const onDragEnd = (event: any) => {
+    onMoveMap(event.center.lat(), event.center.lng());
+  };
+
+  const handleOnClickMarker =
+    (place: Place) => (e: React.MouseEvent<Element, MouseEvent>) => {
+      e.preventDefault();
+      onClickMarker(place);
+    };
 
   return (
     <Container>
@@ -53,15 +55,15 @@ export const StopStep = ({
             bootstrapURLKeys={{
               key: apiKey,
             }}
-            defaultCenter={{ lat: center.lat, lng: center.lng }}
-            defaultZoom={zoom}
+            center={{ lat: center.lat, lng: center.lng }}
+            zoom={zoom}
             onDragEnd={onDragEnd}
             yesIWantToUseGoogleMapApiInternals
           >
             {places.map((place, i) => (
               <Marker
                 key={i}
-                onClick={() => onClickMarker(place)}
+                onClick={handleOnClickMarker(place)}
                 place={place}
                 lat={place.geometry.location.latitude}
                 lng={place.geometry.location.longitude}

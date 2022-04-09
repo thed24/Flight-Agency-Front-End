@@ -1,10 +1,17 @@
-import { Entries, Location, Stop, Trip } from "common/types";
+import {
+  Entries,
+  Location,
+  Places,
+  Stop,
+  Suggestions,
+  Trip,
+} from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { FilledInMarker, List } from "common/components";
 import { GetSuggestionsEndpoint } from "common/utilities";
 import { Container } from "common/components/container";
-import { SC } from "modules/createTrip";
+import * as SC from "../steps.styles";
 import { IsError, usePost } from "common/hooks";
 
 interface Props {
@@ -40,7 +47,7 @@ export const FillerStep = ({
     request: requestSuggestion,
     payload: suggestions,
     loading: suggestionsLoading,
-  } = usePost<Trip, Stop[]>(GetSuggestionsEndpoint);
+  } = usePost<Trip, Places>(GetSuggestionsEndpoint);
 
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
@@ -107,6 +114,8 @@ export const FillerStep = ({
     }
   }, [trip]);
 
+  console.log(trip);
+
   const mapMarkers: ReactElement<any, any>[] = React.useMemo(
     () =>
       trip.stops.map((stop, i) => (
@@ -162,10 +171,10 @@ export const FillerStep = ({
             []
           }
         />
-        {!IsError(suggestions) && suggestions.data.length > 0 && (
+        {!IsError(suggestions) && suggestions.data.results.length > 0 && (
           <List
             title="Suggestions"
-            entries={suggestions.data.map((stop) => {
+            entries={suggestions.data.results.map((stop) => {
               const entry: Entries = [
                 {
                   header: "Name",
@@ -173,15 +182,15 @@ export const FillerStep = ({
                 },
                 {
                   header: "Address",
-                  content: stop.address,
+                  content: stop.vicinity,
                 },
                 {
                   header: "Latitude",
-                  content: stop.location.lat.toString(),
+                  content: stop.geometry.location.latitude.toString(),
                 },
                 {
                   header: "Longitude",
-                  content: stop.location.lng.toString(),
+                  content: stop.geometry.location.longitude.toString(),
                 },
               ];
 
