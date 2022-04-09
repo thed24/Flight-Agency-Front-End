@@ -1,11 +1,4 @@
-import {
-  Entries,
-  Location,
-  Places,
-  Stop,
-  Suggestions,
-  Trip,
-} from "common/types";
+import { Entries, Location, Places, Trip } from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { FilledInMarker, List } from "common/components";

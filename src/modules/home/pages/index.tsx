@@ -62,8 +62,6 @@ const Home: NextPage = () => {
             </div>
           ))}
 
-        {divider}
-
         <Link href={"createTrip"} passHref>
           <Button style={{ marginBottom: "25px" }}>Create a new trip</Button>
         </Link>
