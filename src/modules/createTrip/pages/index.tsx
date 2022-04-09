@@ -35,7 +35,7 @@ import {
   DestinationStep,
 } from "modules/createTrip";
 import { getSession, useSession } from "next-auth/react";
-import { Input, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Session } from "next-auth";
 
 const CreateTrip: NextPage = () => {

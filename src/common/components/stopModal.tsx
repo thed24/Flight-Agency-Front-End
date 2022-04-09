@@ -65,7 +65,7 @@ export function StopModal({
           <SubTitle> {place.vicinity} </SubTitle>
           <SubTitle> Rated {place.rating} / 5</SubTitle>
 
-          <Divider style={{ paddingTop: "20px" }} />
+          <Divider />
 
           <SubTitle> Select a Time </SubTitle>
 

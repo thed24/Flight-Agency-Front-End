@@ -1,7 +1,7 @@
-export { ConfirmationStep } from "./components/confirmationStep";
-export { DestinationStep } from "./components/destinationStep";
-export { FillerStep } from "./components/fillerStep";
-export { StopStep } from "./components/stopStep";
-export { SubmittedStep } from "./components/submittedStep";
+export { ConfirmationStepDynamic as ConfirmationStep } from "./components/confirmationStep/confirmationStep.dynamic";
+export { DestinationStepDynamic as DestinationStep } from "./components/destinationStep/destinationStep.dynamic";
+export { FillerStepDynamic as FillerStep } from "./components/fillerStep/fillerStep.dynamic";
+export { StopStepDynamic as StopStep } from "./components/stopStep/stopStep.dynamic";
+export { SubmittedStepDynamic as SubmittedStep } from "./components/submittedStep/submittedStep.dynamic";
 
-export * as SC from "./steps.styles";
+export * as SC from "./components/steps.styles";
