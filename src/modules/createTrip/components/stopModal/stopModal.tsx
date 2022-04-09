@@ -1,27 +1,11 @@
-import { Modal, TextField, Button } from "@mui/material";
-import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import DateFnsUtils from "@date-io/date-fns";
+import { Title } from "@mui/icons-material";
+import { LocalizationProvider, DateTimePicker } from "@mui/lab";
+import { Modal, TextField, Button } from "@mui/material";
+import { SubTitle, Divider } from "common/components";
 import { DateRange, Place } from "common/types";
-import { Title } from "./title";
-import { SubTitle } from "./subTitle";
-import styled from "@emotion/styled";
 import { useState, useCallback, useEffect } from "react";
-import { Divider } from "./divider/divider";
-
-const ModalContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 350px;
-  background-color: white;
-  border: 3px solid #5f5f5f;
-  box-shadow: 24;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 25px;
-`;
+import * as SC from "./stopModal.styles";
 
 export interface Props {
   place: Place | null;
@@ -60,7 +44,7 @@ export function StopModal({
   return (
     place && (
       <Modal open={open} onClose={setOpen}>
-        <ModalContainer>
+        <SC.ModalContainer>
           <Title> {place.name} </Title>
           <SubTitle> {place.vicinity} </SubTitle>
           <SubTitle> Rated {place.rating} / 5</SubTitle>
@@ -91,7 +75,7 @@ export function StopModal({
 
           <Button onClick={confirm}>Save Stop</Button>
           <Button onClick={cancel}>Cancel</Button>
-        </ModalContainer>
+        </SC.ModalContainer>
       </Modal>
     )
   );

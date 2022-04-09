@@ -3,5 +3,4 @@ export { DestinationStepDynamic as DestinationStep } from "./components/destinat
 export { FillerStepDynamic as FillerStep } from "./components/fillerStep/fillerStep.dynamic";
 export { StopStepDynamic as StopStep } from "./components/stopStep/stopStep.dynamic";
 export { SubmittedStepDynamic as SubmittedStep } from "./components/submittedStep/submittedStep.dynamic";
-
-export * as SC from "./components/steps.styles";
+export { StopModalDynamic as StopModal } from "./components/stopModal/stopModal.dynamic";

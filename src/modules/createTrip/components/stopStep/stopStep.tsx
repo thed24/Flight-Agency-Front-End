@@ -3,7 +3,7 @@ import { Categories, Location, Trip, Place } from "common/types";
 import GoogleMapReact from "google-map-react";
 import { Container, List, Marker } from "common/components";
 import React, { useCallback } from "react";
-import { SC } from "modules/createTrip";
+import * as SC from "../steps.styles";
 
 interface Props {
   trip: Trip;

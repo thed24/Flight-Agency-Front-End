@@ -12,8 +12,6 @@ export { AlertBar } from "./alertBar";
 
 export type { AlertDetails } from "./alertBar";
 
-export { StopModal } from "./stopModal";
-
 export { StepButton } from "./stepButton";
 
 export { SubmittedStep } from "../../modules/createTrip/components/submittedStep/submittedStep";

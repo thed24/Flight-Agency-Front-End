@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Step, Stepper } from "react-form-stepper";
 import {
-  StopModal,
   Layout,
   StepButton,
   Title,
@@ -33,6 +32,7 @@ import {
   FillerStep,
   SubmittedStep,
   DestinationStep,
+  StopModal,
 } from "modules/createTrip";
 import { getSession, useSession } from "next-auth/react";
 import { TextField } from "@mui/material";
