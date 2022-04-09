@@ -1,18 +1,29 @@
-import { Entries, Location, Places, Trip } from "common/types";
+import {
+  Addresses,
+  AddressRequest,
+  Entries,
+  Location,
+  Places,
+  Stop,
+  Trip,
+} from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { FilledInMarker, List } from "common/components";
-import { GetSuggestionsEndpoint } from "common/utilities";
+import {
+  GetSuggestionsEndpoint,
+  RequestAddressEndpoint,
+} from "common/utilities";
 import { Container } from "common/components/container";
 import * as SC from "../steps.styles";
-import { IsError, usePost } from "common/hooks";
+import { IsError, useGet, usePost } from "common/hooks";
 
 interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
   apiKey: string;
-  addStopOver: (lat: number, lng: number) => void;
+  handleNewStopAdded: (stop: Stop) => void;
 }
 
 function arePointsNear(
@@ -32,7 +43,7 @@ export const FillerStep = ({
   center,
   zoom,
   trip,
-  addStopOver,
+  handleNewStopAdded,
 }: Props) => {
   const [route, setRoute] = useState<google.maps.DirectionsRoute | null>(null);
 
@@ -41,6 +52,12 @@ export const FillerStep = ({
     payload: suggestions,
     loading: suggestionsLoading,
   } = usePost<Trip, Places>(GetSuggestionsEndpoint);
+
+  const {
+    loading: addressLoading,
+    payload: addressResult,
+    request: addressRequest,
+  } = useGet<Addresses>(RequestAddressEndpoint);
 
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
@@ -53,11 +70,16 @@ export const FillerStep = ({
           )
         );
         if (nearestLocationOnPath) {
-          addStopOver(nearestLocationOnPath.lat(), nearestLocationOnPath.lng());
+          var request: AddressRequest = {
+            lat: nearestLocationOnPath.lat(),
+            lng: nearestLocationOnPath.lng(),
+          };
+
+          addressRequest(request);
         }
       }
     },
-    [addStopOver, route]
+    [addressRequest, route]
   );
 
   const handleGoogleMapApi = React.useCallback(
@@ -102,12 +124,28 @@ export const FillerStep = ({
   );
 
   useEffect(() => {
+    if (!IsError(addressResult)) {
+      const address = addressResult.data.results[0];
+
+      const newStop: Stop = {
+        name: `Stop Over at ${address.formattedAddress}`,
+        time: { start: new Date(), end: new Date() },
+        location: {
+          lat: address.geometry.location.latitude,
+          lng: address.geometry.location.longitude,
+        },
+        address: address.formattedAddress,
+      };
+
+      handleNewStopAdded(newStop);
+    }
+  }, [addressResult]);
+
+  useEffect(() => {
     if (trip.stops.length > 1) {
       requestSuggestion(trip);
     }
   }, [trip]);
-
-  console.log(trip);
 
   const mapMarkers: ReactElement<any, any>[] = React.useMemo(
     () =>

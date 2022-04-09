@@ -50,7 +50,6 @@ const CreateTrip: NextPage = () => {
     end: new Date(),
   });
 
-  const [category, setCategory] = useState<string>("");
   const [step, setStep] = useState<number>(0);
   const [destination, setDestination] = useState<string>("");
   const [trip, setTrip] = useState<Trip>({
@@ -60,7 +59,6 @@ const CreateTrip: NextPage = () => {
   });
 
   const [zoom, setZoom] = useState<number>(15);
-  const [places, setPlaces] = useState<Place[]>([]);
   const [center, setCenter] = useState<Location>({
     lat: -37.840935,
     lng: 144.946457,
@@ -68,69 +66,16 @@ const CreateTrip: NextPage = () => {
 
   const [apiKey, setApiKey] = useState<string>("");
 
-  const {
-    loading: placesLoading,
-    payload: placesResult,
-    request: placesRequest,
-  } = useGet<Places>(RequestLocationDataEndpoint);
-
-  const {
-    loading: addressLoading,
-    payload: addressResult,
-    request: addressRequest,
-  } = useGet<Addresses>(RequestAddressEndpoint);
-
   const { loading: createTripLoading, request: createTripRequest } = usePost<
     Trip,
     void
   >(CreateTripEndpoint(session?.user?.id ?? ""));
-
-  useEffect(() => {
-    if (step === 1) setCategory("Food");
-  }, [step]);
 
   useEffect((): void => {
     if (step === 4) {
       createTripRequest(trip);
     }
   }, [step]);
-
-  useEffect(() => {
-    var request: PlacesRequest = {
-      lat: center.lat,
-      lng: center.lng,
-      zoom: zoom,
-      radius: 2000,
-      keyword: `'${category}'`,
-    };
-
-    placesRequest(request);
-  }, [category, center]);
-
-  useEffect(() => {
-    if (!IsError(placesResult)) setPlaces(placesResult.data.results);
-  }, [placesResult]);
-
-  useEffect(() => {
-    if (!IsError(addressResult)) {
-      const address = addressResult.data.results[0];
-
-      const newStop: Stop = {
-        name: `Stop Over at ${address.formattedAddress}`,
-        time: { start: new Date(), end: new Date() },
-        location: {
-          lat: address.geometry.location.latitude,
-          lng: address.geometry.location.longitude,
-        },
-        address: address.formattedAddress,
-      };
-
-      setTrip((prevState) => ({
-        ...prevState,
-        stops: [...prevState.stops, newStop],
-      }));
-    }
-  }, [addressResult]);
 
   const confirmDestinationOnClick = useCallback(() => {
     const currentCountry = countries.find(
@@ -183,15 +128,6 @@ const CreateTrip: NextPage = () => {
     setModalPlace(place);
   };
 
-  const onAddStopOver = (lat: number, lng: number) => {
-    var request: AddressRequest = {
-      lat: lat,
-      lng: lng,
-    };
-
-    addressRequest(request);
-  };
-
   const onMoveMap = (lat: number, lng: number) => {
     setCenter({ lat: lat, lng: lng });
   };
@@ -202,6 +138,12 @@ const CreateTrip: NextPage = () => {
     },
     [setApiKey]
   );
+
+  const onNewStopAdded = (stop: Stop) =>
+    setTrip({
+      ...trip,
+      stops: [...trip.stops, stop],
+    });
 
   return (
     <>
@@ -215,7 +157,7 @@ const CreateTrip: NextPage = () => {
         cancel={modalCancel}
       />
 
-      <Layout loading={placesLoading || createTripLoading || addressLoading}>
+      <Layout loading={createTripLoading}>
         <Title> Welcome to the Flight Agency </Title>
         <SubTitle> Build your trip below </SubTitle>
 
@@ -240,11 +182,8 @@ const CreateTrip: NextPage = () => {
           <StopStep
             center={center}
             zoom={zoom}
-            places={places}
             trip={trip}
             onClickMarker={openModalWithPlace}
-            onChangeCategory={setCategory}
-            category={category}
             onMoveMap={onMoveMap}
             apiKey={apiKey}
           />
@@ -252,7 +191,7 @@ const CreateTrip: NextPage = () => {
 
         {step === 2 && (
           <FillerStep
-            addStopOver={onAddStopOver}
+            handleNewStopAdded={onNewStopAdded}
             center={center}
             zoom={zoom}
             trip={trip}

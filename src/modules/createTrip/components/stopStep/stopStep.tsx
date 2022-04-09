@@ -1,15 +1,23 @@
-import { Typography, Select, MenuItem } from "@mui/material";
-import { Categories, Location, Trip, Place } from "common/types";
+import { Typography, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  Categories,
+  Location,
+  Trip,
+  Place,
+  Places,
+  PlacesRequest,
+} from "common/types";
 import GoogleMapReact from "google-map-react";
 import { Container, List, Marker } from "common/components";
-import React from "react";
+import React, { useEffect } from "react";
 import * as SC from "../steps.styles";
+import { IsError, useGet } from "common/hooks";
+import { RequestLocationDataEndpoint } from "common/utilities";
 
 interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
-  places: Place[];
   category: string;
   apiKey: string;
   onClickMarker: (place: Place) => void;
@@ -21,13 +29,37 @@ export const StopStep = ({
   center,
   zoom,
   trip,
-  places,
-  category,
   onClickMarker,
-  onChangeCategory,
   onMoveMap,
   apiKey,
 }: Props) => {
+  const [places, setPlaces] = React.useState<Place[]>([]);
+  const [category, setCategory] = React.useState<string>("");
+
+  const {
+    loading: placesLoading,
+    payload: placesResult,
+    request: placesRequest,
+  } = useGet<Places>(RequestLocationDataEndpoint);
+
+  useEffect(() => {
+    var request: PlacesRequest = {
+      lat: center.lat,
+      lng: center.lng,
+      zoom: zoom,
+      radius: 2000,
+      keyword: `'${category}'`,
+    };
+
+    placesRequest(request);
+  }, [category, center]);
+
+  useEffect(() => {
+    if (!IsError(placesResult)) {
+      setPlaces(placesResult.data.results);
+    }
+  }, [placesResult]);
+
   const entries = trip.stops.map((stop, i) => {
     return [
       {
@@ -46,6 +78,10 @@ export const StopStep = ({
       e.preventDefault();
       onClickMarker(place);
     };
+
+  const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
+    setCategory(e.target.value);
+  };
 
   return (
     <Container>
@@ -83,7 +119,7 @@ export const StopStep = ({
         placeholder="Select a category"
         value={category}
         label="Category"
-        onChange={(e) => onChangeCategory(e.target.value)}
+        onChange={handleOnChangeCategory}
       >
         {Categories.map((category, index) => {
           return (
