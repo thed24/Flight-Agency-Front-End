@@ -5,35 +5,34 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export function NavBar() {
   const { data: session } = useSession();
 
-  const handleSignIn = async () => {
-    await signIn("google");
-  };
-
   const logOut = () => {
     signOut();
-    window.location.href = "/";
   };
 
-  const buttons = session ? (
-    <>
-      <Button onClick={logOut} color="inherit">
-        Log Out, {session.user?.name}
-      </Button>
-    </>
-  ) : (
-    <>
-      <Button onClick={handleSignIn} color="inherit">
-        Register
-      </Button>
-      <Button onClick={handleSignIn} color="inherit">
-        Login
-      </Button>
-    </>
+  const buttons = React.useMemo(
+    () =>
+      session ? (
+        <>
+          <Button onClick={logOut} color="inherit">
+            Log Out, {session.user?.name}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button color="inherit">
+            <Link href={"/register"}>Register</Link>
+          </Button>
+          <Button color="inherit">
+            <Link href={"/login"}>Login</Link>
+          </Button>
+        </>
+      ),
+    [session]
   );
 
   return (

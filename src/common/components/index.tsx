@@ -1,4 +1,4 @@
-export { NavBar } from "./navbar";
+export { NavBarDynamic as NavBar } from "./navbar/navbar.dynamic";
 
 export { Marker } from "./marker";
 
@@ -28,6 +28,8 @@ export { SubTitle } from "./subTitle";
 
 export { Title } from "./title";
 
-export { LoadingOverlay } from "./loadingOverlay";
+export { LoadingOverlayDynamic as LoadingOverlay } from "./loadingOverlay/loadingOverlay.dynamic";
 
 export { PasswordInput } from "./passwordInput";
+
+export { AuthMessage } from "./authMessage/authMessage";

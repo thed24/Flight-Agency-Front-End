@@ -1,43 +1,56 @@
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { IsError, Result } from "common/hooks";
+import { User } from "common/types";
+import { RequestLoginEndpoint } from "common/utilities";
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { Sequelize } from "sequelize";
-import SequelizeAdapter from "@next-auth/sequelize-adapter";
-import { getSecret } from "./utilities/auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-let dbConn: Sequelize | null = null;
+const httpClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:8080",
+});
 
-const setUpDb = async () => {
-  const user = await getSecret("db_username");
-  const pass = await getSecret("db_pass");
-  const host = await getSecret("db_host");
+export default NextAuth({
+  providers: [
+    CredentialsProvider({
+      credentials: {},
+      authorize: async (credentials: any) => {
+        var res: Result<User> = await httpClient
+          .post(RequestLoginEndpoint, credentials)
+          .then((response: AxiosResponse<User>) => {
+            return { data: response.data };
+          })
+          .catch((error: AxiosError) => {
+            return { error: error.response?.data };
+          });
 
-  const mysqlConnectionString = `mysql://${user}:${pass}@${host}:3306/auth`;
-  const sequelize = new Sequelize(mysqlConnectionString);
-  sequelize.sync();
+        if (IsError(res)) {
+          throw new Error(res.error);
+        }
 
-  return sequelize;
-};
-
-const getNextAuth = async () => {
-  const clientId = await getSecret("client_id");
-  const clientSecret = await getSecret("client_secret");
-
-  if (dbConn === null) {
-    dbConn = await setUpDb();
-  }
-
-  const auth = NextAuth({
-    providers: [
-      GoogleProvider({
-        clientId: clientId,
-        clientSecret: clientSecret,
-      }),
-    ],
-    secret: "my-super-secret-key",
-    adapter: SequelizeAdapter(dbConn),
-  });
-
-  return auth;
-};
-
-export default getNextAuth;
+        return res.data;
+      },
+    }),
+  ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+    session: async ({ session, token, user }) => {
+      if (session?.user) {
+        session.user.id = token.uid;
+      }
+      return session;
+    },
+  },
+  secret: "SECRET_HERE",
+  session: {
+    strategy: "jwt",
+    maxAge: 1 * 24 * 60 * 60,
+  },
+  jwt: {
+    secret: "SECRET_HERE",
+  },
+});

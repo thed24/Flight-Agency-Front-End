@@ -1,12 +1,7 @@
-import React from "react";
-import { signIn, useSession } from "next-auth/react";
-import {
-  Container,
-  LoadingOverlay,
-  NavBar,
-  SubTitle,
-  Title,
-} from "common/components";
+import React, { useMemo } from "react";
+
+import { useSession } from "next-auth/react";
+import { AuthMessage, LoadingOverlay, NavBar } from "common/components";
 
 export type LayoutProps = {
   children: React.ReactNode;
@@ -16,24 +11,19 @@ export type LayoutProps = {
 export function Layout({ children, loading }: LayoutProps) {
   const { data: session, status } = useSession();
 
-  const handleSignIn = async () => {
-    await signIn("google");
-  };
-
-  const authMessage = (
-    <Container>
-      <Title> Welcome to the Flight Agency </Title>
-      <SubTitle onClick={handleSignIn}>
-        Please login or register to continue
-      </SubTitle>
-    </Container>
+  const isLoading = useMemo(
+    () => loading || status === "loading",
+    [loading, status]
   );
+
+  if (isLoading) {
+    return <LoadingOverlay loading={isLoading} />;
+  }
 
   return (
     <>
       <NavBar />
-      <LoadingOverlay loading={loading || status === "loading"} />
-      {session ? children : authMessage}
+      {session ? children : <AuthMessage />}
     </>
   );
 }

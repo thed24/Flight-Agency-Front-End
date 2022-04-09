@@ -6,41 +6,26 @@ import {
   Title,
   PasswordInput,
 } from "common/components";
-import { usePost, IsError, IsUnitializedError } from "common/hooks";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { LoginRequest, User } from "common/types";
-import { RequestLoginEndpoint } from "common/utilities";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [alert, setAlert] = useState<AlertDetails | null>(null);
-  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
-  const {
-    request: requestLogin,
-    loading: loginLoading,
-    payload: loginResult,
-  } = usePost<LoginRequest, User>(RequestLoginEndpoint);
+  const OnLogin = async () => {
+    const response = await signIn<"credentials">("credentials", {
+      email,
+      password,
+    });
 
-  useEffect(() => {
-    if (loggedInUser) {
+    if (response && response.error) {
+      setAlert({ message: response.error, type: "error" });
+    } else {
       window.location.href = "/";
     }
-  }, [loggedInUser]);
-
-  useEffect(() => {
-    if (IsError(loginResult)) {
-      if (IsUnitializedError(loginResult.error)) return;
-      setAlert({ message: loginResult.error, type: "error" });
-    } else {
-      setLoggedInUser(loginResult.data);
-    }
-  }, [loginResult]);
-
-  const OnLogin = () => {
-    requestLogin({ email, password });
   };
 
   const OnEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +37,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <AuthLayout loading={loginLoading}>
+    <AuthLayout>
       {alert && (
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}

@@ -25,7 +25,7 @@ import {
   CreateTripEndpoint,
   RequestAddressEndpoint,
 } from "common/utilities";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { IsError, useGet, usePost } from "common/hooks";
 import {
   ConfirmationStep,
@@ -34,8 +34,9 @@ import {
   SubmittedStep,
   DestinationStep,
 } from "modules/createTrip";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { Input } from "@mui/material";
+import { Session } from "next-auth";
 
 const CreateTrip: NextPage = () => {
   const { data: session } = useSession();
@@ -82,7 +83,7 @@ const CreateTrip: NextPage = () => {
   const { loading: createTripLoading, request: createTripRequest } = usePost<
     Trip,
     void
-  >(CreateTripEndpoint(session?.user?.email ?? ""));
+  >(CreateTripEndpoint(session?.user?.id ?? ""));
 
   useEffect(() => {
     if (step === 1) setCategory("Food");
@@ -272,3 +273,13 @@ const CreateTrip: NextPage = () => {
 };
 
 export default CreateTrip;
+
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null;
+}> = async (context) => {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  };
+};
