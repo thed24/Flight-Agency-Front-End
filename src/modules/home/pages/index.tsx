@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (session) requestTrips();
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     setTrips(IsError(tripsPayload) ? [] : tripsPayload.data);
@@ -46,7 +46,6 @@ const Home: NextPage = () => {
   return (
     <Layout loading={isLoading}>
       <Title>Welcome to the Flight Agency, {session?.user?.name}!</Title>
-
       <SubTitle>View your existing trip, or create a new one</SubTitle>
 
       {divider}
