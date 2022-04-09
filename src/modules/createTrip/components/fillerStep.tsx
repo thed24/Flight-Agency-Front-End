@@ -1,6 +1,6 @@
 import { Entries, Location, Stop, Trip } from "common/types";
 import GoogleMapReact from "google-map-react";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { FilledInMarker, List } from "common/components";
 import { GetSuggestionsEndpoint } from "common/utilities";
 import { Container } from "common/components/container";
@@ -102,6 +102,19 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
     }
   }, [trip]);
 
+  const mapMarkers: ReactElement<any, any>[] = React.useMemo(
+    () =>
+      trip.stops.map((stop, i) => (
+        <FilledInMarker
+          key={i}
+          lat={stop.location.lat}
+          lng={stop.location.lng}
+          stop={stop}
+        />
+      )),
+    [trip.stops]
+  );
+
   return (
     <Container>
       <SC.MapContainer>
@@ -116,14 +129,7 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={handleGoogleMapApi}
           >
-            {trip.stops.map((stop, i) => (
-              <FilledInMarker
-                key={i}
-                lat={stop.location.lat}
-                lng={stop.location.lng}
-                stop={stop}
-              />
-            ))}
+            {mapMarkers}
           </GoogleMapReact>
         </SC.Map>
 

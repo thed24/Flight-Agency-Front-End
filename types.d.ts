@@ -13,3 +13,9 @@ declare module "next-auth/jwt/types" {
     uid: string;
   }
 }
+
+declare module "google-map-react" {
+  interface Props {
+    children?: any;
+  }
+}

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Stop } from "common/types";
 
 export type LayoutProps = {
+  key: number;
   lat: number;
   lng: number;
   stop: Stop;
