@@ -8,7 +8,7 @@ import {
   PlacesRequest,
 } from "common/types";
 import GoogleMapReact from "google-map-react";
-import { Container, List, Marker } from "common/components";
+import { Container, List, LoadingOverlay, Marker } from "common/components";
 import React, { useEffect } from "react";
 import * as SC from "../steps.styles";
 import { IsError, useGet } from "common/hooks";
@@ -18,10 +18,8 @@ interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
-  category: string;
   apiKey: string;
   onClickMarker: (place: Place) => void;
-  onChangeCategory: (category: string) => void;
   onMoveMap: (lat: number, lng: number) => void;
 }
 
@@ -82,6 +80,10 @@ export const StopStep = ({
   const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
     setCategory(e.target.value);
   };
+
+  if (placesLoading) {
+    return <LoadingOverlay loading={true} />;
+  }
 
   return (
     <Container>

@@ -17,6 +17,7 @@ import {
 import { Container } from "common/components/container";
 import * as SC from "../steps.styles";
 import { IsError, useGet, usePost } from "common/hooks";
+import { CircularProgress } from "@mui/material";
 
 interface Props {
   trip: Trip;
@@ -159,6 +160,14 @@ export const FillerStep = ({
       )),
     [trip.stops]
   );
+
+  if (addressLoading) {
+    return (
+      <Container>
+        <CircularProgress color="inherit" />
+      </Container>
+    );
+  }
 
   return (
     <Container>
