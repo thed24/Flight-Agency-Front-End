@@ -1,7 +1,5 @@
-import * as fs from "fs";
-import * as Types from ".";
-
-import * as CSV from "csv-string";
+import { parse } from "csv-string";
+import { Country } from "common/types";
 
 export const Categories = [
   "Accommodation",
@@ -19,9 +17,9 @@ export const Categories = [
   "Art",
 ];
 
-export const LoadCountries = (): Types.Country[] => {
-  const parsedCsv = CSV.parse(countriesAsCsv);
-  const countries: Types.Country[] = [];
+export const LoadCountries = (): Country[] => {
+  const parsedCsv = parse(countriesAsCsv);
+  const countries: Country[] = [];
 
   parsedCsv.forEach((row) => {
     countries.push({

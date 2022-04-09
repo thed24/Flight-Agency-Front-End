@@ -2,7 +2,7 @@ import { Typography, Select, MenuItem } from "@mui/material";
 import { Categories, Location, Trip, Place } from "common/types";
 import GoogleMapReact from "google-map-react";
 import { Container, List, Marker } from "common/components";
-import React from "react";
+import React, { useCallback } from "react";
 import { SC } from "modules/createTrip";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   zoom: number;
   places: Place[];
   category: string;
+  apiKey: string;
   onClickMarker: (place: Place) => void;
   onChangeCategory: (category: string) => void;
   onMoveMap: (lat: number, lng: number) => void;
@@ -25,6 +26,7 @@ export const StopStep = ({
   onClickMarker,
   onChangeCategory,
   onMoveMap,
+  apiKey,
 }: Props) => {
   const entries = trip.stops.map((stop, i) => {
     return [
@@ -35,7 +37,7 @@ export const StopStep = ({
     ];
   });
 
-  const onDragEnd = React.useCallback(
+  const onDragEnd = useCallback(
     (event: any) => {
       console.log(event);
       onMoveMap(event.center.lat(), event.center.lng());
@@ -49,7 +51,7 @@ export const StopStep = ({
         <SC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: "",
+              key: apiKey,
             }}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}

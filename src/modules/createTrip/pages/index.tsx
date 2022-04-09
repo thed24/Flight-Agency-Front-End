@@ -35,7 +35,7 @@ import {
   DestinationStep,
 } from "modules/createTrip";
 import { getSession, useSession } from "next-auth/react";
-import { Input } from "@mui/material";
+import { Input, TextField } from "@mui/material";
 import { Session } from "next-auth";
 
 const CreateTrip: NextPage = () => {
@@ -196,9 +196,12 @@ const CreateTrip: NextPage = () => {
     setCenter({ lat: lat, lng: lng });
   };
 
-  const onChangeApiKey = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setApiKey(e.target.value);
-  };
+  const onBlurApiKey = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setApiKey(e.target.value);
+    },
+    [setApiKey]
+  );
 
   return (
     <>
@@ -243,6 +246,7 @@ const CreateTrip: NextPage = () => {
             onChangeCategory={setCategory}
             category={category}
             onMoveMap={onMoveMap}
+            apiKey={apiKey}
           />
         )}
 
@@ -252,6 +256,7 @@ const CreateTrip: NextPage = () => {
             center={center}
             zoom={zoom}
             trip={trip}
+            apiKey={apiKey}
           />
         )}
 
@@ -266,7 +271,18 @@ const CreateTrip: NextPage = () => {
           confirmDestination={confirmDestinationOnClick}
         />
 
-        <Input onChange={onChangeApiKey} />
+        <TextField
+          placeholder="Enter Maps API Key"
+          variant="outlined"
+          value={apiKey}
+          onChange={onBlurApiKey}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "25px",
+          }}
+        />
       </Layout>
     </>
   );

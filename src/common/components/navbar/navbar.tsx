@@ -1,11 +1,7 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useMemo } from "react";
+import { Button, Box, AppBar, Toolbar, Typography } from "@mui/material";
 
 export function NavBar() {
   const { data: session } = useSession();
@@ -14,7 +10,7 @@ export function NavBar() {
     signOut();
   };
 
-  const buttons = React.useMemo(
+  const buttons = useMemo(
     () =>
       session ? (
         <>

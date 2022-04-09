@@ -1,11 +1,12 @@
-import * as React from "react";
-import { Modal, TextField, Typography, Button, Divider } from "@mui/material";
+import { Modal, TextField, Button } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/lab";
 import DateFnsUtils from "@date-io/date-fns";
 import { DateRange, Place } from "common/types";
 import { Title } from "./title";
 import { SubTitle } from "./subTitle";
 import styled from "@emotion/styled";
+import { useState, useCallback, useEffect } from "react";
+import { Divider } from "./divider/divider";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -41,18 +42,18 @@ export function StopModal({
   confirm,
   cancel,
 }: Props) {
-  const [start, setStart] = React.useState(value.start);
-  const [end, setEnd] = React.useState(value.end);
+  const [start, setStart] = useState(value.start);
+  const [end, setEnd] = useState(value.end);
 
-  const handleChangeStart = React.useCallback((event: string | null) => {
+  const handleChangeStart = useCallback((event: string | null) => {
     setStart(event === null ? new Date() : new Date(event));
   }, []);
 
-  const handleChangeEnd = React.useCallback((event: string | null) => {
+  const handleChangeEnd = useCallback((event: string | null) => {
     setEnd(event === null ? new Date() : new Date(event));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setValue({ start, end });
   }, [start, end, setValue]);
 

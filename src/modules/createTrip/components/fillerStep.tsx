@@ -1,6 +1,6 @@
 import { Entries, Location, Stop, Trip } from "common/types";
 import GoogleMapReact from "google-map-react";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { FilledInMarker, List } from "common/components";
 import { GetSuggestionsEndpoint } from "common/utilities";
 import { Container } from "common/components/container";
@@ -11,31 +11,36 @@ interface Props {
   trip: Trip;
   center: Location;
   zoom: number;
+  apiKey: string;
   addStopOver: (lat: number, lng: number) => void;
 }
 
-export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
-  const [route, setRoute] = React.useState<google.maps.DirectionsRoute | null>(
-    null
-  );
+function arePointsNear(
+  checkPoint: Location,
+  centerPoint: Location,
+  km: number
+): boolean {
+  var ky = 40000 / 360;
+  var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
+  var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+  var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+  return Math.sqrt(dx * dx + dy * dy) <= km;
+}
+
+export const FillerStep = ({
+  apiKey,
+  center,
+  zoom,
+  trip,
+  addStopOver,
+}: Props) => {
+  const [route, setRoute] = useState<google.maps.DirectionsRoute | null>(null);
 
   const {
     request: requestSuggestion,
     payload: suggestions,
     loading: suggestionsLoading,
   } = usePost<Trip, Stop[]>(GetSuggestionsEndpoint);
-
-  function arePointsNear(
-    checkPoint: Location,
-    centerPoint: Location,
-    km: number
-  ): boolean {
-    var ky = 40000 / 360;
-    var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
-    var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
-    var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
-    return Math.sqrt(dx * dx + dy * dy) <= km;
-  }
 
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
@@ -121,7 +126,7 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
         <SC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: "",
+              key: apiKey,
             }}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
@@ -132,7 +137,6 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
             {mapMarkers}
           </GoogleMapReact>
         </SC.Map>
-
         <List
           title="Stops"
           entries={
@@ -158,7 +162,6 @@ export const FillerStep = ({ center, zoom, trip, addStopOver }: Props) => {
             []
           }
         />
-
         {!IsError(suggestions) && suggestions.data.length > 0 && (
           <List
             title="Suggestions"

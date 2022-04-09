@@ -7,5 +7,3 @@ export {
   RequestLocationDataEndpoint,
   RequestAddressEndpoint,
 } from "./api";
-
-export { theme } from "./theme";

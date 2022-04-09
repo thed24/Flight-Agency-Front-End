@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Typography,
   Select,
@@ -9,6 +8,7 @@ import {
 } from "@mui/material";
 import { LoadCountries } from "common/types";
 import { Container } from "common/components";
+import { useCallback } from "react";
 
 interface Props {
   destination: string;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const DestinationStep = ({ destination, onChange }: Props) => {
-  const handleOnChange = React.useCallback(
+  const handleOnChange = useCallback(
     (event: SelectChangeEvent<string>) => {
       onChange(event.target.value);
     },

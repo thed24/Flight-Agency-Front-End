@@ -33,3 +33,5 @@ export { LoadingOverlayDynamic as LoadingOverlay } from "./loadingOverlay/loadin
 export { PasswordInput } from "./passwordInput";
 
 export { AuthMessage } from "./authMessage/authMessage";
+
+export { Divider } from "./divider/divider";

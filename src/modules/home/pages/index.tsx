@@ -1,4 +1,4 @@
-import { Button, Divider } from "@mui/material";
+import { Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { GetTripsEndpoint } from "common/utilities";
 import {
@@ -7,6 +7,7 @@ import {
   Title,
   Container,
   ConfirmationList,
+  Divider,
 } from "common/components";
 import { Trip } from "common/types";
 import { NextPage } from "next";

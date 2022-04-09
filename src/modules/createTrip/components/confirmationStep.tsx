@@ -1,6 +1,10 @@
-import { Divider } from "@mui/material";
 import { Trip } from "common/types";
-import { ConfirmationList, Container, SubTitle } from "common/components";
+import {
+  ConfirmationList,
+  Container,
+  Divider,
+  SubTitle,
+} from "common/components";
 
 interface Props {
   trip: Trip;

@@ -2,13 +2,21 @@
 module.exports = {
   reactStrictMode: true,
   compiler: {
-    transforms: {
-      dangerousTaggedTemplateString: true,
-    },
     styledComponents: true,
     swcMinify: true,
   },
   experimental: {
-    concurrentFeatures: true,
+    modularizeImports: {
+      "@mui/material": {
+        transform: "@mui/material/{{member}}",
+      },
+      "@mui/icons-material": {
+        transform: "@mui/icons-material/{{member}}",
+      },
+    },
+  },
+  pwa: {
+    dest: "public",
+    swSrc: "src/service-worker.js",
   },
 };
