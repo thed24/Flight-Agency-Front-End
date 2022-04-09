@@ -13,15 +13,19 @@ import { signIn } from "next-auth/react";
 const Login: NextPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertDetails | null>(null);
 
   const OnLogin = async () => {
+    setLoading(true);
     const response = await signIn<"credentials">("credentials", {
       email,
       password,
     });
 
     if (response && response.error) {
+      setLoading(false);
       setAlert({ message: response.error, type: "error" });
     } else {
       window.location.href = "/";
@@ -37,7 +41,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <AuthLayout>
+    <AuthLayout loading={loading}>
       {alert && (
         <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
       )}

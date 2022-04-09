@@ -54,9 +54,7 @@ const Register: NextPage = () => {
 
   return (
     <AuthLayout loading={registerLoading}>
-      {alert && (
-        <AlertBar callback={() => setAlert(null)} details={alert}></AlertBar>
-      )}
+      {alert && <AlertBar callback={() => setAlert(null)} details={alert} />}
       <Title> Register </Title>
 
       <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">

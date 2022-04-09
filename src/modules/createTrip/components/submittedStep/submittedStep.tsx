@@ -1,8 +1,31 @@
 import { Typography } from "@mui/material";
 import { Container } from "common/components";
+import { LoadingOverlay } from "common/components/loadingOverlay/loadingOverlay";
+import { usePost } from "common/hooks";
+import { Trip } from "common/types";
+import { CreateTripEndpoint } from "common/utilities";
 import Link from "next/link";
+import { useEffect } from "react";
 
-export const SubmittedStep = () => {
+export interface Props {
+  id: string;
+  trip: Trip;
+}
+
+export const SubmittedStep = ({ id, trip }: Props) => {
+  const { loading: createTripLoading, request: createTripRequest } = usePost<
+    Trip,
+    void
+  >(CreateTripEndpoint(id));
+
+  useEffect(() => {
+    if (id) createTripRequest(trip);
+  }, [id]);
+
+  if (createTripLoading) {
+    return <LoadingOverlay loading={true} />;
+  }
+
   return (
     <Container>
       <Typography variant="h5">

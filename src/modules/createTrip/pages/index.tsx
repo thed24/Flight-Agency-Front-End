@@ -66,17 +66,6 @@ const CreateTrip: NextPage = () => {
 
   const [apiKey, setApiKey] = useState<string>("");
 
-  const { loading: createTripLoading, request: createTripRequest } = usePost<
-    Trip,
-    void
-  >(CreateTripEndpoint(session?.user?.id ?? ""));
-
-  useEffect((): void => {
-    if (step === 4) {
-      createTripRequest(trip);
-    }
-  }, [step]);
-
   const confirmDestinationOnClick = useCallback(() => {
     const currentCountry = countries.find(
       (country) => country.name === destination
@@ -157,7 +146,7 @@ const CreateTrip: NextPage = () => {
         cancel={modalCancel}
       />
 
-      <Layout loading={createTripLoading}>
+      <Layout>
         <Title> Welcome to the Flight Agency </Title>
         <SubTitle> Build your trip below </SubTitle>
 
@@ -201,7 +190,9 @@ const CreateTrip: NextPage = () => {
 
         {step === 3 && <ConfirmationStep trip={trip} />}
 
-        {step === 4 && <SubmittedStep />}
+        {step === 4 && (
+          <SubmittedStep trip={trip} id={session?.user?.id ?? ""} />
+        )}
 
         <StepButton
           step={step}

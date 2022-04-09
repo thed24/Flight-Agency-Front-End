@@ -41,6 +41,10 @@ export const StopStep = ({
   } = useGet<Places>(RequestLocationDataEndpoint);
 
   useEffect(() => {
+    setCategory("Food");
+  }, []);
+
+  useEffect(() => {
     var request: PlacesRequest = {
       lat: center.lat,
       lng: center.lng,
