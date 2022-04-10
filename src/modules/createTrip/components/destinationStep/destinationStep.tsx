@@ -7,7 +7,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { LoadCountries } from "common/types";
-import { Container } from "common/components";
+import { SC } from "common/components";
 import { useCallback } from "react";
 
 interface Props {
@@ -24,7 +24,7 @@ export const DestinationStep = ({ destination, onChange }: Props) => {
   );
 
   return (
-    <Container>
+    <SC.Container>
       <Typography variant="h5">Please select your destination</Typography>
       <FormControl style={{ width: "15%", margin: "30px" }}>
         <InputLabel>Select a country</InputLabel>
@@ -42,6 +42,6 @@ export const DestinationStep = ({ destination, onChange }: Props) => {
           })}
         </Select>
       </FormControl>
-    </Container>
+    </SC.Container>
   );
 };

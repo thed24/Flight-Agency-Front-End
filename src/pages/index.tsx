@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import Home from "modules/home/pages";
+import Home from "modules/home/home";
 
 const HomeRedirect: NextPage = () => {
   return <Home></Home>;

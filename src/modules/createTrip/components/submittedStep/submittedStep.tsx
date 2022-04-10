@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { Container } from "common/components";
+import { SC } from "common/components";
 import { LoadingOverlay } from "common/components/loadingOverlay/loadingOverlay";
 import { usePost } from "common/hooks";
 import { Trip } from "common/types";
@@ -27,7 +27,7 @@ export const SubmittedStep = ({ id, trip }: Props) => {
   }
 
   return (
-    <Container>
+    <SC.Container>
       <Typography variant="h5">
         Your trip has been submitted successfully
       </Typography>
@@ -36,6 +36,6 @@ export const SubmittedStep = ({ id, trip }: Props) => {
           Head home
         </Link>
       </Typography>
-    </Container>
+    </SC.Container>
   );
 };

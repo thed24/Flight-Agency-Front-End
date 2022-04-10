@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Trip } from "common/types";
-import { Container } from "./container";
+import { Container } from "../../../../common/components/common.styles";
 
 interface Props {
   trip: Trip;

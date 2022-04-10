@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, LoadingOverlay, NavBar } from "common/components";
+import { SC, LoadingOverlay, NavBar } from "common/components";
 
 export type LayoutProps = {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ export function AuthLayout({ children, loading }: LayoutProps) {
     <>
       <NavBar />
       <LoadingOverlay loading={loading} />
-      <Container>{children}</Container>
+      <SC.Container>{children}</SC.Container>
     </>
   );
 }

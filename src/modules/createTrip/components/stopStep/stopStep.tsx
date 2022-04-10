@@ -6,11 +6,12 @@ import {
   Place,
   Places,
   PlacesRequest,
+  LoadCountries,
 } from "common/types";
 import GoogleMapReact from "google-map-react";
-import { Container, List, LoadingOverlay, Marker } from "common/components";
+import { List, LoadingOverlay, SC } from "common/components";
 import React, { useEffect } from "react";
-import * as SC from "../steps.styles";
+import { SSC, Marker } from "modules/createTrip/components";
 import { IsError, useGet } from "common/hooks";
 import { RequestLocationDataEndpoint } from "common/utilities";
 
@@ -19,6 +20,7 @@ interface Props {
   center: Location;
   zoom: number;
   apiKey: string;
+  destination: string;
   onClickMarker: (place: Place) => void;
   onMoveMap: (lat: number, lng: number) => void;
 }
@@ -30,9 +32,12 @@ export const StopStep = ({
   onClickMarker,
   onMoveMap,
   apiKey,
+  destination,
 }: Props) => {
   const [places, setPlaces] = React.useState<Place[]>([]);
   const [category, setCategory] = React.useState<string>("");
+
+  const countries = LoadCountries();
 
   const {
     loading: placesLoading,
@@ -42,6 +47,14 @@ export const StopStep = ({
 
   useEffect(() => {
     setCategory("Food");
+
+    const currentCountry = countries.find(
+      (country) => country.name === destination
+    );
+
+    if (currentCountry) {
+      onMoveMap(currentCountry.lat, currentCountry.lng);
+    }
   }, []);
 
   useEffect(() => {
@@ -90,9 +103,9 @@ export const StopStep = ({
   }
 
   return (
-    <Container>
-      <SC.MapContainer>
-        <SC.Map>
+    <SC.Container>
+      <SSC.MapContainer>
+        <SSC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
               key: apiKey,
@@ -112,10 +125,10 @@ export const StopStep = ({
               />
             ))}
           </GoogleMapReact>
-        </SC.Map>
+        </SSC.Map>
 
         <List title="Stops" entries={entries} />
-      </SC.MapContainer>
+      </SSC.MapContainer>
 
       <Typography gutterBottom variant="h6">
         Select a category
@@ -135,6 +148,6 @@ export const StopStep = ({
           );
         })}
       </Select>
-    </Container>
+    </SC.Container>
   );
 };

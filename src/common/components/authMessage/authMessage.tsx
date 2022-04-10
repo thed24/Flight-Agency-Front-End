@@ -1,4 +1,4 @@
-import { SubTitle, Title, Container } from "common/components";
+import { SC } from "common/components";
 import { signIn } from "next-auth/react";
 
 export function AuthMessage() {
@@ -7,11 +7,11 @@ export function AuthMessage() {
   };
 
   return (
-    <Container>
-      <Title> Welcome to the Flight Agency </Title>
-      <SubTitle onClick={handleSignIn}>
+    <SC.Container>
+      <SC.Title> Welcome to the Flight Agency </SC.Title>
+      <SC.SubTitle onClick={handleSignIn}>
         Please login or register to continue
-      </SubTitle>
-    </Container>
+      </SC.SubTitle>
+    </SC.Container>
   );
 }

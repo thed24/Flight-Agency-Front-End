@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { Title } from "common/components";
+import { SC } from "common/components";
 import React from "react";
 import { Entries } from "common/types";
 
@@ -11,7 +11,7 @@ export type LayoutProps = {
 export function List({ title, entries }: LayoutProps) {
   return (
     <div style={{ height: "40vh", width: "60vh", overflowY: "scroll" }}>
-      <Title>{title}</Title>
+      <SC.Title>{title}</SC.Title>
       {entries.map((entry, entryIndex) => (
         <div
           key={entryIndex}

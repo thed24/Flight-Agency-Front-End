@@ -1,19 +1,13 @@
 import { Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { GetTripsEndpoint } from "common/utilities";
-import {
-  Layout,
-  SubTitle,
-  Title,
-  Container,
-  ConfirmationList,
-  Divider,
-} from "common/components";
+import { Layout, SC, Divider } from "common/components";
 import { Trip } from "common/types";
 import { NextPage } from "next";
 import Link from "next/link";
 import { IsError, useGet } from "common/hooks";
 import { useSession } from "next-auth/react";
+import { ConfirmationList } from "modules/createTrip/components";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -45,18 +39,18 @@ const Home: NextPage = () => {
 
   return (
     <Layout loading={isLoading}>
-      <Title>Welcome to the Flight Agency, {session?.user?.name}!</Title>
-      <SubTitle>View your existing trip, or create a new one</SubTitle>
+      <SC.Title>Welcome to the Flight Agency, {session?.user?.name}!</SC.Title>
+      <SC.SubTitle>View your existing trip, or create a new one</SC.SubTitle>
 
       {divider}
 
-      <Container>
+      <SC.Container>
         {trips &&
           trips.map((trip, i) => (
             <div key={i}>
-              <SubTitle>
+              <SC.SubTitle>
                 Trip {i + 1}: {trip.destination}
-              </SubTitle>
+              </SC.SubTitle>
               <ConfirmationList key={i} trip={trip} />
             </div>
           ))}
@@ -64,7 +58,7 @@ const Home: NextPage = () => {
         <Link href={"createTrip"} passHref>
           <Button style={{ marginBottom: "25px" }}>Create a new trip</Button>
         </Link>
-      </Container>
+      </SC.Container>
     </Layout>
   );
 };

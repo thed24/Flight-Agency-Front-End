@@ -1,16 +1,11 @@
 import { Button, FormControl, InputLabel, OutlinedInput } from "@mui/material";
-import {
-  AlertDetails,
-  AuthLayout,
-  AlertBar,
-  Title,
-  PasswordInput,
-} from "common/components";
+import { AlertDetails, AuthLayout, AlertBar, SC } from "common/components";
 import { IsError, IsUnitializedError, usePost } from "common/hooks";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { RegisterRequest, User } from "common/types";
 import { RequestRegisterEndpoint } from "common/utilities";
+import { PasswordInput } from "modules/auth/components";
 
 const Register: NextPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -52,10 +47,12 @@ const Register: NextPage = () => {
     setName(e.target.value);
   };
 
+  const OnCloseAlert = () => setAlert(null);
+
   return (
     <AuthLayout loading={registerLoading}>
-      {alert && <AlertBar callback={() => setAlert(null)} details={alert} />}
-      <Title> Register </Title>
+      {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
+      <SC.Title> Register </SC.Title>
 
       <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">
         <InputLabel>Email</InputLabel>

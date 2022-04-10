@@ -1,5 +1,3 @@
-import { Location } from "./models";
-
 export interface RegisterRequest {
   name: string;
   email: string;

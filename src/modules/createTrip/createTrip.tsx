@@ -1,31 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { Step, Stepper } from "react-form-stepper";
-import {
-  Layout,
-  StepButton,
-  Title,
-  SubTitle,
-  Container,
-} from "common/components";
+import { Layout, SC } from "common/components";
 import {
   DateRange,
   Location,
   LoadCountries,
   Place,
-  Places,
-  PlacesRequest,
   Trip,
   Stop,
-  Addresses,
-  AddressRequest,
 } from "common/types";
-import {
-  RequestLocationDataEndpoint,
-  CreateTripEndpoint,
-  RequestAddressEndpoint,
-} from "common/utilities";
 import { GetServerSideProps, NextPage } from "next";
-import { IsError, useGet, usePost } from "common/hooks";
 import {
   ConfirmationStep,
   StopStep,
@@ -33,15 +17,14 @@ import {
   SubmittedStep,
   DestinationStep,
   StopModal,
-} from "modules/createTrip";
+  StepButton,
+} from "modules/createTrip/components";
 import { getSession, useSession } from "next-auth/react";
 import { TextField } from "@mui/material";
 import { Session } from "next-auth";
 
 const CreateTrip: NextPage = () => {
   const { data: session } = useSession();
-
-  const countries = LoadCountries();
 
   const [modalPlace, setModalPlace] = useState<Place | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -65,17 +48,6 @@ const CreateTrip: NextPage = () => {
   });
 
   const [apiKey, setApiKey] = useState<string>("");
-
-  const confirmDestinationOnClick = useCallback(() => {
-    const currentCountry = countries.find(
-      (country) => country.name === destination
-    );
-
-    if (currentCountry) {
-      setCenter({ lat: currentCountry.lat, lng: currentCountry.lng });
-      setStep(step + 1);
-    }
-  }, [countries, destination, step]);
 
   const modalConfirm = useCallback(() => {
     if (modalPlace !== null) {
@@ -147,10 +119,10 @@ const CreateTrip: NextPage = () => {
       />
 
       <Layout>
-        <Title> Welcome to the Flight Agency </Title>
-        <SubTitle> Build your trip below </SubTitle>
+        <SC.Title> Welcome to the Flight Agency </SC.Title>
+        <SC.SubTitle> Build your trip below </SC.SubTitle>
 
-        <Container>
+        <SC.Container>
           <Stepper activeStep={step}>
             <Step label="Select your destination" />
             <Step label="Select your stops" />
@@ -158,7 +130,7 @@ const CreateTrip: NextPage = () => {
             <Step label="Confirm your trip" />
             <Step label="Trip confirmed" />
           </Stepper>
-        </Container>
+        </SC.Container>
 
         {step === 0 && (
           <DestinationStep
@@ -172,6 +144,7 @@ const CreateTrip: NextPage = () => {
             center={center}
             zoom={zoom}
             trip={trip}
+            destination={destination}
             onClickMarker={openModalWithPlace}
             onMoveMap={onMoveMap}
             apiKey={apiKey}
@@ -198,7 +171,7 @@ const CreateTrip: NextPage = () => {
           step={step}
           setStep={setStep}
           destination={destination}
-          confirmDestination={confirmDestinationOnClick}
+          trip={trip}
         />
 
         <TextField

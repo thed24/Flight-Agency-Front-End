@@ -9,13 +9,12 @@ import {
 } from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
-import { FilledInMarker, List } from "common/components";
+import { List, SC } from "common/components";
+import { FilledInMarker, SSC } from "modules/createTrip/components";
 import {
   GetSuggestionsEndpoint,
   RequestAddressEndpoint,
 } from "common/utilities";
-import { Container } from "common/components/container";
-import * as SC from "../steps.styles";
 import { IsError, useGet, usePost } from "common/hooks";
 import { CircularProgress } from "@mui/material";
 
@@ -163,16 +162,16 @@ export const FillerStep = ({
 
   if (addressLoading) {
     return (
-      <Container>
+      <SC.Container>
         <CircularProgress color="inherit" />
-      </Container>
+      </SC.Container>
     );
   }
 
   return (
-    <Container>
-      <SC.MapContainer>
-        <SC.Map>
+    <SC.Container>
+      <SSC.MapContainer>
+        <SSC.Map>
           <GoogleMapReact
             bootstrapURLKeys={{
               key: apiKey,
@@ -185,7 +184,7 @@ export const FillerStep = ({
           >
             {mapMarkers}
           </GoogleMapReact>
-        </SC.Map>
+        </SSC.Map>
         <List
           title="Stops"
           entries={
@@ -238,7 +237,7 @@ export const FillerStep = ({
             })}
           />
         )}
-      </SC.MapContainer>
-    </Container>
+      </SSC.MapContainer>
+    </SC.Container>
   );
 };

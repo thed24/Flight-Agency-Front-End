@@ -21,10 +21,10 @@ export function NavBar() {
       ) : (
         <>
           <Button color="inherit">
-            <Link href={"/register"}>Register</Link>
+            <Link href={"/auth/register"}>Register</Link>
           </Button>
           <Button color="inherit">
-            <Link href={"/login"}>Login</Link>
+            <Link href={"/auth/login"}>Login</Link>
           </Button>
         </>
       ),

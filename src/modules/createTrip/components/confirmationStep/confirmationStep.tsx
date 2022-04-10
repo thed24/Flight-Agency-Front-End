@@ -1,10 +1,6 @@
 import { Trip } from "common/types";
-import {
-  ConfirmationList,
-  Container,
-  Divider,
-  SubTitle,
-} from "common/components";
+import { Divider, SC } from "common/components";
+import { ConfirmationList } from "modules/createTrip/components";
 
 interface Props {
   trip: Trip;
@@ -12,14 +8,14 @@ interface Props {
 
 export const ConfirmationStep = ({ trip }: Props) => {
   return (
-    <Container>
-      <SubTitle>
+    <SC.Container>
+      <SC.SubTitle>
         Your current trip itinary for your trip to {trip.destination}
-      </SubTitle>
+      </SC.SubTitle>
 
       <Divider />
       <ConfirmationList trip={trip} />
       <Divider />
-    </Container>
+    </SC.Container>
   );
 };

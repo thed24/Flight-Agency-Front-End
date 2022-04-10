@@ -2,10 +2,10 @@ import DateFnsUtils from "@date-io/date-fns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import { Modal, TextField, Button } from "@mui/material";
-import { Title, SubTitle } from "common/components";
+import { SC } from "common/components";
 import { DateRange, Place } from "common/types";
 import { useState, useCallback, useEffect } from "react";
-import * as SC from "./stopModal.styles";
+import * as SSC from "./stopModal.styles";
 
 export interface Props {
   place: Place | null;
@@ -44,12 +44,12 @@ export function StopModal({
   return (
     place && (
       <Modal open={open} onClose={setOpen}>
-        <SC.ModalContainer>
-          <Title> {place.name} </Title>
-          <SubTitle> {place.vicinity} </SubTitle>
-          <SubTitle> Rated {place.rating} / 5</SubTitle>
+        <SSC.ModalContainer>
+          <SC.Title> {place.name} </SC.Title>
+          <SC.SubTitle> {place.vicinity} </SC.SubTitle>
+          <SC.SubTitle> Rated {place.rating} / 5</SC.SubTitle>
 
-          <SubTitle> Select a Time </SubTitle>
+          <SC.SubTitle> Select a Time </SC.SubTitle>
 
           <LocalizationProvider dateAdapter={DateFnsUtils}>
             <DateTimePicker
@@ -71,7 +71,7 @@ export function StopModal({
 
           <Button onClick={confirm}>Save Stop</Button>
           <Button onClick={cancel}>Cancel</Button>
-        </SC.ModalContainer>
+        </SSC.ModalContainer>
       </Modal>
     )
   );

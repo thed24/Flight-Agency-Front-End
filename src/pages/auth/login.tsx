@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import Login from "modules/login/pages";
+import Login from "modules/auth/login";
 
 const LoginRedirect: NextPage = () => {
   return <Login></Login>;
