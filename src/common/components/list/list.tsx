@@ -10,7 +10,14 @@ export type LayoutProps = {
 
 export function List({ title, entries }: LayoutProps) {
   return (
-    <div style={{ height: "40vh", width: "60vh", overflowY: "scroll" }}>
+    <div
+      style={{
+        height: "400px",
+        width: "400px",
+        overflowY: "scroll",
+        textAlign: "center",
+      }}
+    >
       <SC.Title>{title}</SC.Title>
       {entries.map((entry, entryIndex) => (
         <div

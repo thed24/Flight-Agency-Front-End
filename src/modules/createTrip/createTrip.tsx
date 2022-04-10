@@ -184,6 +184,7 @@ const CreateTrip: NextPage = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: "25px",
+            marginBottom: "25px",
           }}
         />
       </Layout>

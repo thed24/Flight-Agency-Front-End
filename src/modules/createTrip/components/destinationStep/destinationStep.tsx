@@ -26,7 +26,7 @@ export const DestinationStep = ({ destination, onChange }: Props) => {
   return (
     <SC.Container>
       <Typography variant="h5">Please select your destination</Typography>
-      <FormControl style={{ width: "15%", margin: "30px" }}>
+      <FormControl style={{ width: "20rem", margin: "30px" }}>
         <InputLabel>Select a country</InputLabel>
         <Select
           label={"Select a country"}

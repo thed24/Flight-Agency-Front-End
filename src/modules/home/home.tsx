@@ -3,11 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import { GetTripsEndpoint } from "common/utilities";
 import { Layout, SC, Divider } from "common/components";
 import { Trip } from "common/types";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { IsError, useGet } from "common/hooks";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { ConfirmationList } from "modules/createTrip/components";
+import { Session } from "next-auth";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -64,3 +65,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null;
+}> = async (context) => {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  };
+};

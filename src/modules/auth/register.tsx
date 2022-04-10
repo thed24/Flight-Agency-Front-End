@@ -59,6 +59,7 @@ const Register: NextPage = () => {
         <OutlinedInput
           id="outlined-basic"
           label="Email"
+          type="email"
           value={email}
           onChange={OnEmailChange}
         />

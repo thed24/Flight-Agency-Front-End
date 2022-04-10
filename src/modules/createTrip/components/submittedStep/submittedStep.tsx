@@ -27,7 +27,7 @@ export const SubmittedStep = ({ id, trip }: Props) => {
   }
 
   return (
-    <SC.Container>
+    <SC.Container style={{ textAlign: "center" }}>
       <Typography variant="h5">
         Your trip has been submitted successfully
       </Typography>
