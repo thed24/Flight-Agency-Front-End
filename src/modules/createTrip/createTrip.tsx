@@ -73,23 +73,24 @@ const CreateTrip: NextPage = () => {
 
   const modalCancel = useCallback(() => {
     setModalOpen(!modalOpen);
-    setModalValue({
-      start: new Date(),
-      end: new Date(),
-    });
     setModalPlace(null);
   }, [modalOpen]);
 
   const openModalWithPlace = (place: Place, day: number) => {
-    var newDate = new Date();
-    newDate.setDate(newDate.getDate() + day);
+    var startDate = new Date();
+    startDate.setDate(startDate.getDate() + day);
+    startDate.setHours(0, 0, 0, 0);
 
-    setModalOpen(true);
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() + day);
+    endDate.setHours(23, 59, 59, 999);
+
     setModalValue({
-      start: newDate,
-      end: newDate,
+      start: startDate,
+      end: endDate,
     });
     setModalPlace(place);
+    setModalOpen(true);
   };
 
   const onMoveMap = (lat: number, lng: number) => {

@@ -6,6 +6,7 @@ import { SC } from "common/components";
 import { DateRange, Place } from "common/types";
 import { useState, useCallback, useEffect } from "react";
 import * as SSC from "./stopModal.styles";
+import { start } from "repl";
 
 export interface Props {
   place: Place | null;
@@ -26,20 +27,25 @@ export function StopModal({
   confirm,
   cancel,
 }: Props) {
-  const [start, setStart] = useState(value.start);
-  const [end, setEnd] = useState(value.end);
+  const handleChangeStart = useCallback(
+    (event: string | null) => {
+      setValue({
+        start: event === null ? new Date() : new Date(event),
+        end: value.end,
+      });
+    },
+    [setValue, value.end]
+  );
 
-  const handleChangeStart = useCallback((event: string | null) => {
-    setStart(event === null ? new Date() : new Date(event));
-  }, []);
-
-  const handleChangeEnd = useCallback((event: string | null) => {
-    setEnd(event === null ? new Date() : new Date(event));
-  }, []);
-
-  useEffect(() => {
-    setValue({ start, end });
-  }, [start, end, setValue]);
+  const handleChangeEnd = useCallback(
+    (event: string | null) => {
+      setValue({
+        start: value.start,
+        end: event === null ? new Date() : new Date(event),
+      });
+    },
+    [setValue, value.start]
+  );
 
   return (
     place && (
@@ -54,7 +60,7 @@ export function StopModal({
           <LocalizationProvider dateAdapter={DateFnsUtils}>
             <DateTimePicker
               label="Start Time"
-              value={start}
+              value={value.start}
               onChange={handleChangeStart}
               renderInput={(params) => <TextField {...params} />}
               minDate={new Date().toISOString()}
@@ -64,7 +70,7 @@ export function StopModal({
           <LocalizationProvider dateAdapter={DateFnsUtils}>
             <DateTimePicker
               label="Stop Time"
-              value={end}
+              value={value.end}
               onChange={handleChangeEnd}
               renderInput={(params) => <TextField {...params} />}
             />

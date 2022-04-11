@@ -116,7 +116,7 @@ export const FillerStep = ({
           lng: stopsForDay[stopsForDay.length - 1].location.lng,
         },
         travelMode: google.maps.TravelMode.DRIVING,
-        waypoints: trip.stops.slice(1, stopsForDay.length - 1).map((stop) => {
+        waypoints: stopsForDay.slice(1, stopsForDay.length - 1).map((stop) => {
           const stopOver: google.maps.DirectionsWaypoint = {
             location: new google.maps.LatLng(
               stop.location.lat,
@@ -136,7 +136,7 @@ export const FillerStep = ({
         }
       });
     },
-    [day, trip.stops]
+    [stopsForDay, trip.stops]
   );
 
   useEffect(() => {
