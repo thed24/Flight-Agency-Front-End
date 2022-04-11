@@ -11,7 +11,7 @@ import {
 import GoogleMapReact from "google-map-react";
 import { List, LoadingOverlay, SC } from "common/components";
 import React, { useEffect } from "react";
-import { SSC, Marker } from "modules/createTrip/components";
+import { SSC, Marker, ScrollableStops } from "modules/createTrip/components";
 import { IsError, useGet } from "common/hooks";
 import { RequestLocationDataEndpoint } from "common/utilities";
 
@@ -21,7 +21,7 @@ interface Props {
   zoom: number;
   apiKey: string;
   destination: string;
-  onClickMarker: (place: Place) => void;
+  onClickMarker: (place: Place, day: number) => void;
   onMoveMap: (lat: number, lng: number) => void;
 }
 
@@ -36,6 +36,7 @@ export const StopStep = ({
 }: Props) => {
   const [places, setPlaces] = React.useState<Place[]>([]);
   const [category, setCategory] = React.useState<string>("");
+  const [day, setDay] = React.useState(0);
 
   const countries = LoadCountries();
 
@@ -75,23 +76,18 @@ export const StopStep = ({
     }
   }, [placesResult]);
 
-  const entries = trip.stops.map((stop, i) => {
-    return [
-      {
-        header: `${stop.name}`,
-        content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
-      },
-    ];
-  });
-
   const onDragEnd = (event: any) => {
     onMoveMap(event.center.lat(), event.center.lng());
+  };
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setDay(newValue);
   };
 
   const handleOnClickMarker =
     (place: Place) => (e: React.MouseEvent<Element, MouseEvent>) => {
       e.preventDefault();
-      onClickMarker(place);
+      onClickMarker(place, day);
     };
 
   const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
@@ -127,7 +123,11 @@ export const StopStep = ({
           </GoogleMapReact>
         </SSC.Map>
 
-        <List title="Stops" entries={entries} />
+        <ScrollableStops
+          day={day}
+          handleDayChange={handleChange}
+          stops={trip.stops}
+        />
       </SSC.MapContainer>
 
       <Typography gutterBottom variant="h6">

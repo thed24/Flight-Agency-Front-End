@@ -16,4 +16,6 @@ export { AuthMessage } from "./authMessage/authMessage";
 
 export { Divider } from "./divider/divider";
 
+export { TabPanel } from "./tabPanel/tabPanel";
+
 export * as SC from "./common.styles";

@@ -57,6 +57,7 @@ export function StopModal({
               value={start}
               onChange={handleChangeStart}
               renderInput={(params) => <TextField {...params} />}
+              minDate={new Date().toISOString()}
             />
           </LocalizationProvider>
 

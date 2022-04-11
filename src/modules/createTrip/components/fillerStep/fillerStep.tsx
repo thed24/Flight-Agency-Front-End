@@ -8,9 +8,13 @@ import {
   Trip,
 } from "common/types";
 import GoogleMapReact from "google-map-react";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import { List, SC } from "common/components";
-import { FilledInMarker, SSC } from "modules/createTrip/components";
+import {
+  FilledInMarker,
+  ScrollableStops,
+  SSC,
+} from "modules/createTrip/components";
 import {
   GetSuggestionsEndpoint,
   RequestAddressEndpoint,
@@ -46,18 +50,30 @@ export const FillerStep = ({
   handleNewStopAdded,
 }: Props) => {
   const [route, setRoute] = useState<google.maps.DirectionsRoute | null>(null);
+  const [day, setDay] = useState<number>(0);
 
-  const {
-    request: requestSuggestion,
-    payload: suggestions,
-    loading: suggestionsLoading,
-  } = usePost<Trip, Places>(GetSuggestionsEndpoint);
+  // const {
+  //   request: requestSuggestion,
+  //   payload: suggestions,
+  //   loading: suggestionsLoading,
+  // } = usePost<Trip, Places>(GetSuggestionsEndpoint);
 
   const {
     loading: addressLoading,
     payload: addressResult,
     request: addressRequest,
   } = useGet<Addresses>(RequestAddressEndpoint);
+
+  var stopsPerDay = trip.stops.reduce<Record<string, Stop[]>>((acc, curr) => {
+    const day = curr.time.start.toDateString();
+    if (!acc[day]) {
+      acc[day] = [];
+    }
+    acc[day].push(curr);
+    return acc;
+  }, {});
+
+  const stopsForDay = Object.values(stopsPerDay)[day];
 
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
@@ -69,6 +85,7 @@ export const FillerStep = ({
             0.02
           )
         );
+
         if (nearestLocationOnPath) {
           var request: AddressRequest = {
             lat: nearestLocationOnPath.lat(),
@@ -86,19 +103,20 @@ export const FillerStep = ({
     (api: { map: google.maps.Map; ref: Element | null }) => {
       const directionsService = new google.maps.DirectionsService();
       const directionsDisplay = new google.maps.DirectionsRenderer();
+
       directionsDisplay.setMap(api.map);
 
       const directionsRequest: google.maps.DirectionsRequest = {
         origin: {
-          lat: trip.stops[0].location.lat,
-          lng: trip.stops[0].location.lng,
+          lat: stopsForDay[0].location.lat,
+          lng: stopsForDay[0].location.lng,
         },
         destination: {
-          lat: trip.stops[trip.stops.length - 1].location.lat,
-          lng: trip.stops[trip.stops.length - 1].location.lng,
+          lat: stopsForDay[stopsForDay.length - 1].location.lat,
+          lng: stopsForDay[stopsForDay.length - 1].location.lng,
         },
         travelMode: google.maps.TravelMode.DRIVING,
-        waypoints: trip.stops.slice(1, trip.stops.length - 1).map((stop) => {
+        waypoints: trip.stops.slice(1, stopsForDay.length - 1).map((stop) => {
           const stopOver: google.maps.DirectionsWaypoint = {
             location: new google.maps.LatLng(
               stop.location.lat,
@@ -113,23 +131,27 @@ export const FillerStep = ({
 
       directionsService.route(directionsRequest, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK && result) {
-          result.routes[0].summary;
-          console.log(result.routes[0]);
           directionsDisplay.setDirections(result);
           setRoute(result.routes[0]);
         }
       });
     },
-    [trip.stops]
+    [day, trip.stops]
   );
 
   useEffect(() => {
     if (!IsError(addressResult)) {
       const address = addressResult.data.results[0];
 
+      const startDate = stopsForDay[0].time.start;
+      startDate.setMinutes(startDate.getMinutes() + 30);
+
+      const endDate = stopsForDay[0].time.end;
+      endDate.setMinutes(endDate.getMinutes() + 30);
+
       const newStop: Stop = {
         name: `Stop Over at ${address.formattedAddress}`,
-        time: { start: new Date(), end: new Date() },
+        time: { start: startDate, end: endDate },
         location: {
           lat: address.geometry.location.latitude,
           lng: address.geometry.location.longitude,
@@ -141,11 +163,9 @@ export const FillerStep = ({
     }
   }, [addressResult]);
 
-  useEffect(() => {
-    if (trip.stops.length > 1) {
-      requestSuggestion(trip);
-    }
-  }, [trip]);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setDay(newValue);
+  };
 
   const mapMarkers: ReactElement<any, any>[] = React.useMemo(
     () =>
@@ -176,6 +196,7 @@ export const FillerStep = ({
             bootstrapURLKeys={{
               key: apiKey,
             }}
+            key={day}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
             onClick={onClickAddStop}
@@ -185,58 +206,11 @@ export const FillerStep = ({
             {mapMarkers}
           </GoogleMapReact>
         </SSC.Map>
-        <List
-          title="Stops"
-          entries={
-            (route &&
-              route.legs.map((leg, i) => {
-                const entry: Entries = [
-                  {
-                    header: `Stop ${i + 1}`,
-                    content: `${leg.start_address} to ${leg.end_address}`,
-                  },
-                  {
-                    header: "Duration",
-                    content: `${leg?.duration?.text}`,
-                  },
-                  {
-                    header: "Distance",
-                    content: `${leg?.distance?.text}`,
-                  },
-                ];
-
-                return entry;
-              })) ??
-            []
-          }
+        <ScrollableStops
+          day={day}
+          handleDayChange={handleChange}
+          stops={trip.stops}
         />
-        {!IsError(suggestions) && suggestions.data.results.length > 0 && (
-          <List
-            title="Suggestions"
-            entries={suggestions.data.results.map((stop) => {
-              const entry: Entries = [
-                {
-                  header: "Name",
-                  content: stop.name,
-                },
-                {
-                  header: "Address",
-                  content: stop.vicinity,
-                },
-                {
-                  header: "Latitude",
-                  content: stop.geometry.location.latitude.toString(),
-                },
-                {
-                  header: "Longitude",
-                  content: stop.geometry.location.longitude.toString(),
-                },
-              ];
-
-              return entry;
-            })}
-          />
-        )}
       </SSC.MapContainer>
     </SC.Container>
   );

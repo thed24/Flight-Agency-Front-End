@@ -7,8 +7,8 @@ import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { IsError, useGet } from "common/hooks";
 import { getSession, useSession } from "next-auth/react";
-import { ConfirmationList } from "modules/createTrip/components";
 import { Session } from "next-auth";
+import { ScrollableTrips } from "./components";
 
 const Home: NextPage = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -46,18 +46,12 @@ const Home: NextPage = () => {
       {divider}
 
       <SC.Container>
-        {trips &&
-          trips.map((trip, i) => (
-            <div key={i}>
-              <SC.SubTitle>
-                Trip {i + 1}: {trip.destination}
-              </SC.SubTitle>
-              <ConfirmationList key={i} trip={trip} />
-            </div>
-          ))}
+        {trips && <ScrollableTrips trips={trips} />}
 
         <Link href={"createTrip"} passHref>
-          <Button style={{ marginBottom: "25px" }}>Create a new trip</Button>
+          <Button variant="contained" style={{ marginBottom: "25px" }}>
+            Create a new trip
+          </Button>
         </Link>
       </SC.Container>
     </Layout>

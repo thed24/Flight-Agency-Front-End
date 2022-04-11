@@ -14,7 +14,6 @@ export function List({ title, entries }: LayoutProps) {
       style={{
         height: "400px",
         width: "400px",
-        overflowY: "scroll",
         textAlign: "center",
       }}
     >

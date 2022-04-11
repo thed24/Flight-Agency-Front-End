@@ -1,13 +1,15 @@
 import { Typography } from "@mui/material";
 import { Trip } from "common/types";
-import { Container } from "../../../../common/components/common.styles";
+import { Container } from "common/components/common.styles";
 
 interface Props {
   trip: Trip;
 }
 export const ConfirmationList = ({ trip }: Props) => {
   return (
-    <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+    <Container
+      style={{ paddingTop: "20px", paddingBottom: "20px", textAlign: "center" }}
+    >
       {trip.stops.map((stop) => (
         <>
           <Typography variant="h5">{stop.name}</Typography>

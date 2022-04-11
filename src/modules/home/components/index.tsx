@@ -1,0 +1,1 @@
+export { ScrollableTrips } from "./scrollableTrips";

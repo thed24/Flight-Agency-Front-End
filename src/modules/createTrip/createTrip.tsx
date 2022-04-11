@@ -80,11 +80,14 @@ const CreateTrip: NextPage = () => {
     setModalPlace(null);
   }, [modalOpen]);
 
-  const openModalWithPlace = (place: Place) => {
+  const openModalWithPlace = (place: Place, day: number) => {
+    var newDate = new Date();
+    newDate.setDate(newDate.getDate() + day);
+
     setModalOpen(true);
     setModalValue({
-      start: new Date(),
-      end: new Date(),
+      start: newDate,
+      end: newDate,
     });
     setModalPlace(place);
   };
