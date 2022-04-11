@@ -10,18 +10,17 @@ import {
   Stop,
 } from "common/types";
 import { GetServerSideProps, NextPage } from "next";
-import {
-  ConfirmationStep,
-  StopStep,
-  FillerStep,
-  SubmittedStep,
-  DestinationStep,
-  StopModal,
-  StepButton,
-} from "modules/createTrip/components";
+import { StopModal, StepButton } from "modules/createTrip/components";
 import { getSession, useSession } from "next-auth/react";
 import { TextField } from "@mui/material";
 import { Session } from "next-auth";
+import {
+  DestinationStep,
+  StopStep,
+  FillerStep,
+  ConfirmationStep,
+  SubmittedStep,
+} from "modules/createTrip/steps";
 
 const CreateTrip: NextPage = () => {
   const { data: session } = useSession();
@@ -41,7 +40,6 @@ const CreateTrip: NextPage = () => {
     destination: "",
   });
 
-  const [zoom, setZoom] = useState<number>(15);
   const [center, setCenter] = useState<Location>({
     lat: -37.840935,
     lng: 144.946457,
@@ -146,7 +144,6 @@ const CreateTrip: NextPage = () => {
         {step === 1 && (
           <StopStep
             center={center}
-            zoom={zoom}
             trip={trip}
             destination={destination}
             onClickMarker={openModalWithPlace}
@@ -159,7 +156,6 @@ const CreateTrip: NextPage = () => {
           <FillerStep
             handleNewStopAdded={onNewStopAdded}
             center={center}
-            zoom={zoom}
             trip={trip}
             apiKey={apiKey}
           />

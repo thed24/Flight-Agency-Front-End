@@ -1,31 +1,16 @@
-import {
-  Addresses,
-  AddressRequest,
-  Entries,
-  Location,
-  Places,
-  Stop,
-  Trip,
-} from "common/types";
+import { Addresses, AddressRequest, Location, Stop, Trip } from "common/types";
 import GoogleMapReact from "google-map-react";
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
-import { List, SC } from "common/components";
-import {
-  FilledInMarker,
-  ScrollableStops,
-  SSC,
-} from "modules/createTrip/components";
-import {
-  GetSuggestionsEndpoint,
-  RequestAddressEndpoint,
-} from "common/utilities";
-import { IsError, useGet, usePost } from "common/hooks";
+import React, { ReactElement, useEffect, useState } from "react";
+import { SC } from "common/components";
+import { FilledInMarker, ScrollableStops } from "modules/createTrip/components";
+import { RequestAddressEndpoint } from "common/utilities";
+import { IsError, useGet } from "common/hooks";
 import { CircularProgress } from "@mui/material";
+import { SSC } from "modules/createTrip/steps";
 
 interface Props {
   trip: Trip;
   center: Location;
-  zoom: number;
   apiKey: string;
   handleNewStopAdded: (stop: Stop) => void;
 }
@@ -45,12 +30,12 @@ function arePointsNear(
 export const FillerStep = ({
   apiKey,
   center,
-  zoom,
   trip,
   handleNewStopAdded,
 }: Props) => {
   const [route, setRoute] = useState<google.maps.DirectionsRoute | null>(null);
   const [day, setDay] = useState<number>(0);
+  const [zoom, setZoom] = React.useState<number>(15);
 
   // const {
   //   request: requestSuggestion,
@@ -165,6 +150,10 @@ export const FillerStep = ({
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setDay(newValue);
+  };
+
+  const onZoomEnd = (event: any) => {
+    setZoom(event);
   };
 
   const mapMarkers: ReactElement<any, any>[] = React.useMemo(

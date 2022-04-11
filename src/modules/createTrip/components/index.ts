@@ -1,12 +1,6 @@
-export { ConfirmationStepDynamic as ConfirmationStep } from "./confirmationStep/confirmationStep.dynamic";
-export { DestinationStepDynamic as DestinationStep } from "./destinationStep/destinationStep.dynamic";
-export { FillerStepDynamic as FillerStep } from "./fillerStep/fillerStep.dynamic";
-export { StopStepDynamic as StopStep } from "./stopStep/stopStep.dynamic";
-export { SubmittedStepDynamic as SubmittedStep } from "./submittedStep/submittedStep.dynamic";
 export { StopModalDynamic as StopModal } from "./stopModal/stopModal.dynamic";
 export { ConfirmationList } from "./confirmationList/confirmationList";
 export { FilledInMarker } from "./filledInMarker/filledInMarker";
 export { Marker } from "./marker/marker";
 export { StepButton } from "./stepButton/stepButton";
 export { ScrollableStops } from "./scrollableStops/scrollableStops";
-export * as SSC from "./steps.styles";

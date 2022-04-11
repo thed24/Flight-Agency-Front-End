@@ -9,16 +9,16 @@ import {
   LoadCountries,
 } from "common/types";
 import GoogleMapReact from "google-map-react";
-import { List, LoadingOverlay, SC } from "common/components";
+import { LoadingOverlay, SC } from "common/components";
 import React, { useEffect } from "react";
-import { SSC, Marker, ScrollableStops } from "modules/createTrip/components";
+import { Marker, ScrollableStops } from "modules/createTrip/components";
 import { IsError, useGet } from "common/hooks";
 import { RequestLocationDataEndpoint } from "common/utilities";
+import { SSC } from "modules/createTrip/steps";
 
 interface Props {
   trip: Trip;
   center: Location;
-  zoom: number;
   apiKey: string;
   destination: string;
   onClickMarker: (place: Place, day: number) => void;
@@ -27,7 +27,6 @@ interface Props {
 
 export const StopStep = ({
   center,
-  zoom,
   trip,
   onClickMarker,
   onMoveMap,
@@ -36,6 +35,7 @@ export const StopStep = ({
 }: Props) => {
   const [places, setPlaces] = React.useState<Place[]>([]);
   const [category, setCategory] = React.useState<string>("");
+  const [zoom, setZoom] = React.useState<number>(15);
   const [day, setDay] = React.useState(0);
 
   const countries = LoadCountries();
@@ -80,6 +80,10 @@ export const StopStep = ({
     onMoveMap(event.center.lat(), event.center.lng());
   };
 
+  const onZoomEnd = (event: any) => {
+    setZoom(event);
+  };
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setDay(newValue);
   };
@@ -109,6 +113,7 @@ export const StopStep = ({
             center={{ lat: center.lat, lng: center.lng }}
             zoom={zoom}
             onDragEnd={onDragEnd}
+            onZoomAnimationEnd={onZoomEnd}
             yesIWantToUseGoogleMapApiInternals
           >
             {places.map((place, i) => (
