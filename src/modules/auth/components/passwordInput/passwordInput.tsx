@@ -28,7 +28,7 @@ export const PasswordInput = ({ password, onPasswordChange }: Props) => {
   };
 
   return (
-    <FormControl sx={{ m: 1, width: "25ch", gap: "20px" }} variant="outlined">
+    <FormControl variant="outlined">
       <InputLabel>Password</InputLabel>
       <OutlinedInput
         id="outlined-basic"

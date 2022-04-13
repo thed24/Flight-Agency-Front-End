@@ -24,7 +24,7 @@ export default NextAuth({
           });
 
         if (IsError(res)) {
-          throw new Error(res.error);
+          return null;
         }
 
         return res.data;
