@@ -1,4 +1,11 @@
-import { Addresses, AddressRequest, Location, Stop, Trip } from "common/types";
+import {
+  Addresses,
+  AddressRequest,
+  getStopsPerDay,
+  Location,
+  Stop,
+  Trip,
+} from "common/types";
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { SC } from "common/components";
@@ -34,8 +41,8 @@ export const FillerStep = ({
   handleNewStopAdded,
 }: Props) => {
   const [route, setRoute] = useState<google.maps.DirectionsRoute | null>(null);
-  const [day, setDay] = useState<number>(0);
   const [zoom, setZoom] = React.useState<number>(15);
+  const [index, setIndex] = React.useState<number>(0);
 
   // const {
   //   request: requestSuggestion,
@@ -49,16 +56,9 @@ export const FillerStep = ({
     request: addressRequest,
   } = useGet<Addresses>(RequestAddressEndpoint);
 
-  var stopsPerDay = trip.stops.reduce<Record<string, Stop[]>>((acc, curr) => {
-    const day = curr.time.start.toDateString();
-    if (!acc[day]) {
-      acc[day] = [];
-    }
-    acc[day].push(curr);
-    return acc;
-  }, {});
-
-  const stopsForDay = Object.values(stopsPerDay)[day];
+  const dayToStopMap = getStopsPerDay(trip.stops);
+  const days = Object.keys(dayToStopMap);
+  const stopsForDay = Object.values(dayToStopMap)[index];
 
   const onClickAddStop = React.useCallback(
     (event: GoogleMapReact.ClickEventValue) => {
@@ -129,10 +129,10 @@ export const FillerStep = ({
       const address = addressResult.data.results[0];
 
       const startDate = stopsForDay[0].time.start;
-      startDate.setMinutes(startDate.getMinutes() + 30);
+      startDate.setDate(startDate.getDate() - 1);
 
       const endDate = stopsForDay[0].time.end;
-      endDate.setMinutes(endDate.getMinutes() + 30);
+      endDate.setDate(endDate.getDate() - 1);
 
       const newStop: Stop = {
         name: `Stop Over at ${address.formattedAddress}`,
@@ -147,14 +147,6 @@ export const FillerStep = ({
       handleNewStopAdded(newStop);
     }
   }, [addressResult]);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setDay(newValue);
-  };
-
-  const onZoomEnd = (event: any) => {
-    setZoom(event);
-  };
 
   const mapMarkers: ReactElement<any, any>[] = React.useMemo(
     () =>
@@ -185,7 +177,7 @@ export const FillerStep = ({
             bootstrapURLKeys={{
               key: apiKey,
             }}
-            key={day}
+            key={index}
             defaultCenter={{ lat: center.lat, lng: center.lng }}
             defaultZoom={zoom}
             onClick={onClickAddStop}
@@ -195,11 +187,14 @@ export const FillerStep = ({
             {mapMarkers}
           </GoogleMapReact>
         </SSC.Map>
-        <ScrollableStops
-          day={day}
-          handleDayChange={handleChange}
-          stops={trip.stops}
-        />
+
+        {trip.stops.length > 0 && (
+          <ScrollableStops
+            setIndex={setIndex}
+            index={index}
+            dayToStopsMap={dayToStopMap}
+          />
+        )}
       </SSC.MapContainer>
     </SC.Container>
   );

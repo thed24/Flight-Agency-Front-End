@@ -7,9 +7,10 @@ import {
   Places,
   PlacesRequest,
   LoadCountries,
+  getStopsPerDay,
 } from "common/types";
 import GoogleMapReact from "google-map-react";
-import { LoadingOverlay, SC } from "common/components";
+import { SC } from "common/components";
 import React, { useEffect } from "react";
 import { Marker, ScrollableStops } from "modules/createTrip/components";
 import { IsError, useGet } from "common/hooks";
@@ -36,7 +37,10 @@ export const StopStep = ({
   const [places, setPlaces] = React.useState<Place[]>([]);
   const [category, setCategory] = React.useState<string>("");
   const [zoom, setZoom] = React.useState<number>(15);
-  const [day, setDay] = React.useState(0);
+  const [index, setIndex] = React.useState<number>(0);
+
+  const dayToStopMap = getStopsPerDay(trip.stops);
+  const days = Object.keys(dayToStopMap);
 
   const countries = LoadCountries();
 
@@ -84,23 +88,15 @@ export const StopStep = ({
     setZoom(event);
   };
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setDay(newValue);
-  };
-
   const handleOnClickMarker =
     (place: Place) => (e: React.MouseEvent<Element, MouseEvent>) => {
       e.preventDefault();
-      onClickMarker(place, day);
+      onClickMarker(place, days.length > 0 ? parseInt(days[index]) : 1);
     };
 
   const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
     setCategory(e.target.value);
   };
-
-  if (placesLoading) {
-    return <LoadingOverlay loading={true} />;
-  }
 
   return (
     <SC.Container>
@@ -128,11 +124,13 @@ export const StopStep = ({
           </GoogleMapReact>
         </SSC.Map>
 
-        <ScrollableStops
-          day={day}
-          handleDayChange={handleChange}
-          stops={trip.stops}
-        />
+        {trip.stops.length > 0 && (
+          <ScrollableStops
+            setIndex={setIndex}
+            index={index}
+            dayToStopsMap={dayToStopMap}
+          />
+        )}
       </SSC.MapContainer>
 
       <Typography gutterBottom variant="h6">

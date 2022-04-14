@@ -15,6 +15,8 @@ export type {
   Addresses,
 } from "./models";
 
+export { getStopsPerDay } from "./models";
+
 export type {
   RegisterRequest,
   LoginRequest,

@@ -25,6 +25,21 @@ export interface Stop {
   address: string;
 }
 
+export const getStopsPerDay = (stops: Stop[]): Record<string, Stop[]> => {
+  return stops.reduce<Record<string, Stop[]>>((acc, curr) => {
+    var baseLine = stops[0].time.start;
+    var diff = Math.abs(baseLine.getTime() - curr.time.start.getTime());
+    const day = Math.ceil(diff / (1000 * 3600 * 24)) + 1;
+
+    if (!acc[day]) {
+      acc[day] = [];
+    }
+
+    acc[day].push(curr);
+    return acc;
+  }, {});
+};
+
 export interface Country {
   name: string;
   code: string;

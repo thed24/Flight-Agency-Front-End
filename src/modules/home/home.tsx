@@ -46,10 +46,10 @@ const Home: NextPage = () => {
       {divider}
 
       <SC.Container>
-        {trips && <ScrollableTrips trips={trips} />}
+        {trips.length > 0 && <ScrollableTrips trips={trips} />}
 
         <Link href={"createTrip"} passHref>
-          <Button variant="contained" style={{ marginBottom: "25px" }}>
+          <Button variant="contained" style={{ margin: "25px" }}>
             Create a new trip
           </Button>
         </Link>

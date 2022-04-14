@@ -3,12 +3,11 @@ import * as React from "react";
 import { Stop } from "common/types";
 import { Box, Tabs, Tab } from "@mui/material";
 import { List, TabPanel } from "common/components";
-import { useMemo } from "react";
 
 export interface Props {
-  stops: Stop[];
-  day: number;
-  handleDayChange: (event: React.SyntheticEvent, newValue: number) => void;
+  dayToStopsMap: Record<string, Stop[]>;
+  index: number;
+  setIndex: (index: number) => void;
 }
 
 function propGenerator(index: number) {
@@ -18,36 +17,32 @@ function propGenerator(index: number) {
   };
 }
 
-export function ScrollableStops({ stops, day, handleDayChange }: Props) {
-  var stopsPerDay = useMemo(() => {
-    return stops.reduce<Record<string, Stop[]>>((acc, curr) => {
-      const day = curr.time.start.getUTCDate();
-      if (!acc[day]) {
-        acc[day] = [];
-      }
-      acc[day].push(curr);
-      return acc;
-    }, {});
-  }, [stops]);
+export function ScrollableStops({ dayToStopsMap, index, setIndex }: Props) {
+  const handleIndexChange = (
+    event: React.ChangeEvent<{}>,
+    newValue: number
+  ) => {
+    setIndex(newValue);
+  };
 
   return (
     <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: "background.paper" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          value={day}
-          onChange={handleDayChange}
+          value={index}
+          onChange={handleIndexChange}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile
           aria-label="scrollable trip view"
         >
-          {Object.entries(stopsPerDay).map(([day, trips], i) => (
-            <Tab key={i} label={`Day ${i + 1}`} {...propGenerator(i)} />
+          {Object.entries(dayToStopsMap).map(([day, stopsForDay], i) => (
+            <Tab key={i} label={`Day ${day}`} {...propGenerator(i)} />
           ))}
         </Tabs>
       </Box>
 
-      {Object.entries(stopsPerDay).map(([currentDay, stopsForDay], i) => {
+      {Object.entries(dayToStopsMap).map(([day, stopsForDay], i) => {
         const entries = stopsForDay.map((stop) => {
           return [
             {
@@ -58,8 +53,19 @@ export function ScrollableStops({ stops, day, handleDayChange }: Props) {
         });
 
         return (
-          <TabPanel key={i} value={day} index={i}>
-            <List title={`Stops`} entries={entries} />
+          <TabPanel key={i} value={index} index={i}>
+            <List
+              title={`Stops for ${
+                stopsForDay[0].time.start
+                  .toLocaleTimeString([], {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  })
+                  .split(",")[0]
+              }`}
+              entries={entries}
+            />
           </TabPanel>
         );
       })}
