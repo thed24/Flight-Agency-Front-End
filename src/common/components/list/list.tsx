@@ -30,7 +30,7 @@ export function List({ title, entries }: LayoutProps) {
               key={subEntryIndex}
             >
               <Box fontWeight="fontWeightMedium" display="inline">
-                {subEntry.header}:
+                {subEntry.header}:{" "}
               </Box>
               {subEntry.content}
             </Typography>

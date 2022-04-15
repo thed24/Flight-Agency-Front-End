@@ -76,12 +76,12 @@ const CreateTrip: NextPage = () => {
 
   const openModalWithPlace = (place: Place, day: number) => {
     var startDate = new Date();
-    startDate.setDate(startDate.getDate() + day - 1);
-    startDate.setHours(0, 0, 0, 0);
+    startDate.setDate(startDate.getDate());
+    startDate.setHours(6, 0, 0, 0);
 
     var endDate = new Date();
-    endDate.setDate(endDate.getDate() + day - 1);
-    endDate.setHours(23, 59, 59, 999);
+    endDate.setDate(endDate.getDate());
+    endDate.setHours(7, 0, 0, 0);
 
     setModalValue({
       start: startDate,

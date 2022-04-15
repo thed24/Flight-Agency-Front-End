@@ -1,6 +1,7 @@
 import {
   Addresses,
   AddressRequest,
+  Entries,
   getStopsPerDay,
   Location,
   Stop,
@@ -9,11 +10,16 @@ import {
 import GoogleMapReact from "google-map-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { SC } from "common/components";
-import { FilledInMarker, ScrollableStops } from "modules/createTrip/components";
+import {
+  FilledInMarker,
+  Map,
+  ScrollableStops,
+} from "modules/createTrip/components";
 import { RequestAddressEndpoint } from "common/utilities";
 import { IsError, useGet } from "common/hooks";
 import { CircularProgress } from "@mui/material";
 import { SSC } from "modules/createTrip/steps";
+import { ScrollableLegs } from "modules/createTrip/components/scrollableLegs/scrollableLegs";
 
 interface Props {
   trip: Trip;
@@ -121,7 +127,7 @@ export const FillerStep = ({
         }
       });
     },
-    [stopsForDay, trip.stops]
+    [stopsForDay]
   );
 
   useEffect(() => {
@@ -161,6 +167,28 @@ export const FillerStep = ({
     [trip.stops]
   );
 
+  const entries =
+    (route &&
+      route.legs.map((leg, i) => {
+        const entry: Entries = [
+          {
+            header: `Stop ${i + 1}`,
+            content: `${leg.start_address} to ${leg.end_address}`,
+          },
+          {
+            header: "Duration",
+            content: `${leg?.duration?.text}`,
+          },
+          {
+            header: "Distance",
+            content: `${leg?.distance?.text}`,
+          },
+        ];
+
+        return entry;
+      })) ??
+    [];
+
   if (addressLoading) {
     return (
       <SC.Container>
@@ -172,27 +200,23 @@ export const FillerStep = ({
   return (
     <SC.Container>
       <SSC.MapContainer>
-        <SSC.Map>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: apiKey,
-            }}
-            key={index}
-            defaultCenter={{ lat: center.lat, lng: center.lng }}
-            defaultZoom={zoom}
-            onClick={onClickAddStop}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={handleGoogleMapApi}
-          >
-            {mapMarkers}
-          </GoogleMapReact>
-        </SSC.Map>
+        <Map
+          key={stopsForDay.length}
+          center={center}
+          zoom={zoom}
+          onClick={onClickAddStop}
+          onLoad={handleGoogleMapApi}
+          apiKey={apiKey}
+        >
+          {mapMarkers}
+        </Map>
 
         {trip.stops.length > 0 && (
           <ScrollableStops
             setIndex={setIndex}
             index={index}
             dayToStopsMap={dayToStopMap}
+            entries={entries}
           />
         )}
       </SSC.MapContainer>

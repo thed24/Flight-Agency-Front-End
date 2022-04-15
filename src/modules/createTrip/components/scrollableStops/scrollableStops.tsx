@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Stop } from "common/types";
+import { Entries, Stop } from "common/types";
 import { Box, Tabs, Tab } from "@mui/material";
 import { List, TabPanel } from "common/components";
 
@@ -8,6 +8,7 @@ export interface Props {
   dayToStopsMap: Record<string, Stop[]>;
   index: number;
   setIndex: (index: number) => void;
+  entries: Entries[];
 }
 
 function propGenerator(index: number) {
@@ -17,13 +18,20 @@ function propGenerator(index: number) {
   };
 }
 
-export function ScrollableStops({ dayToStopsMap, index, setIndex }: Props) {
+export function ScrollableStops({
+  dayToStopsMap,
+  index,
+  setIndex,
+  entries,
+}: Props) {
   const handleIndexChange = (
     event: React.ChangeEvent<{}>,
     newValue: number
   ) => {
     setIndex(newValue);
   };
+
+  const stopsForCurrentDay = Object.values(dayToStopsMap)[index];
 
   return (
     <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: "background.paper" }}>
@@ -37,38 +45,29 @@ export function ScrollableStops({ dayToStopsMap, index, setIndex }: Props) {
           aria-label="scrollable trip view"
         >
           {Object.entries(dayToStopsMap).map(([day, stopsForDay], i) => (
-            <Tab key={i} label={`Day ${day}`} {...propGenerator(i)} />
+            <Tab
+              key={i}
+              label={`Day ${parseInt(day) + 1}`}
+              {...propGenerator(i)}
+            />
           ))}
         </Tabs>
       </Box>
 
-      {Object.entries(dayToStopsMap).map(([day, stopsForDay], i) => {
-        const entries = stopsForDay.map((stop) => {
-          return [
-            {
-              header: `${stop.name}`,
-              content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
-            },
-          ];
-        });
-
-        return (
-          <TabPanel key={i} value={index} index={i}>
-            <List
-              title={`Stops for ${
-                stopsForDay[0].time.start
-                  .toLocaleTimeString([], {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  })
-                  .split(",")[0]
-              }`}
-              entries={entries}
-            />
-          </TabPanel>
-        );
-      })}
+      <TabPanel key={index} value={index} index={index}>
+        <List
+          title={`Stops for ${
+            stopsForCurrentDay[0].time.start
+              .toLocaleTimeString([], {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              })
+              .split(",")[0]
+          }`}
+          entries={entries}
+        />
+      </TabPanel>
     </Box>
   );
 }

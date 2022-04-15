@@ -11,8 +11,8 @@ import {
 } from "common/types";
 import GoogleMapReact from "google-map-react";
 import { SC } from "common/components";
-import React, { useEffect } from "react";
-import { Marker, ScrollableStops } from "modules/createTrip/components";
+import React, { useEffect, useMemo } from "react";
+import { Map, Marker, ScrollableStops } from "modules/createTrip/components";
 import { IsError, useGet } from "common/hooks";
 import { RequestLocationDataEndpoint } from "common/utilities";
 import { SSC } from "modules/createTrip/steps";
@@ -41,6 +41,7 @@ export const StopStep = ({
 
   const dayToStopMap = getStopsPerDay(trip.stops);
   const days = Object.keys(dayToStopMap);
+  const stopsForDay = Object.values(dayToStopMap)[index];
 
   const countries = LoadCountries();
 
@@ -88,47 +89,61 @@ export const StopStep = ({
     setZoom(event);
   };
 
-  const handleOnClickMarker =
-    (place: Place) => (e: React.MouseEvent<Element, MouseEvent>) => {
-      e.preventDefault();
-      onClickMarker(place, days.length > 0 ? parseInt(days[index]) : 1);
-    };
-
   const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
     setCategory(e.target.value);
   };
 
+  const markers = useMemo(() => {
+    const handleOnClickMarker =
+      (place: Place) => (e: React.MouseEvent<Element, MouseEvent>) => {
+        e.preventDefault();
+        onClickMarker(place, days.length > 0 ? parseInt(days[index]) : 1);
+      };
+
+    return places.map((place, i) => (
+      <Marker
+        key={i}
+        onClick={handleOnClickMarker(place)}
+        place={place}
+        lat={place.geometry.location.latitude}
+        lng={place.geometry.location.longitude}
+      />
+    ));
+  }, [days, index, onClickMarker, places]);
+
+  const entries = useMemo(() => {
+    return stopsForDay && stopsForDay.length > 0
+      ? stopsForDay.map((stop) => {
+          return [
+            {
+              header: `${stop.name}`,
+              content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
+            },
+          ];
+        })
+      : [];
+  }, [stopsForDay]);
+
   return (
     <SC.Container>
       <SSC.MapContainer>
-        <SSC.Map>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: apiKey,
-            }}
-            center={{ lat: center.lat, lng: center.lng }}
-            zoom={zoom}
-            onDragEnd={onDragEnd}
-            onZoomAnimationEnd={onZoomEnd}
-            yesIWantToUseGoogleMapApiInternals
-          >
-            {places.map((place, i) => (
-              <Marker
-                key={i}
-                onClick={handleOnClickMarker(place)}
-                place={place}
-                lat={place.geometry.location.latitude}
-                lng={place.geometry.location.longitude}
-              />
-            ))}
-          </GoogleMapReact>
-        </SSC.Map>
+        <Map
+          key="map"
+          center={center}
+          zoom={zoom}
+          onDrag={onDragEnd}
+          onZoom={onZoomEnd}
+          apiKey={apiKey}
+        >
+          {markers}
+        </Map>
 
         {trip.stops.length > 0 && (
           <ScrollableStops
             setIndex={setIndex}
             index={index}
             dayToStopsMap={dayToStopMap}
+            entries={entries}
           />
         )}
       </SSC.MapContainer>
