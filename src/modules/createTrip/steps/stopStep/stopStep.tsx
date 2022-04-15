@@ -4,12 +4,10 @@ import {
   Location,
   Trip,
   Place,
-  Places,
   PlacesRequest,
   LoadCountries,
   getStopsPerDay,
 } from "common/types";
-import GoogleMapReact from "google-map-react";
 import { SC } from "common/components";
 import React, { useEffect, useMemo } from "react";
 import { Map, Marker, ScrollableStops } from "modules/createTrip/components";
@@ -49,7 +47,7 @@ export const StopStep = ({
     loading: placesLoading,
     payload: placesResult,
     request: placesRequest,
-  } = useGet<Places>(RequestLocationDataEndpoint);
+  } = useGet<Place[]>(RequestLocationDataEndpoint);
 
   useEffect(() => {
     setCategory("Food");
@@ -65,10 +63,10 @@ export const StopStep = ({
 
   useEffect(() => {
     var request: PlacesRequest = {
-      lat: center.lat,
-      lng: center.lng,
-      zoom: zoom,
-      radius: 2000,
+      lat: center.lat.toString(),
+      lng: center.lng.toString(),
+      zoom: zoom.toString(),
+      radius: "2000",
       keyword: `'${category}'`,
     };
 
@@ -77,7 +75,7 @@ export const StopStep = ({
 
   useEffect(() => {
     if (!IsError(placesResult)) {
-      setPlaces(placesResult.data.results);
+      setPlaces(placesResult.data);
     }
   }, [placesResult]);
 

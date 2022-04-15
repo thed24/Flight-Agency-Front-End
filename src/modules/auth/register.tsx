@@ -10,9 +10,9 @@ import * as SSC from "./components/form.styles";
 import { Controller, useForm } from "react-hook-form";
 
 type FormData = {
-  name: string;
-  email: string;
-  password: string;
+  Name: string;
+  Email: string;
+  Password: string;
 };
 
 const Register: NextPage = () => {
@@ -42,8 +42,8 @@ const Register: NextPage = () => {
     }
   }, [registerResult]);
 
-  const OnRegister = async ({ name, email, password }: FormData) =>
-    requestRegister({ name, email, password });
+  const OnRegister = async ({ Name, Email, Password }: FormData) =>
+    requestRegister({ Name, Email, Password });
 
   const OnCloseAlert = () => setAlert(null);
 
@@ -54,15 +54,15 @@ const Register: NextPage = () => {
 
       <SSC.FormContainer onSubmit={handleSubmit(OnRegister)}>
         <Controller
-          name="name"
+          name="Name"
           render={({ field }) => (
             <TextField
-              id="name"
-              helperText={errors.name ? errors.name.message : null}
-              label="name"
+              id="Name"
+              helperText={errors.Email ? errors.Email.message : null}
+              label="Name"
               value={field.value}
               onChange={field.onChange}
-              error={errors.name ? true : false}
+              error={errors.Email ? true : false}
             />
           )}
           control={control}
@@ -72,15 +72,15 @@ const Register: NextPage = () => {
           }}
         />
         <Controller
-          name="email"
+          name="Email"
           render={({ field }) => (
             <TextField
-              id="email"
-              helperText={errors.email ? errors.email.message : null}
-              label="email"
+              id="Email"
+              helperText={errors.Email ? errors.Email.message : null}
+              label="Email"
               value={field.value}
               onChange={field.onChange}
-              error={errors.email ? true : false}
+              error={errors.Email ? true : false}
             />
           )}
           control={control}
@@ -94,7 +94,7 @@ const Register: NextPage = () => {
           }}
         />
         <Controller
-          name="password"
+          name="Password"
           render={({ field }) => (
             <PasswordInput
               password={field.value}

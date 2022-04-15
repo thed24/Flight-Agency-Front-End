@@ -8,8 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import * as SSC from "./components/form.styles";
 
 type FormData = {
-  email: string;
-  password: string;
+  Email: string;
+  Password: string;
 };
 
 const Login: NextPage = () => {
@@ -22,12 +22,12 @@ const Login: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertDetails | null>(null);
 
-  const OnLogin = async ({ email, password }: FormData) => {
+  const OnLogin = async ({ Email, Password }: FormData) => {
     setLoading(true);
     const response = await signIn<"credentials">("credentials", {
       redirect: false,
-      email,
-      password,
+      Email,
+      Password,
       callbackUrl: `${window.location.origin}`,
     });
 
@@ -50,15 +50,15 @@ const Login: NextPage = () => {
 
       <SSC.FormContainer onSubmit={handleSubmit(OnLogin)}>
         <Controller
-          name="email"
+          name="Email"
           render={({ field }) => (
             <TextField
-              id="email"
-              helperText={errors.email ? errors.email.message : null}
-              label="email"
+              id="Email"
+              helperText={errors.Email ? errors.Email.message : null}
+              label="Email"
               value={field.value}
               onChange={field.onChange}
-              error={errors.email ? true : false}
+              error={errors.Email ? true : false}
             />
           )}
           control={control}
@@ -72,7 +72,7 @@ const Login: NextPage = () => {
           }}
         />
         <Controller
-          name="password"
+          name="Password"
           render={({ field }) => (
             <PasswordInput
               password={field.value}

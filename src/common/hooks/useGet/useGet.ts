@@ -2,9 +2,7 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import { Result, GetResponse } from "common/hooks";
 import { useState } from "react";
 
-const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:8080",
-});
+const httpClient = axios.create();
 
 export function useGet<T>(url: string): GetResponse<T> {
   const [loading, setLoading] = useState(false);

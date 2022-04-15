@@ -19,7 +19,6 @@ import { RequestAddressEndpoint } from "common/utilities";
 import { IsError, useGet } from "common/hooks";
 import { CircularProgress } from "@mui/material";
 import { SSC } from "modules/createTrip/steps";
-import { ScrollableLegs } from "modules/createTrip/components/scrollableLegs/scrollableLegs";
 
 interface Props {
   trip: Trip;
@@ -79,8 +78,8 @@ export const FillerStep = ({
 
         if (nearestLocationOnPath) {
           var request: AddressRequest = {
-            lat: nearestLocationOnPath.lat(),
-            lng: nearestLocationOnPath.lng(),
+            lat: nearestLocationOnPath.lat().toString(),
+            lng: nearestLocationOnPath.lng().toString(),
           };
 
           addressRequest(request);
@@ -201,7 +200,7 @@ export const FillerStep = ({
     <SC.Container>
       <SSC.MapContainer>
         <Map
-          key={stopsForDay.length}
+          key={stopsForDay.length.toString()}
           center={center}
           zoom={zoom}
           onClick={onClickAddStop}
