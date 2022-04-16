@@ -1,7 +1,6 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { Stop } from "common/types";
-import { InfoBox } from "@react-google-maps/api";
 
 export type LayoutProps = {
   key: number;
@@ -14,12 +13,10 @@ export function FilledInMarker({ lat, lng, stop }: LayoutProps) {
   const text = stop.name;
 
   return (
-    <InfoBox position={{ lat, lng }}>
-      <Card>
-        <CardContent>
-          <Typography color={"secondary"}> {text} </Typography>
-        </CardContent>
-      </Card>
-    </InfoBox>
+    <Card>
+      <CardContent>
+        <Typography color={"secondary"}> {text} </Typography>
+      </CardContent>
+    </Card>
   );
 }
