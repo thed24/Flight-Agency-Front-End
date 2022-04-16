@@ -79,12 +79,12 @@ export const StopStep = ({
     }
   }, [placesResult]);
 
-  const onDragEnd = (event: any) => {
-    onMoveMap(event.center.lat(), event.center.lng());
+  const onDragEnd = (lat: number, lng: number) => {
+    onMoveMap(lat, lng);
   };
 
-  const onZoomEnd = (event: any) => {
-    setZoom(event);
+  const onZoomEnd = (zoom: number) => {
+    setZoom(zoom);
   };
 
   const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {

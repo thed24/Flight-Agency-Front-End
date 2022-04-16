@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Flight-Agency Frontend / BFF
+
+This frontend is written in Typescript, using Next.js. The directory structure is modulated, so that common utilities and components live at the top level, whereas page specific components live in their own modules. This allows us to reuse code where it makes sense, whilst keeping things together where they're likely to change for the same reason.
+
+This project utilizes some of the latest features from Next.js, including aspects of their Rust compiler. For example, we use SWC to modularize imports to avoid bundling the entirety of certain packages into our pages. Components also leverage dynamic imports to have them lazy loaded until required.
+
+Due to the fact that Next.js exposes both regular and API routes, the API side was leveraged as a `backend for frontend` or `BFF`. It handles authorization by using JWT tokens within the NextAuth framework, and makes calls to both the backend service and Googles standalone APIs such as Places, and caches responses for the frontend.
 
 ## Getting Started
 
@@ -11,24 +17,3 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

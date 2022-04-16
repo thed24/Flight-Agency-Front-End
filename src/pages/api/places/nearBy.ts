@@ -27,8 +27,9 @@ export default async function handler(
       return;
     }
 
-    if (Cache.get(`${lat}-${lng}-${radius}-${keyword}`)) {
-      res.status(200).json(Cache.get(`${lat}-${lng}-${radius}-${keyword}`));
+    var cachedPlaces = Cache.get<Place[]>(`${lat}-${lng}-${radius}-${keyword}`);
+    if (cachedPlaces) {
+      res.status(200).json(cachedPlaces);
       return;
     }
 
@@ -39,8 +40,8 @@ export default async function handler(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&keyword=${keyword}&key=${key}`
       )
       .then((result) => {
-        Cache.set(`${lat}-${lng}-${radius}-${keyword}`, result.data);
-        res.status(200).json(result.data);
+        Cache.set(`${lat}-${lng}-${radius}-${keyword}`, result.data.results);
+        res.status(200).json(result.data.results);
       })
       .catch((error) => {
         res.status(400).json(error.response.data);

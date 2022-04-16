@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler } from "react";
 import { Place } from "common/types";
+import { InfoBox } from "@react-google-maps/api";
 
 export type LayoutProps = {
   lat: number;
@@ -9,26 +10,20 @@ export type LayoutProps = {
   onClick: MouseEventHandler;
 };
 
-export function Marker({ place, onClick }: LayoutProps) {
-  const [raised, setRaised] = useState<boolean>(false);
-  const toggleRaised = () => setRaised(!raised);
-
+export function Marker({ lat, lng, place, onClick }: LayoutProps) {
   const text = place.name;
   const address = place.vicinity;
   const rating = place.rating;
 
   return (
-    <Card
-      onMouseOut={toggleRaised}
-      raised={raised}
-      sx={{ minWidth: 100 }}
-      onClick={onClick}
-    >
-      <CardContent>
-        <Typography color={"secondary"}> {text} </Typography>
-        <Typography color={"secondary"}> {address} </Typography>
-        <Typography color={"secondary"}> {rating} </Typography>
-      </CardContent>
-    </Card>
+    <InfoBox position={{ lat, lng }}>
+      <Card onClick={onClick}>
+        <CardContent>
+          <Typography color={"secondary"}> {text} </Typography>
+          <Typography color={"secondary"}> {address} </Typography>
+          <Typography color={"secondary"}> {rating} </Typography>
+        </CardContent>
+      </Card>
+    </InfoBox>
   );
 }

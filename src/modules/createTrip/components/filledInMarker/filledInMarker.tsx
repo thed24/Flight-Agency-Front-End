@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Stop } from "common/types";
+import { InfoBox } from "@react-google-maps/api";
 
 export type LayoutProps = {
   key: number;
@@ -9,17 +10,16 @@ export type LayoutProps = {
   stop: Stop;
 };
 
-export function FilledInMarker({ stop }: LayoutProps) {
-  const [raised, setRaised] = useState<boolean>(false);
-  const toggleRaised = () => setRaised(!raised);
-
+export function FilledInMarker({ lat, lng, stop }: LayoutProps) {
   const text = stop.name;
 
   return (
-    <Card onMouseOut={toggleRaised} raised={raised} sx={{ minWidth: 100 }}>
-      <CardContent>
-        <Typography color={"secondary"}> {text} </Typography>
-      </CardContent>
-    </Card>
+    <InfoBox position={{ lat, lng }}>
+      <Card>
+        <CardContent>
+          <Typography color={"secondary"}> {text} </Typography>
+        </CardContent>
+      </Card>
+    </InfoBox>
   );
 }

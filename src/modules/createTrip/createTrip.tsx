@@ -158,6 +158,7 @@ const CreateTrip: NextPage = () => {
             center={center}
             trip={trip}
             apiKey={apiKey}
+            onMoveMap={onMoveMap}
           />
         )}
 

@@ -1,16 +1,19 @@
-import GoogleMapReact from "google-map-react";
-import { memo } from "react";
-import * as SSC from "./map.style";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { memo, useMemo, useRef } from "react";
 
+const mapContainerStyle = {
+  height: "600px",
+  width: "800px",
+};
 interface Props {
   center: { lat: number; lng: number };
   zoom: number;
   children: any;
   apiKey: string;
   key: string;
+  onDrag: (lat: number, lng: number) => void;
+  onZoom: (zoom: number) => void;
   onClick?: (any: any) => void;
-  onDrag?: (any: any) => void;
-  onZoom?: (any: any) => void;
   onLoad?: (any: any) => void;
 }
 
@@ -25,24 +28,72 @@ const MapInternal = ({
   onZoom,
   onLoad,
 }: Props) => {
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
+  });
+
+  const mapRef = useRef<google.maps.Map | null>(null);
+
+  const centerOptions = useMemo(() => {
+    return {
+      lat: center.lat,
+      lng: center.lng,
+    };
+  }, [center]);
+
+  const zoomOptions = useMemo(() => zoom, [zoom]);
+
+  if (loadError) {
+    return <div>Error loading maps</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>Loading maps...</div>;
+  }
+
+  const handleOnLoad = (map: google.maps.Map) => {
+    mapRef.current = map;
+    onLoad && onLoad(map);
+  };
+
+  const handleOnIdle = () => {
+    if (mapRef && mapRef !== null && mapRef.current !== null) {
+      const currCenter = {
+        lat: mapRef.current.getCenter()?.lat(),
+        lng: mapRef.current.getCenter()?.lng(),
+      };
+
+      const currZoom = mapRef.current?.getZoom();
+
+      if (
+        currCenter.lat &&
+        currCenter.lng &&
+        (currCenter.lat !== centerOptions.lat ||
+          currCenter.lng !== centerOptions.lng)
+      ) {
+        console.log("center", currCenter, centerOptions);
+        onDrag && onDrag(currCenter.lat, currCenter.lng);
+      }
+
+      if (currZoom && currZoom !== zoomOptions) {
+        console.log("zoom", currZoom, zoomOptions);
+        onZoom && onZoom(currZoom);
+      }
+    }
+  };
+
   return (
-    <SSC.MapBox>
-      <GoogleMapReact
-        key={key}
-        bootstrapURLKeys={{
-          key: apiKey,
-        }}
-        center={{ lat: center.lat, lng: center.lng }}
-        zoom={zoom}
-        onClick={onClick}
-        onGoogleApiLoaded={onLoad}
-        onDragEnd={onDrag}
-        onZoomAnimationEnd={onZoom}
-        yesIWantToUseGoogleMapApiInternals
-      >
-        {children}
-      </GoogleMapReact>
-    </SSC.MapBox>
+    <GoogleMap
+      key={key}
+      mapContainerStyle={mapContainerStyle}
+      center={centerOptions}
+      zoom={zoomOptions}
+      onClick={onClick}
+      onLoad={handleOnLoad}
+      onIdle={handleOnIdle}
+    >
+      {children}
+    </GoogleMap>
   );
 };
 

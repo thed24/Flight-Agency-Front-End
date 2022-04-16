@@ -7,8 +7,8 @@ COPY . .
 ARG URL
 RUN echo "NEXT_PUBLIC_URL=${URL}" > .env
 
-RUN npm ci
-RUN npm run build
+RUN yarn install
+RUN yarn run build
 
 ENV NODE_ENV production
 
