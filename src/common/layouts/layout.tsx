@@ -1,29 +1,36 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 
-import { useSession } from "next-auth/react";
-import { AuthMessage, LoadingOverlay, NavBar } from "common/components";
+import { useSession } from 'next-auth/react';
+import { AuthMessage, LoadingOverlay, NavBar } from 'common/components';
+import Head from 'next/head';
 
 export type LayoutProps = {
-  children: React.ReactNode;
-  loading?: boolean;
+    children: React.ReactNode;
+    loading?: boolean;
+    title?: string;
 };
 
-export function Layout({ children, loading }: LayoutProps) {
-  const { data: session, status } = useSession();
+export function Layout({ title, children, loading }: LayoutProps) {
+    const { data: session, status } = useSession();
 
-  const isLoading = useMemo(
-    () => loading || status === "loading",
-    [loading, status]
-  );
+    const isLoading = useMemo(
+        () => loading || status === 'loading',
+        [loading, status]
+    );
 
-  if (isLoading) {
-    return <LoadingOverlay loading={isLoading} />;
-  }
+    if (isLoading) {
+        return <LoadingOverlay loading={isLoading} />;
+    }
 
-  return (
-    <>
-      <NavBar />
-      {session ? children : <AuthMessage />}
-    </>
-  );
+    return (
+        <>
+            <Head>
+                <title> {title}</title>
+            </Head>
+            <main>
+                <NavBar />
+                {session ? children : <AuthMessage />}
+            </main>
+        </>
+    );
 }

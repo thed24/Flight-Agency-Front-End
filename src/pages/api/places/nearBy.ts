@@ -1,50 +1,60 @@
-import axios from "axios";
-import { readApiKey } from "common/server";
-import { Place } from "common/types";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Cache } from "common/server/cache";
+import axios from 'axios';
+import { readApiKey, RequiresAuth } from 'common/server';
+import { Place } from 'common/types';
+import { Cache } from 'common/server/cache';
+import {
+    BadRequestException,
+    createHandler,
+    Get,
+    Query,
+} from '@storyofams/next-api-decorators';
 
 const client = axios.create();
 
 type IntermediatePlacesResponse = {
-  results: Place[];
-  status: string;
+    results: Place[];
+    status: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "GET") {
-    const lat = req.query["lat"] as string;
-    const lng = req.query["lng"] as string;
-    const radius = parseInt(req.query["radius"] as string);
-    const keyword = req.query["keyword"] as string;
-    const zoom = parseInt(req.query["zoom"] as string);
+class nearByHandler {
+    @Get()
+    @RequiresAuth()
+    async login(
+        @Query('lat') lat: string,
+        @Query('lng') lng: string,
+        @Query('radius') radius: string,
+        @Query('zoom') zoom: string,
+        @Query('keyword') keyword: string
+    ) {
+        if (!lat || !lng || !zoom || !radius || !keyword) {
+            throw new BadRequestException();
+        }
 
-    if (!lat || !lng || !zoom || !radius || !keyword) {
-      res.status(400).json("Missing required query parameters.");
-      return;
+        var cachedPlaces = Cache.get<Place[]>(
+            `${lat}-${lng}-${radius}-${keyword}`
+        );
+
+        if (cachedPlaces) {
+            return cachedPlaces;
+        }
+
+        const key = await readApiKey();
+
+        client
+            .post<IntermediatePlacesResponse>(
+                `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&keyword=${keyword}&key=${key}`
+            )
+            .then((result) => {
+                Cache.set(
+                    `${lat}-${lng}-${radius}-${keyword}`,
+                    result.data.results
+                );
+                return result.data.results;
+            })
+            .catch((error) => {
+                throw new BadRequestException(error.response.data);
+            });
     }
-
-    var cachedPlaces = Cache.get<Place[]>(`${lat}-${lng}-${radius}-${keyword}`);
-    if (cachedPlaces) {
-      res.status(200).json(cachedPlaces);
-      return;
-    }
-
-    const key = await readApiKey();
-
-    client
-      .post<IntermediatePlacesResponse>(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&keyword=${keyword}&key=${key}`
-      )
-      .then((result) => {
-        Cache.set(`${lat}-${lng}-${radius}-${keyword}`, result.data.results);
-        res.status(200).json(result.data.results);
-      })
-      .catch((error) => {
-        res.status(400).json(error.response.data);
-      });
-  }
 }
+
+export default createHandler(nearByHandler);

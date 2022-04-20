@@ -1,8 +1,9 @@
-import { NextPage } from "next";
-import Login from "modules/auth/login";
+import { NextPage } from 'next';
+import Login from 'modules/auth/login';
 
 const LoginRedirect: NextPage = () => {
-  return <Login></Login>;
+    // @ts-ignore
+    return <Login />;
 };
 
 export default LoginRedirect;

@@ -1,33 +1,30 @@
-import axios from "axios";
-import { RegisterRequest, User } from "common/types";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { RequestRegisterEndpoint } from "common/utilities";
-
-const client = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_URL || "http://localhost:8080",
-});
+import axios from 'axios';
+import { RegisterRequest, User } from 'common/types';
+import { RequestRegisterEndpoint } from 'common/utilities';
+import {
+    createHandler,
+    Post,
+    BadRequestException,
+    Body,
+} from '@storyofams/next-api-decorators';
+import { client } from 'common/server';
 
 type RegisterResponse = User;
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    const request = req.body as RegisterRequest;
+class registerHandler {
+    @Post()
+    async login(@Body() request: RegisterRequest) {
+        if (!request) throw new BadRequestException();
 
-    if (!request) {
-      res.status(400).json("Missing required query parameters.");
-      return;
+        client
+            .post<RegisterResponse>(RequestRegisterEndpoint, request)
+            .then((result) => {
+                return result.data;
+            })
+            .catch((error) => {
+                throw new BadRequestException(error.response.data);
+            });
     }
-
-    client
-      .post<RegisterResponse>(RequestRegisterEndpoint, request)
-      .then((result) => {
-        res.status(200).json(result.data);
-      })
-      .catch((error) => {
-        res.status(400).json(error.response.data);
-      });
-  }
 }
+
+export default createHandler(registerHandler);

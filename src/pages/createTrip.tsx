@@ -1,8 +1,9 @@
-import { NextPage } from "next";
-import CreateTrip from "modules/createTrip/createTrip";
+import { NextPage } from 'next';
+import CreateTrip from 'modules/createTrip/createTrip';
 
 const CreateTripRedirect: NextPage = () => {
-  return <CreateTrip></CreateTrip>;
+    // @ts-ignore
+    return <CreateTrip />;
 };
 
 export default CreateTripRedirect;
