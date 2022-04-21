@@ -79,14 +79,23 @@ const Login: NextPage = () => {
                         <PasswordInput
                             password={field.value}
                             onPasswordChange={field.onChange}
+                            error={
+                                errors.Password?.message
+                                    ? errors.Password.message
+                                    : null
+                            }
                         />
                     )}
+                    defaultValue=""
                     control={control}
                     rules={{
-                        required: true,
+                        required: {
+                            value: true,
+                            message: 'Password is required',
+                        },
                         minLength: {
                             value: 4,
-                            message: 'Minimum password length is 4 characters',
+                            message: 'Minimum password length is 4',
                         },
                     }}
                 />

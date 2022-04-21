@@ -23,7 +23,9 @@ export default NextAuth({
                     })
                     .catch((error: AxiosError) => {
                         return {
-                            error: error.response?.data,
+                            error:
+                                error.response?.data?.message ??
+                                'An unknown error occured.',
                         };
                     });
 

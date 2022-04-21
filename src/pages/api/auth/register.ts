@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { RegisterRequest, User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
 import {
@@ -8,6 +7,7 @@ import {
     Body,
 } from '@storyofams/next-api-decorators';
 import { client } from 'common/server';
+import { AxiosError } from 'axios';
 
 type RegisterResponse = User;
 
@@ -16,13 +16,13 @@ class registerHandler {
     async login(@Body() request: RegisterRequest) {
         if (!request) throw new BadRequestException();
 
-        client
+        await client
             .post<RegisterResponse>(RequestRegisterEndpoint, request)
-            .then((result) => {
-                return result.data;
+            .then((response) => {
+                return response.data;
             })
-            .catch((error) => {
-                throw new BadRequestException(error.response.data);
+            .catch((error: AxiosError) => {
+                throw new BadRequestException(error.response?.data);
             });
     }
 }

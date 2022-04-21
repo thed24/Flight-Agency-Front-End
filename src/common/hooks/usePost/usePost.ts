@@ -17,7 +17,11 @@ export function usePost<I, O>(url: string): PostResponse<O> {
                 setData({ data: response.data });
             })
             .catch((error: AxiosError) => {
-                setData({ error: error.response?.data });
+                setData({
+                    error:
+                        error.response?.data?.message ??
+                        'An unknown error occured.',
+                });
             })
             .then(() => {
                 setLoading(false);

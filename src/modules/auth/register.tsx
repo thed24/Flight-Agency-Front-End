@@ -53,6 +53,7 @@ const Register: NextPage = () => {
             loading={registerLoading}
         >
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
+
             <SC.Title> Register </SC.Title>
 
             <SSC.FormContainer onSubmit={handleSubmit(OnRegister)}>
@@ -62,18 +63,21 @@ const Register: NextPage = () => {
                         <TextField
                             id="Name"
                             helperText={
-                                errors.Email ? errors.Email.message : null
+                                errors.Name ? errors.Name.message : null
                             }
                             label="Name"
                             value={field.value}
                             onChange={field.onChange}
-                            error={errors.Email ? true : false}
+                            error={errors.Name ? true : false}
                         />
                     )}
                     control={control}
                     defaultValue=""
                     rules={{
-                        required: true,
+                        required: {
+                            value: true,
+                            message: 'Name is required.',
+                        },
                     }}
                 />
                 <Controller
@@ -106,10 +110,25 @@ const Register: NextPage = () => {
                         <PasswordInput
                             password={field.value}
                             onPasswordChange={field.onChange}
+                            error={
+                                errors.Password?.message
+                                    ? errors.Password.message
+                                    : null
+                            }
                         />
                     )}
+                    defaultValue=""
                     control={control}
-                    rules={{ required: true, minLength: 4 }}
+                    rules={{
+                        required: {
+                            value: true,
+                            message: 'Password is required',
+                        },
+                        minLength: {
+                            value: 4,
+                            message: 'Minimum password length is 4',
+                        },
+                    }}
                 />
                 <SSC.AuthButton type={'submit'} />
             </SSC.FormContainer>
