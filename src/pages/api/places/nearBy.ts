@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { readApiKey, RequiresAuth } from 'common/server';
-import { Place } from 'common/types';
-import { Cache } from 'common/server/cache';
 import {
     BadRequestException,
     createHandler,
     Get,
     Query,
 } from '@storyofams/next-api-decorators';
+import axios from 'axios';
+import { readApiKey, RequiresAuth } from 'common/server';
+import { Cache } from 'common/server/cache';
+import { Place } from 'common/types';
 
 const client = axios.create();
 
@@ -30,7 +30,7 @@ class nearByHandler {
             throw new BadRequestException();
         }
 
-        var cachedPlaces = Cache.get<Place[]>(
+        const cachedPlaces = Cache.get<Place[]>(
             `${lat}-${lng}-${radius}-${keyword}`
         );
 
@@ -40,7 +40,7 @@ class nearByHandler {
 
         const key = await readApiKey();
 
-        client
+        return client
             .post<IntermediatePlacesResponse>(
                 `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&keyword=${keyword}&key=${key}`
             )

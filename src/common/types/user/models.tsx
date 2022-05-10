@@ -1,48 +1,49 @@
-import { Location } from "common/types";
+import { Location } from 'common/types';
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
+    id: string;
+    name: string;
+    email: string;
+    password: string;
 }
 
 export interface Trip {
-  id: number;
-  destination: string;
-  stops: Stop[];
+    id: number;
+    destination: string;
+    stops: Stop[];
 }
 
 export type Trips = Trip[];
 
 export interface Stop {
-  name: string;
-  time: DateRange;
-  location: Location;
-  address: string;
+    id: number;
+    name: string;
+    time: DateRange;
+    location: Location;
+    address: string;
 }
 
 export interface DateRange {
-  start: Date;
-  end: Date;
+    start: Date;
+    end: Date;
 }
 
 export interface Places {
-  results: Place[];
+    results: Place[];
 }
 export interface Place {
-  name: string;
-  rating: number;
-  icon: string;
-  id?: any;
-  geometry: {
-    location: {
-      latitude: number;
-      longitude: number;
+    name: string;
+    rating: number;
+    icon: string;
+    id?: any;
+    geometry: {
+        location: {
+            latitude: number;
+            longitude: number;
+        };
     };
-  };
-  reference: string;
-  vicinity: string;
-  types: string[];
-  placeId: string;
+    reference: string;
+    vicinity: string;
+    types: string[];
+    placeId: string;
 }

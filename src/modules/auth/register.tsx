@@ -1,13 +1,14 @@
 import { TextField } from '@mui/material';
-import { AlertDetails, AuthLayout, AlertBar, SC } from 'common/components';
-import { IsError, IsUnitializedError, usePost } from 'common/hooks';
-import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import { RegisterRequest, User } from 'common/types';
+import useAxios from 'axios-hooks';
+import { AlertBar, AlertDetails, AuthLayout, SC } from 'common/components';
+import { User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
 import { PasswordInput } from 'modules/auth/components';
-import * as SSC from './components/form.styles';
+import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+
+import * as SSC from './components/form.styles';
 
 type FormData = {
     Name: string;
@@ -24,34 +25,34 @@ const Register: NextPage = () => {
         formState: { errors },
     } = useForm<FormData>();
 
-    const {
-        request: requestRegister,
-        loading: registerLoading,
-        payload: registerResult,
-    } = usePost<RegisterRequest, User>(RequestRegisterEndpoint);
+    const [
+        { data: response, loading: registerLoading, error },
+        requestRegister,
+    ] = useAxios<User>(RequestRegisterEndpoint, { manual: true });
 
     useEffect(() => {
-        if (IsError(registerResult)) {
-            if (IsUnitializedError(registerResult.error)) return;
-            setAlert({ message: registerResult.error, type: 'error' });
-        } else {
+        if (error) {
+            setAlert({
+                message: error?.response?.data?.message,
+                type: 'error',
+            });
+        }
+
+        if (response) {
             setAlert({
                 message: 'Successfully registered! Please login.',
                 type: 'success',
             });
         }
-    }, [registerResult]);
+    }, [error, response]);
 
     const OnRegister = async ({ Name, Email, Password }: FormData) =>
-        requestRegister({ Name, Email, Password });
+        requestRegister({ data: { Name, Email, Password }, method: 'post' });
 
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <AuthLayout
-            title={'Register | Flight Agency'}
-            loading={registerLoading}
-        >
+        <AuthLayout title="Register | Flight Agency" loading={registerLoading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
             <SC.Title> Register </SC.Title>
@@ -68,7 +69,7 @@ const Register: NextPage = () => {
                             label="Name"
                             value={field.value}
                             onChange={field.onChange}
-                            error={errors.Name ? true : false}
+                            error={!!errors.Name}
                         />
                     )}
                     control={control}
@@ -91,7 +92,7 @@ const Register: NextPage = () => {
                             label="Email"
                             value={field.value}
                             onChange={field.onChange}
-                            error={errors.Email ? true : false}
+                            error={!!errors.Email}
                         />
                     )}
                     control={control}
@@ -130,7 +131,7 @@ const Register: NextPage = () => {
                         },
                     }}
                 />
-                <SSC.AuthButton type={'submit'} />
+                <SSC.AuthButton type="submit" />
             </SSC.FormContainer>
         </AuthLayout>
     );

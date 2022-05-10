@@ -1,91 +1,58 @@
-import { Typography, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import {
-    Categories,
-    Location,
-    Trip,
-    Place,
-    PlacesRequest,
-    LoadCountries,
-    getStopsPerDay,
-} from 'common/types';
+import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import useAxios from 'axios-hooks';
 import { SC } from 'common/components';
-import React, { useEffect, useMemo } from 'react';
-import { Map, Marker, ScrollableStops } from 'modules/createTrip/components';
-import { IsError, useGet } from 'common/hooks';
+import { Categories, LoadCountries, Place, PlacesRequest } from 'common/types';
+import { Entry } from 'common/types/misc';
 import { RequestLocationDataEndpoint } from 'common/utilities';
-import { SSC } from 'modules/createTrip/steps';
+import {
+    GoogleMap,
+    Marker,
+    ScrollableStops,
+} from 'modules/createTrip/components';
+import { useMap, useTrip } from 'modules/createTrip/context';
+import { MapContainer } from 'modules/createTrip/steps';
+import React, { useEffect, useMemo } from 'react';
 
 interface Props {
-    trip: Trip;
-    center: Location;
     apiKey: string;
-    destination: string;
     onClickMarker: (place: Place, day: number) => void;
-    onMoveMap: (lat: number, lng: number) => void;
 }
 
-export const StopStep = ({
-    center,
-    trip,
-    onClickMarker,
-    onMoveMap,
-    apiKey,
-    destination,
-}: Props) => {
-    const [places, setPlaces] = React.useState<Place[]>([]);
-    const [category, setCategory] = React.useState<string>('');
-    const [zoom, setZoom] = React.useState<number>(15);
+export const StopStep = ({ onClickMarker, apiKey }: Props) => {
+    const [{ data: places }, fetchPlaces] = useAxios<Place[]>(
+        RequestLocationDataEndpoint,
+        { manual: true }
+    );
+
+    const { center, setCenter, zoom, setZoom } = useMap();
+    const { trip, dayToStopMap } = useTrip();
+
     const [index, setIndex] = React.useState<number>(0);
+    const [category, setCategory] = React.useState<string>('Food');
 
-    const dayToStopMap = getStopsPerDay(trip.stops);
     const days = Object.keys(dayToStopMap);
-    const stopsForDay = Object.values(dayToStopMap)[index];
-
-    const countries = LoadCountries();
-
-    const {
-        loading: placesLoading,
-        payload: placesResult,
-        request: placesRequest,
-    } = useGet<Place[]>(RequestLocationDataEndpoint);
 
     useEffect(() => {
-        setCategory('Food');
-
-        const currentCountry = countries.find(
-            (country) => country.name === destination
+        const currentCountry = LoadCountries().find(
+            (country) => country.name === trip.destination
         );
 
         if (currentCountry) {
-            onMoveMap(currentCountry.lat, currentCountry.lng);
+            setCenter(currentCountry.lat, currentCountry.lng);
         }
     }, []);
 
     useEffect(() => {
-        var request: PlacesRequest = {
-            lat: center.lat.toString(),
-            lng: center.lng.toString(),
+        const request: PlacesRequest = {
+            lat: center.latitude.toString(),
+            lng: center.longitude.toString(),
             zoom: zoom.toString(),
             radius: '2000',
             keyword: `'${category}'`,
         };
 
-        placesRequest(request);
+        fetchPlaces({ params: { ...request }, method: 'get' });
     }, [category, center]);
-
-    useEffect(() => {
-        if (!IsError(placesResult)) {
-            setPlaces(placesResult.data);
-        }
-    }, [placesResult]);
-
-    const onDragEnd = (lat: number, lng: number) => {
-        onMoveMap(lat, lng);
-    };
-
-    const onZoomEnd = (zoom: number) => {
-        setZoom(zoom);
-    };
 
     const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
         setCategory(e.target.value);
@@ -97,47 +64,48 @@ export const StopStep = ({
                 e.preventDefault();
                 onClickMarker(
                     place,
-                    days.length > 0 ? parseInt(days[index]) : 1
+                    days.length > 0 ? parseInt(days[index], 10) : 1
                 );
             };
 
-        return places.map((place, i) => (
-            <Marker
-                key={i}
-                onClick={handleOnClickMarker(place)}
-                place={place}
-                lat={place.geometry.location.latitude}
-                lng={place.geometry.location.longitude}
-            />
-        ));
-    }, [days, index, onClickMarker, places]);
+        return places
+            ? places.map((place) => (
+                  <Marker
+                      key={place.id}
+                      onClick={handleOnClickMarker(place)}
+                      place={place}
+                      name={place.name}
+                      lat={place.geometry.location.lat}
+                      lng={place.geometry.location.lng}
+                  />
+              ))
+            : [];
+    }, [places, onClickMarker, days, index]);
 
     const entries = useMemo(() => {
-        return stopsForDay && stopsForDay.length > 0
-            ? stopsForDay.map((stop) => {
-                  return [
-                      {
-                          header: `${stop.name}`,
-                          content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
-                      },
-                  ];
-              })
-            : [];
-    }, [stopsForDay]);
+        const stopsForDay = Object.values(dayToStopMap)[index] ?? [];
+
+        return stopsForDay.map((stop) => [
+            {
+                id: stop.id,
+                header: `${stop.name}`,
+                content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
+            } as Entry,
+        ]);
+    }, [dayToStopMap, index]);
 
     return (
         <SC.Container>
-            <SSC.MapContainer>
-                <Map
-                    key="map"
+            <MapContainer>
+                <GoogleMap
                     center={center}
                     zoom={zoom}
-                    onDrag={onDragEnd}
-                    onZoom={onZoomEnd}
+                    onDrag={setCenter}
+                    onZoom={setZoom}
                     apiKey={apiKey}
                 >
                     {markers}
-                </Map>
+                </GoogleMap>
 
                 {trip.stops.length > 0 && (
                     <ScrollableStops
@@ -145,9 +113,10 @@ export const StopStep = ({
                         index={index}
                         dayToStopsMap={dayToStopMap}
                         entries={entries}
+                        deletable
                     />
                 )}
-            </SSC.MapContainer>
+            </MapContainer>
 
             <Typography gutterBottom variant="h6">
                 Select a category
@@ -159,13 +128,11 @@ export const StopStep = ({
                 label="Category"
                 onChange={handleOnChangeCategory}
             >
-                {Categories.map((category, index) => {
-                    return (
-                        <MenuItem value={category} key={index}>
-                            {category}
-                        </MenuItem>
-                    );
-                })}
+                {Categories.map((cat) => (
+                    <MenuItem value={cat} key={cat}>
+                        {cat}
+                    </MenuItem>
+                ))}
             </Select>
         </SC.Container>
     );

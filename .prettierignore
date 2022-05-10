@@ -1,0 +1,7 @@
+## file extensions
+*.css
+*.js
+node_modules/
+*.md
+.next/
+.yarn/

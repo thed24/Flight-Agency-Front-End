@@ -1,9 +1,9 @@
 export {
-  GetTripsEndpoint,
-  CreateTripEndpoint,
-  RequestLoginEndpoint,
-  GetSuggestionsEndpoint,
-  RequestRegisterEndpoint,
-  RequestLocationDataEndpoint,
-  RequestAddressEndpoint,
-} from "./api";
+    CreateTripEndpoint,
+    GetSuggestionsEndpoint,
+    GetTripsEndpoint,
+    RequestAddressEndpoint,
+    RequestLocationDataEndpoint,
+    RequestLoginEndpoint,
+    RequestRegisterEndpoint,
+} from './api';

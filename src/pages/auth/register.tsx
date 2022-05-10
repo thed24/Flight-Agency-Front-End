@@ -1,9 +1,6 @@
-import { NextPage } from 'next';
 import Register from 'modules/auth/register';
+import { NextPage } from 'next';
 
-const RegisterRedirect: NextPage = () => {
-    // @ts-ignore
-    return <Register />;
-};
+const RegisterRedirect: NextPage = () => <Register />;
 
 export default RegisterRedirect;

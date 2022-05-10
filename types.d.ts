@@ -19,3 +19,4 @@ declare module 'google-map-react' {
         children?: any;
     }
 }
+

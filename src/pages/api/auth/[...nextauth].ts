@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { IsError, Result } from 'common/hooks';
+import axios, { AxiosResponse } from 'axios';
 import { User } from 'common/types';
 import { RequestLoginEndpoint } from 'common/utilities';
 import NextAuth from 'next-auth';
@@ -14,39 +13,34 @@ export default NextAuth({
         CredentialsProvider({
             credentials: {},
             authorize: async (credentials: any) => {
-                var res: Result<User> = await httpClient
+                const res: User | null = await httpClient
                     .post(RequestLoginEndpoint, credentials)
-                    .then((response: AxiosResponse<User>) => {
-                        return {
-                            data: response.data,
-                        };
-                    })
-                    .catch((error: AxiosError) => {
-                        return {
-                            error:
-                                error.response?.data?.message ??
-                                'An unknown error occured.',
-                        };
-                    });
+                    .then((response: AxiosResponse<User>) => response.data)
+                    .catch(() => null);
 
-                if (IsError(res)) {
-                    return null;
-                }
-
-                return res.data;
+                return res;
             },
         }),
     ],
     callbacks: {
         jwt: async ({ token, user }) => {
             if (user) {
-                token.uid = user.id;
+                return {
+                    ...token,
+                    uid: user.id,
+                };
             }
             return token;
         },
-        session: async ({ session, token, user }) => {
+        session: async ({ session, token }) => {
             if (session?.user) {
-                session.user.id = token.uid;
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        id: token.uid,
+                    },
+                };
             }
             return session;
         },

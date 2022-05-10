@@ -1,30 +1,30 @@
-import { Card, CardContent, Typography } from '@mui/material';
-import React, { MouseEventHandler } from 'react';
-import { Place } from 'common/types';
+import { Typography } from '@mui/material';
 import { InfoBox } from '@react-google-maps/api';
+import { Place } from 'common/types';
+import React, { MouseEventHandler } from 'react';
 
-export type LayoutProps = {
+import { MarkerContainer } from './marker.style';
+
+type LayoutProps = {
     lat: number;
     lng: number;
-    place: Place;
-    onClick: MouseEventHandler;
+    name: string;
+    onClick?: MouseEventHandler;
+    place?: Place;
 };
 
-export function Marker({ lat, lng, place, onClick }: LayoutProps) {
-    const text = place.name;
-    const address = place.vicinity;
-    const rating = place.rating;
-
-    return (
-        // @ts-ignore
-        <InfoBox position={{ lat, lng }}>
-            <Card onClick={onClick}>
-                <CardContent>
-                    <Typography color={'secondary'}> {text} </Typography>
-                    <Typography color={'secondary'}> {address} </Typography>
-                    <Typography color={'secondary'}> {rating} </Typography>
-                </CardContent>
-            </Card>
-        </InfoBox>
-    );
-}
+export const Marker = ({ lat, lng, place, name, onClick }: LayoutProps) => (
+    <InfoBox position={new google.maps.LatLng(lat, lng)}>
+        <MarkerContainer onClick={onClick}>
+            <Typography sx={{ fontWeight: 'bold' }} color="primary">
+                {name}
+            </Typography>
+            {place && (
+                <>
+                    <Typography color="primary"> {place.vicinity} </Typography>
+                    <Typography color="primary">{`Rated ${place.rating} / 5`}</Typography>
+                </>
+            )}
+        </MarkerContainer>
+    </InfoBox>
+);

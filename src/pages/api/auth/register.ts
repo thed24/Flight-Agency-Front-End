@@ -1,27 +1,22 @@
-import { RegisterRequest, User } from 'common/types';
-import { RequestRegisterEndpoint } from 'common/utilities';
 import {
-    createHandler,
-    Post,
     BadRequestException,
     Body,
+    createHandler,
+    Post,
 } from '@storyofams/next-api-decorators';
-import { client } from 'common/server';
 import { AxiosError } from 'axios';
+import { client } from 'common/server';
+import type { RegisterRequest, User } from 'common/types';
+import { RequestRegisterEndpoint } from 'common/utilities';
 
 type RegisterResponse = User;
-
 class registerHandler {
     @Post()
-    async login(@Body() request: RegisterRequest) {
-        if (!request) throw new BadRequestException();
-
-        await client
+    login(@Body() request: RegisterRequest) {
+        return client
             .post<RegisterResponse>(RequestRegisterEndpoint, request)
-            .then((response) => {
-                return response.data;
-            })
-            .catch((error: AxiosError) => {
+            .then((response) => response.data)
+            .catch((error: AxiosError<string, string>) => {
                 throw new BadRequestException(error.response?.data);
             });
     }

@@ -1,14 +1,14 @@
-import { Trip, User } from 'common/types';
-import { CreateTripEndpoint, GetTripsEndpoint } from 'common/utilities';
 import {
-    Post,
-    Body,
-    Get,
     BadRequestException,
+    Body,
     createHandler,
+    Get,
     Param,
+    Post,
 } from '@storyofams/next-api-decorators';
 import { client, RequiresAuth } from 'common/server';
+import { Trip, User } from 'common/types';
+import { CreateTripEndpoint, GetTripsEndpoint } from 'common/utilities';
 
 type GetTripResponse = Trip[];
 type CreateTripResonse = User;
@@ -16,12 +16,10 @@ type CreateTripResonse = User;
 class userHandler {
     @Get('/:id/trips')
     @RequiresAuth()
-    async getTrips(@Param('id') id: string) {
-        client
+    getTrips(@Param('id') id: string) {
+        return client
             .get<GetTripResponse>(GetTripsEndpoint(id))
-            .then((result) => {
-                return result.data;
-            })
+            .then((result) => result.data)
             .catch((error) => {
                 throw new BadRequestException(error);
             });
@@ -29,14 +27,21 @@ class userHandler {
 
     @Post('/:id/trips')
     @RequiresAuth()
-    async createTrip(@Param('id') id: string, @Body() request: Trip) {
-        client
-            .post<CreateTripResonse>(CreateTripEndpoint(id), request)
-            .then((result) => {
-                return result.data;
+    createTrip(@Param('id') id: string, @Body() request: Trip) {
+        const stopsWithoutIds = request.stops.map((stop) => ({
+            ...stop,
+            id: undefined,
+        }));
+
+        return client
+            .post<CreateTripResonse>(CreateTripEndpoint(id), {
+                ...request,
+                id: null,
+                stops: stopsWithoutIds,
             })
+            .then((result) => result.data)
             .catch((error) => {
-                throw new BadRequestException(error.response.data);
+                throw new BadRequestException(error.response.data.message);
             });
     }
 }

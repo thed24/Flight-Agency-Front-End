@@ -1,8 +1,8 @@
-import { Place } from "common/types";
+import { Place } from 'common/types';
 
 export type PlacesResponse = Place[];
 
 export interface AddressResponse {
-  lat: string;
-  lng: string;
+    lat: string;
+    lng: string;
 }

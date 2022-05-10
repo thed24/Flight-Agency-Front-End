@@ -1,14 +1,12 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
     FormControl,
+    FormHelperText,
+    IconButton,
+    InputAdornment,
     InputLabel,
     OutlinedInput,
-    InputAdornment,
-    IconButton,
-    FormHelperText,
-    TextField,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-
 import React from 'react';
 
 interface Props {
@@ -39,7 +37,7 @@ export const PasswordInput = ({ error, password, onPasswordChange }: Props) => {
                 value={password}
                 type={passwordVisible ? 'text' : 'password'}
                 onChange={onPasswordChange}
-                error={error ? true : false}
+                error={!!error}
                 endAdornment={
                     <InputAdornment position="end">
                         <IconButton

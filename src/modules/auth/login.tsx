@@ -1,10 +1,11 @@
 import { TextField } from '@mui/material';
-import { AlertDetails, AuthLayout, AlertBar, SC } from 'common/components';
-import { NextPage } from 'next';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { AlertBar, AlertDetails, AuthLayout, SC } from 'common/components';
 import { PasswordInput } from 'modules/auth/components';
+import { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+
 import * as SSC from './components/form.styles';
 
 type FormData = {
@@ -31,19 +32,19 @@ const Login: NextPage = () => {
             callbackUrl: `${window.location.origin}`,
         });
 
-        if (response && response.error) {
-            setLoading(false);
-            setAlert({ message: 'Login failed.', type: 'error' });
-        } else {
+        if (response && response.ok) {
             setLoading(false);
             window.location.href = '/';
+        } else {
+            setLoading(false);
+            setAlert({ message: 'Login failed.', type: 'error' });
         }
     };
 
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <AuthLayout title={'Login | Flight Agency'} loading={loading}>
+        <AuthLayout title="Login | Flight Agency" loading={loading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
             <SC.Title> Login </SC.Title>
@@ -60,7 +61,7 @@ const Login: NextPage = () => {
                             label="Email"
                             value={field.value}
                             onChange={field.onChange}
-                            error={errors.Email ? true : false}
+                            error={!!errors.Email}
                         />
                     )}
                     control={control}
@@ -99,7 +100,7 @@ const Login: NextPage = () => {
                         },
                     }}
                 />
-                <SSC.AuthButton type={'submit'} />
+                <SSC.AuthButton type="submit" />
             </SSC.FormContainer>
         </AuthLayout>
     );

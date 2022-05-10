@@ -1,16 +1,16 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 h1,
@@ -19,13 +19,13 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
+    margin: 0;
 }
 
 .MuiDivider-root {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }

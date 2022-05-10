@@ -1,9 +1,6 @@
-import { NextPage } from 'next';
 import Home from 'modules/home/home';
+import { NextPage } from 'next';
 
-const HomeRedirect: NextPage = () => {
-    // @ts-ignore
-    return <Home />;
-};
+const HomeRedirect: NextPage = () => <Home />;
 
 export default HomeRedirect;

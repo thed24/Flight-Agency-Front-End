@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { readApiKey, RequiresAuth } from 'common/server';
-import { Address } from 'common/types';
-import { Cache } from 'common/server/cache';
 import {
-    Get,
-    Query,
     BadRequestException,
     createHandler,
+    Get,
+    Query,
 } from '@storyofams/next-api-decorators';
+import axios from 'axios';
+import { readApiKey, RequiresAuth } from 'common/server';
+import { Cache } from 'common/server/cache';
+import { Address } from 'common/types';
 
 const client = axios.create();
 
@@ -23,7 +23,7 @@ class reverseGeocodeHandler {
             throw new BadRequestException();
         }
 
-        var cachedAddress = Cache.get(`${lat}-${lng}`);
+        const cachedAddress = Cache.get(`${lat}-${lng}`);
 
         if (cachedAddress) {
             return cachedAddress;
@@ -31,7 +31,7 @@ class reverseGeocodeHandler {
 
         const key = await readApiKey();
 
-        client
+        return client
             .post<IntermediateReverseGeocodeResponse>(
                 `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`
             )

@@ -1,1 +1,1 @@
-export { ScrollableTrips } from "./scrollableTrips";
+export { ScrollableTrips } from './scrollableTrips';

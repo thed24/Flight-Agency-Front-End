@@ -1,29 +1,19 @@
 // models
-
-export { LoadCountries, Categories } from "./places/data";
-
+export type { Entries } from './misc';
+export { Categories, LoadCountries } from './places/data';
 export type {
-  Location,
-  Country,
-  Place,
-  Address,
-  Addresses,
-} from "./places/models";
-
-export type { User, Trip, Stop, DateRange } from "./user/models";
-
-export type { Entries } from "./misc";
+    Address,
+    Addresses,
+    Country,
+    Location,
+    Place,
+} from './places/models';
+export type { DateRange, Stop, Trip, User } from './user/models';
 
 // requests
-
+export type { AddressRequest, PlacesRequest } from './places/requests';
 export type {
-  RegisterRequest,
-  LoginRequest,
-  CreateTripRequest,
-} from "./user/requests";
-
-export type { PlacesRequest, AddressRequest } from "./places/requests";
-
-// selectors?
-
-export { getStopsPerDay } from "./user/selectors";
+    CreateTripRequest,
+    LoginRequest,
+    RegisterRequest,
+} from './user/requests';

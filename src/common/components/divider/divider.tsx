@@ -1,10 +1,8 @@
-import { SC } from "common/components";
-import { Divider as MuiDivider } from "@mui/material";
+import { Divider as MuiDivider } from '@mui/material';
+import { SC } from 'common/components';
 
-export function Divider() {
-  return (
-    <SC.Container style={{ marginTop: "20px", marginBottom: "20px" }}>
-      <MuiDivider />
+export const Divider = () => (
+    <SC.Container style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <MuiDivider />
     </SC.Container>
-  );
-}
+);

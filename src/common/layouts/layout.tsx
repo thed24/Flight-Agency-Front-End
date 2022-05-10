@@ -1,16 +1,15 @@
-import React, { useMemo } from 'react';
-
-import { useSession } from 'next-auth/react';
 import { AuthMessage, LoadingOverlay, NavBar } from 'common/components';
 import Head from 'next/head';
+import { useSession } from 'next-auth/react';
+import React, { useMemo } from 'react';
 
-export type LayoutProps = {
+type LayoutProps = {
     children: React.ReactNode;
     loading?: boolean;
     title?: string;
 };
 
-export function Layout({ title, children, loading }: LayoutProps) {
+export const Layout = ({ title, children, loading }: LayoutProps) => {
     const { data: session, status } = useSession();
 
     const isLoading = useMemo(
@@ -25,7 +24,7 @@ export function Layout({ title, children, loading }: LayoutProps) {
     return (
         <>
             <Head>
-                <title> {title}</title>
+                <title> {title} </title>
             </Head>
             <main>
                 <NavBar />
@@ -33,4 +32,4 @@ export function Layout({ title, children, loading }: LayoutProps) {
             </main>
         </>
     );
-}
+};

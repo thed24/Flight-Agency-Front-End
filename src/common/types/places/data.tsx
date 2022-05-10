@@ -1,37 +1,21 @@
-import { parse } from "csv-string";
-import { Country } from "common/types";
+import { Country } from 'common/types';
+import { parse } from 'csv-string';
 
 export const Categories = [
-  "Accommodation",
-  "Food",
-  "Transport",
-  "Shopping",
-  "Entertainment",
-  "Bars",
-  "Restaurants",
-  "Cafes",
-  "Nightlife",
-  "Museums",
-  "Parks",
-  "Theatre",
-  "Art",
+    'Accommodation',
+    'Food',
+    'Transport',
+    'Shopping',
+    'Entertainment',
+    'Bars',
+    'Restaurants',
+    'Cafes',
+    'Nightlife',
+    'Museums',
+    'Parks',
+    'Theatre',
+    'Art',
 ];
-
-export const LoadCountries = (): Country[] => {
-  const parsedCsv = parse(countriesAsCsv);
-  const countries: Country[] = [];
-
-  parsedCsv.forEach((row) => {
-    countries.push({
-      name: row[0],
-      code: row[1],
-      lat: Number(row[4]),
-      lng: Number(row[5]),
-    });
-  });
-
-  return countries;
-};
 
 const countriesAsCsv = `Country,Alpha-2 code,Alpha-3 code,Numeric code,Latitude (average),Longitude (average)
 Afghanistan,AF,AFG,4,33.0,65.0
@@ -278,3 +262,19 @@ Western Sahara,EH,ESH,732,24.5,-13.0
 Yemen,YE,YEM,887,15.0,48.0
 Zambia,ZM,ZMB,894,-15.0,30.0
 Zimbabwe,ZW,ZWE,716,-20.0,30.0`;
+
+export const LoadCountries = (): Country[] => {
+    const parsedCsv = parse(countriesAsCsv);
+    const countries: Country[] = [];
+
+    parsedCsv.forEach((row) => {
+        countries.push({
+            name: row[0],
+            code: row[1],
+            lat: Number(row[4]),
+            lng: Number(row[5]),
+        });
+    });
+
+    return countries;
+};
