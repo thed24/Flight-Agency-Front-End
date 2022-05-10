@@ -12,7 +12,9 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             credentials: {},
-            authorize: async (credentials: any) => {
+            authorize: async (
+                credentials: Record<never, string> | undefined
+            ) => {
                 const res: User | null = await httpClient
                     .post(RequestLoginEndpoint, credentials)
                     .then((response: AxiosResponse<User>) => response.data)
