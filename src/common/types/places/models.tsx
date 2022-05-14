@@ -30,6 +30,7 @@ export interface Place {
     vicinity: string;
     business_status: string;
     types: string[];
+    category?: string;
     opening_hours: {
         open_now: boolean;
     };

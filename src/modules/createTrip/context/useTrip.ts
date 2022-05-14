@@ -1,4 +1,4 @@
-import { Stop, Trip } from 'common/types';
+import { DayToStopMap, Stop, Trip } from 'common/types';
 import { useCallback, useContext, useMemo } from 'react';
 
 import { CreateTripContext } from './createTripContext';
@@ -32,25 +32,7 @@ export function useTrip() {
     );
 
     const dayToStopMap: Record<string, Stop[]> = useMemo(
-        () =>
-            trip.stops.reduce<Record<string, Stop[]>>((acc, curr) => {
-                const baseLine = trip.stops[0].time.start;
-
-                const oneDay = 24 * 60 * 60 * 1000;
-                const diffDays = Math.round(
-                    Math.abs(
-                        (baseLine.getTime() - curr.time.start.getTime()) /
-                            oneDay
-                    )
-                );
-
-                if (!acc[diffDays]) {
-                    acc[diffDays] = [];
-                }
-
-                acc[diffDays].push(curr);
-                return acc;
-            }, {}),
+        () => DayToStopMap(trip.stops),
         [trip.stops]
     );
 

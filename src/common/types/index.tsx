@@ -17,3 +17,4 @@ export type {
     LoginRequest,
     RegisterRequest,
 } from './user/requests';
+export { DayToStopMap } from './user/selectors';

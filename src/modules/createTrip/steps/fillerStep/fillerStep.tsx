@@ -59,16 +59,19 @@ export const FillerStep = ({ apiKey }: Props) => {
         if (addresses) {
             const address = addresses.results[0];
 
-            const startDate = stopsForDay[0].time.start;
+            const startDate = new Date(stopsForDay[0].time.start);
             startDate.setDate(startDate.getDate() - 1);
 
-            const endDate = stopsForDay[0].time.end;
+            const endDate = new Date(stopsForDay[0].time.end);
             endDate.setDate(endDate.getDate() - 1);
 
             const newStop: Stop = {
                 id: trip.stops.length,
                 name: `Stop Over at ${address.formattedAddress}`,
-                time: { start: startDate, end: endDate },
+                time: {
+                    start: startDate.toDateString(),
+                    end: endDate.toDateString(),
+                },
                 location: {
                     latitude: address.geometry.location.latitude,
                     longitude: address.geometry.location.longitude,

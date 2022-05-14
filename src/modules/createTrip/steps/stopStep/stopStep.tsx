@@ -69,18 +69,20 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
             };
 
         return places
-            ? places.map((place) => (
-                  <Marker
-                      key={place.id}
-                      onClick={handleOnClickMarker(place)}
-                      place={place}
-                      name={place.name}
-                      lat={place.geometry.location.lat}
-                      lng={place.geometry.location.lng}
-                  />
-              ))
+            ? places
+                  .map((place) => ({ ...place, category }))
+                  .map((place) => (
+                      <Marker
+                          key={place.id}
+                          onClick={handleOnClickMarker(place)}
+                          place={place}
+                          name={place.name}
+                          lat={place.geometry.location.lat}
+                          lng={place.geometry.location.lng}
+                      />
+                  ))
             : [];
-    }, [places, onClickMarker, days, index]);
+    }, [places, onClickMarker, days, index, category]);
 
     const entries = useMemo(() => {
         const stopsForDay = Object.values(dayToStopMap)[index] ?? [];
@@ -89,7 +91,11 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
             {
                 id: stop.id,
                 header: `${stop.name}`,
-                content: `${stop.time.start.toLocaleTimeString()} to ${stop.time.end.toLocaleTimeString()}`,
+                content: `${new Date(
+                    stop.time.start
+                ).toLocaleTimeString()} to ${new Date(
+                    stop.time.end
+                ).toLocaleTimeString()}`,
             } as Entry,
         ]);
     }, [dayToStopMap, index]);

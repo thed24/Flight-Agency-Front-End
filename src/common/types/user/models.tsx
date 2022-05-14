@@ -21,11 +21,12 @@ export interface Stop {
     time: DateRange;
     location: Location;
     address: string;
+    category: string;
 }
 
 export interface DateRange {
-    start: Date;
-    end: Date;
+    start: string;
+    end: string;
 }
 
 export interface Places {

@@ -62,7 +62,7 @@ export const ScrollableStops = ({
             <TabPanel key={index} value={index} index={index}>
                 <List
                     title={`Stops for ${
-                        stopsForCurrentDay[0].time.start
+                        new Date(stopsForCurrentDay[0].time.start)
                             .toLocaleTimeString([], {
                                 year: 'numeric',
                                 month: 'numeric',
