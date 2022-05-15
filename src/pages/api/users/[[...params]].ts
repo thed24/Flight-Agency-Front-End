@@ -28,17 +28,19 @@ class userHandler {
     @Post('/:id/trips')
     @RequiresAuth()
     createTrip(@Param('id') id: string, @Body() request: Trip) {
-        const stopsWithoutIds = request.stops.map((stop) => ({
-            ...stop,
-            id: undefined,
-        }));
+        const transformedRequest = {
+            destination: request.destination,
+            stops: request.stops.map((stop) => ({
+                name: stop.name,
+                time: stop.time,
+                location: stop.location,
+                category: stop.category,
+                address: stop.address,
+            })),
+        };
 
         return client
-            .post<CreateTripResonse>(CreateTripEndpoint(id), {
-                ...request,
-                id: null,
-                stops: stopsWithoutIds,
-            })
+            .post<CreateTripResonse>(CreateTripEndpoint(id), transformedRequest)
             .then((result) => result.data)
             .catch((error) => {
                 throw new BadRequestException(error.response.data.message);

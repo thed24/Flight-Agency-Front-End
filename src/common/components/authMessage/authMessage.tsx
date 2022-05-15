@@ -7,11 +7,12 @@ export const AuthMessage = () => {
     };
 
     return (
-        <SC.Container>
+        <SC.MiddleContainer>
             <SC.Title> Welcome to the Flight Agency </SC.Title>
             <SC.SubTitle onClick={handleSignIn}>
-                Please login or register to continue
+                Please login or register to gain access to our fully featured
+                holiday planning platform!
             </SC.SubTitle>
-        </SC.Container>
+        </SC.MiddleContainer>
     );
 };

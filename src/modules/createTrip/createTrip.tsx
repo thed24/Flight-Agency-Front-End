@@ -1,31 +1,30 @@
 import { TextField } from '@mui/material';
 import { Layout, SC } from 'common/components';
 import { DateRange, Place } from 'common/types';
-import { StepButton, StopModal } from 'modules/createTrip/components';
+import {
+    StepButton,
+    StopModal,
+    TripStepper,
+} from 'modules/createTrip/components';
 import { useTripFlow } from 'modules/createTrip/context';
 import {
     ConfirmationStep,
     DestinationStep,
     FillerStep,
     StopStep,
-    SubmittedStep,
 } from 'modules/createTrip/steps';
 import { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import { ChangeEvent, useCallback, useState } from 'react';
-import { Step, Stepper } from 'react-form-stepper';
 
 const CreateTrip: NextPage = () => {
-    const { data: session } = useSession();
-
     const { step } = useTripFlow();
     const [apiKey, setApiKey] = useState<string>('');
 
     const [modalPlace, setModalPlace] = useState<Place | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalValue, setModalValue] = useState<DateRange>({
-        start: String(new Date()),
-        end: String(new Date()),
+        start: new Date(),
+        end: new Date(),
     });
 
     const modalConfirm = useCallback(() => {
@@ -47,8 +46,8 @@ const CreateTrip: NextPage = () => {
         endDate.setHours(7, 0, 0, 0);
 
         setModalValue({
-            start: String(startDate),
-            end: String(endDate),
+            start: startDate,
+            end: endDate,
         });
 
         setModalPlace(place);
@@ -79,13 +78,7 @@ const CreateTrip: NextPage = () => {
                 <SC.SubTitle> Build your trip below </SC.SubTitle>
 
                 <SC.Container>
-                    <Stepper activeStep={step}>
-                        <Step label="Select your destination" />
-                        <Step label="Select your stops" />
-                        <Step label="Connect your stops" />
-                        <Step label="Confirm your trip" />
-                        <Step label="Trip confirmed" />
-                    </Stepper>
+                    <TripStepper step={step} />
                 </SC.Container>
 
                 {step === 0 && <DestinationStep />}
@@ -100,8 +93,6 @@ const CreateTrip: NextPage = () => {
                 {step === 2 && <FillerStep apiKey={apiKey} />}
 
                 {step === 3 && <ConfirmationStep />}
-
-                {step === 4 && <SubmittedStep id={session?.user?.id ?? ''} />}
 
                 <StepButton />
 

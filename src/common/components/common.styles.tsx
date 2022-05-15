@@ -8,9 +8,21 @@ export const Container = styled.div`
     gap: 10px;
 `;
 
+export const MiddleContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 10px;
+    width: 100%;
+    min-width: 500px;
+    height: 100%;
+    min-height: 500px;
+`;
+
 export const SubTitle = styled.h3`
     font-family: 'Roboto', sans-serif;
     display: flex;
+    font-weight: 500;
     justify-content: center;
 `;
 

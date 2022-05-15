@@ -1,5 +1,4 @@
 import 'styles/globals.css';
-import '@fontsource/roboto/700.css';
 
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';

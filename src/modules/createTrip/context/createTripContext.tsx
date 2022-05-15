@@ -21,7 +21,7 @@ export const CreateTripContext = createContext<CreateTripContextInterface>([
     {
         trip: { id: 0, destination: '', stops: [] },
         step: 0,
-        zoom: 15,
+        zoom: 10,
         center: { latitude: 0, longitude: 0 },
     },
     // eslint-disable-next-line @typescript-eslint/no-empty-function

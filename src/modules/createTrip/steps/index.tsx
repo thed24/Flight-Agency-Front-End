@@ -3,4 +3,3 @@ export { DestinationStepDynamic as DestinationStep } from './destinationStep/des
 export { FillerStepDynamic as FillerStep } from './fillerStep/fillerStep.dynamic';
 export { MapContainer } from './steps.styles';
 export { StopStepDynamic as StopStep } from './stopStep/stopStep.dynamic';
-export { SubmittedStepDynamic as SubmittedStep } from './submittedStep/submittedStep.dynamic';

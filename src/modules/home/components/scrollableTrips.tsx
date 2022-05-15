@@ -26,7 +26,9 @@ export const ScrollableTrips = ({ trips }: Props) => {
         <Box
             sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}
         >
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box
+                sx={{ borderBottom: 1, borderColor: 'divider', margin: 'auto' }}
+            >
                 <Tabs
                     value={value}
                     onChange={handleChange}

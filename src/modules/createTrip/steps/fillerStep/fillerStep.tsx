@@ -69,8 +69,8 @@ export const FillerStep = ({ apiKey }: Props) => {
                 id: trip.stops.length,
                 name: `Stop Over at ${address.formattedAddress}`,
                 time: {
-                    start: startDate.toDateString(),
-                    end: endDate.toDateString(),
+                    start: startDate,
+                    end: endDate,
                 },
                 location: {
                     latitude: address.geometry.location.latitude,
