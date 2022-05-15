@@ -24,8 +24,8 @@ const CreateTrip: NextPage = () => {
     const [modalPlace, setModalPlace] = useState<Place | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalValue, setModalValue] = useState<DateRange>({
-        start: new Date(),
-        end: new Date(),
+        start: String(new Date()),
+        end: String(new Date()),
     });
 
     const modalConfirm = useCallback(() => {
@@ -47,8 +47,8 @@ const CreateTrip: NextPage = () => {
         endDate.setHours(7, 0, 0, 0);
 
         setModalValue({
-            start: startDate,
-            end: endDate,
+            start: String(startDate),
+            end: String(endDate),
         });
 
         setModalPlace(place);

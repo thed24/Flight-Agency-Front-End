@@ -37,6 +37,7 @@ export const StopModal = ({
                 name: place.name,
                 time: value,
                 address: place.vicinity,
+                category: place.category ?? 'Food',
                 location: {
                     latitude: place.geometry.location.lat,
                     longitude: place.geometry.location.lng,
@@ -52,7 +53,7 @@ export const StopModal = ({
     const handleChangeStart = useCallback(
         (event: string | null) => {
             setValue({
-                start: event === null ? new Date() : new Date(event),
+                start: String(event === null ? new Date() : new Date(event)),
                 end: value.end,
             });
         },
@@ -63,7 +64,7 @@ export const StopModal = ({
         (event: string | null) => {
             setValue({
                 start: value.start,
-                end: event === null ? new Date() : new Date(event),
+                end: String(event === null ? new Date() : new Date(event)),
             });
         },
         [setValue, value.start]

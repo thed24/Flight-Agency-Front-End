@@ -76,6 +76,7 @@ export const FillerStep = ({ apiKey }: Props) => {
                     latitude: address.geometry.location.latitude,
                     longitude: address.geometry.location.longitude,
                 },
+                category: trip.stops[0].category,
                 address: address.formattedAddress,
             };
 
@@ -83,6 +84,7 @@ export const FillerStep = ({ apiKey }: Props) => {
         }
     }, [addresses, stopsForDay]);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onClickRoute = useCallback(
         (event: google.maps.MapMouseEvent) => {
             if (event && event.latLng !== null) {
