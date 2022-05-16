@@ -1073,11 +1073,6 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fontsource/roboto@^4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.5.tgz#4ecc38e690469378e2ec2a97f9c12282c654cc93"
-  integrity sha512-Pe1p+gAO6K0aLxBXlLoJRHVx352tVc/v/7DOnvM3t+FYXb+KUga9aCD1NpnDfd0kKnWXqrZyAXguyyFWDDuphw==
-
 "@google-cloud/secret-manager@^3.12.0":
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/secret-manager/-/secret-manager-3.12.0.tgz#ff975190e45da3aaa762905f2b7c679c06a0f4a3"
@@ -1598,11 +1593,6 @@
     json5 "^2.2.0"
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
-
-"@sweetalert2/themes@^5.0.11":
-  version "5.0.11"
-  resolved "https://registry.yarnpkg.com/@sweetalert2/themes/-/themes-5.0.11.tgz#5e5e5f8aee7452f2e71cd0299ae3f459163fbe3b"
-  integrity sha512-2i7YpRNMjTCRzHQJwUhvhRNqctcrTGejpAKnycPL1nsRrhdDMxNDIleMkac8FA/tEq9riR1174qzd8HtLmzzVA==
 
 "@types/estree@0.0.39":
   version "0.0.39"
