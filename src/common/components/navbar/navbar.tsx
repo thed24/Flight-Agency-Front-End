@@ -8,32 +8,34 @@ export const NavBar = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
-    const logOut = async () => {
-        const redirectUrl = await signOut({
-            redirect: false,
-            callbackUrl: '/',
-        });
-        router.push(redirectUrl.url);
-    };
+    const buttons = useMemo(() => {
+        if (session) {
+            const logOut = async () => {
+                const redirectUrl = await signOut({
+                    redirect: false,
+                    callbackUrl: '/',
+                });
+                router.push(redirectUrl.url);
+            };
 
-    const buttons = useMemo(
-        () =>
-            session ? (
+            return (
                 <Button onClick={logOut} color="inherit">
                     Log Out, {session.user?.name}
                 </Button>
-            ) : (
-                <>
-                    <Button color="inherit">
-                        <Link href="/auth/register">Register</Link>
-                    </Button>
-                    <Button color="inherit">
-                        <Link href="/auth/login">Login</Link>
-                    </Button>
-                </>
-            ),
-        [session]
-    );
+            );
+        }
+
+        return (
+            <>
+                <Button color="inherit">
+                    <Link href="/auth/register">Register</Link>
+                </Button>
+                <Button color="inherit">
+                    <Link href="/auth/login">Login</Link>
+                </Button>
+            </>
+        );
+    }, [router, session]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
