@@ -11,6 +11,10 @@ export async function readApiKey(): Promise<string> {
         return process.env.NEXT_PUBLIC_API_KEY ?? '';
     }
 
+    if (process.env.GOOGLE_API_KEY) {
+        return process.env.GOOGLE_API_KEY ?? '';
+    }
+
     const [version] = await client.accessSecretVersion({
         name: 'google-api-key',
     });

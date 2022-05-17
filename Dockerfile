@@ -11,7 +11,7 @@ RUN echo "NEXTAUTH_URL=${URL}" >> .env
 RUN yarn install
 RUN yarn run build
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
