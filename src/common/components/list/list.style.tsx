@@ -12,6 +12,7 @@ export const SubListContainer = styled.div`
     text-align: center;
     align-items: center;
     margin: 0 auto 0 auto;
+    padding-left: 10px;
     float: left;
     display: flex;
     flex-direction: column;

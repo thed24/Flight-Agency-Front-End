@@ -41,11 +41,11 @@ export interface Addresses {
 }
 export interface Address {
     match: boolean;
-    formattedAddress: string;
+    formatted_address: string;
     geometry: {
         location: {
-            latitude: number;
-            longitude: number;
+            lat: number;
+            lng: number;
         };
     };
 }

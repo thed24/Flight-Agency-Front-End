@@ -58,33 +58,30 @@ export const FillerStep = ({ apiKey }: Props) => {
     useEffect(() => {
         if (addresses) {
             const address = addresses.results[0];
-
             const startDate = new Date(stopsForDay[0].time.start);
-            startDate.setDate(startDate.getDate() - 1);
-
             const endDate = new Date(stopsForDay[0].time.end);
-            endDate.setDate(endDate.getDate() - 1);
 
             const newStop: Stop = {
                 id: trip.stops.length,
-                name: `Stop Over at ${address.formattedAddress}`,
+                name: `Stop Over at ${address.formatted_address}`,
                 time: {
                     start: startDate,
                     end: endDate,
                 },
                 location: {
-                    latitude: address.geometry.location.latitude,
-                    longitude: address.geometry.location.longitude,
+                    latitude: address.geometry.location.lat,
+                    longitude: address.geometry.location.lng,
                 },
                 category: trip.stops[0].category,
-                address: address.formattedAddress,
+                address: address.formatted_address,
             };
 
             addStop(newStop);
-        }
-    }, [addresses, stopsForDay]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            delete allRoutes[index];
+        }
+    }, [addresses]);
+
     const onClickRoute = useCallback(
         (event: google.maps.MapMouseEvent) => {
             if (event && event.latLng !== null) {
@@ -224,11 +221,13 @@ export const FillerStep = ({ apiKey }: Props) => {
         <SC.Container>
             <MapContainer>
                 <GoogleMap
+                    key={index * stopsForDay.length}
                     center={center}
                     zoom={zoom}
                     onDrag={setCenter}
                     onZoom={setZoom}
                     apiKey={apiKey}
+                    onClick={onClickRoute}
                 >
                     {DirectionsRendererAsAService()}
                     {DirectionsAsAService()}
