@@ -4,13 +4,12 @@ import {
     UnauthorizedException,
 } from '@storyofams/next-api-decorators';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 export const RequiresAuth = createMiddlewareDecorator(
     async (req: NextApiRequest, res: NextApiResponse, next: NextFunction) => {
-        const session = await getSession({ req });
-
-        console.log('session', session);
+        const session = await getServerSession({ req, res }, authOptions);
 
         if (!session) {
             throw new UnauthorizedException();

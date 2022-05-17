@@ -1,14 +1,14 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from 'common/types';
 import { RequestLoginEndpoint } from 'common/utilities';
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 const httpClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_URL || 'http://localhost:8080',
 });
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             credentials: {},
@@ -55,4 +55,6 @@ export default NextAuth({
     jwt: {
         secret: 'SECRET_HERE',
     },
-});
+};
+
+export default NextAuth(authOptions);
