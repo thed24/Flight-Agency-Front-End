@@ -27,10 +27,11 @@ export const NavBar = () => {
 
         return (
             <>
-                <Link color="black" href="/auth/register">
+                <Link color="black" href="/auth/register" passHref>
                     Register
                 </Link>
-                <Link color="black" href="/auth/login">
+                &ensp;
+                <Link color="black" href="/auth/login" passHref>
                     Login
                 </Link>
             </>

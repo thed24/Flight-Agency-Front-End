@@ -10,11 +10,10 @@ export const FormContainer = styled.form`
 `;
 
 export const AuthButton = styled.input`
+    background-color: #d0e8fb;
     border: 1px solid #bababa;
     border-radius: 4px;
-    color: #000;
-    font-size: 16px;
-    font-weight: 600;
+    font: inherit;
     height: 40px;
     margin-top: 20px;
     padding: 0 20px;

@@ -18,7 +18,13 @@ export const List = ({ title, entries, removeOnClick }: LayoutProps) => {
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
+        <div
+            style={{
+                textAlign: 'center',
+                maxHeight: '60vh',
+                overflow: 'auto',
+            }}
+        >
             <SC.ListTitle>{title}</SC.ListTitle>
             {entries.map((entry) => (
                 <SC.ListContainer key={`${entry[0].header}-${entry[0].id}`}>
