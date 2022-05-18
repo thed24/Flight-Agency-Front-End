@@ -20,17 +20,16 @@ export const MiddleContainer = styled.div`
 `;
 
 export const SubTitle = styled.h3`
-    font-family: 'Roboto', sans-serif;
     display: flex;
-    font-weight: 500;
+    font-weight: 300;
     justify-content: center;
+    padding-bottom: 20px;
 `;
 
 export const Title = styled.h1`
-    font-family: 'Roboto', sans-serif;
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    padding-top: 50px;
-    padding-bottom: 10px;
+    font-weight: 100;
+    padding-top: 40px;
 `;

@@ -124,10 +124,6 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
                 )}
             </MapContainer>
 
-            <Typography gutterBottom variant="h6">
-                Select a category
-            </Typography>
-
             <Select
                 placeholder="Select a category"
                 value={category}

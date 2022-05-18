@@ -10,7 +10,6 @@ export const FormContainer = styled.form`
 `;
 
 export const AuthButton = styled.input`
-    background: #fafafa;
     border: 1px solid #bababa;
     border-radius: 4px;
     color: #000;

@@ -19,20 +19,20 @@ export const NavBar = () => {
             };
 
             return (
-                <Button onClick={logOut} color="inherit">
+                <Typography onClick={logOut}>
                     Log Out, {session.user?.name}
-                </Button>
+                </Typography>
             );
         }
 
         return (
             <>
-                <Button color="inherit">
-                    <Link href="/auth/register">Register</Link>
-                </Button>
-                <Button color="inherit">
-                    <Link href="/auth/login">Login</Link>
-                </Button>
+                <Link color="black" href="/auth/register">
+                    Register
+                </Link>
+                <Link color="black" href="/auth/login">
+                    Login
+                </Link>
             </>
         );
     }, [router, session]);
@@ -42,9 +42,8 @@ export const NavBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
+                        variant="h5"
+                        sx={{ flexGrow: 1, fontWeight: 100 }}
                     >
                         <Link href="/">Flight Agency </Link>
                     </Typography>

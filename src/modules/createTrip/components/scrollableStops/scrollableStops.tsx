@@ -37,10 +37,15 @@ export const ScrollableStops = ({
     const stopsForCurrentDay = Object.values(dayToStopsMap)[index];
 
     return (
-        <Box
-            sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}
-        >
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ height: '65vh', maxWidth: '50%' }}>
+            <Box
+                sx={{
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    margin: 'auto',
+                    width: '50%',
+                }}
+            >
                 <Tabs
                     value={index}
                     onChange={handleIndexChange}

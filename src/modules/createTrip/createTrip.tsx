@@ -96,19 +96,22 @@ const CreateTrip: NextPage = () => {
 
                 <StepButton />
 
-                <TextField
-                    placeholder="Enter Maps API Key"
-                    variant="outlined"
-                    value={apiKey}
-                    onChange={onBlurApiKey}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: '25px',
-                        marginBottom: '25px',
-                    }}
-                />
+                {step === 0 && (
+                    <TextField
+                        placeholder="Enter Maps API Key"
+                        variant="outlined"
+                        value={apiKey}
+                        onChange={onBlurApiKey}
+                        style={{
+                            color: 'primary',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: '25px',
+                            marginBottom: '25px',
+                        }}
+                    />
+                )}
             </Layout>
         </>
     );

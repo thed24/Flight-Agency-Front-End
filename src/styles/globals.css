@@ -4,6 +4,8 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     line-height: 1.42857143;
+    background-image: linear-gradient( 135deg, #d0e8fb 30%, #67addb 100%);
+    background-attachment: fixed; /*edit*/
 }
 
 a {

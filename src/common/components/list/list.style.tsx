@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
 
+export const ListTitle = styled.h1`
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-weight: 100;
+`;
+
 export const ListContainer = styled.div`
     display: flex;
     flex-direction: row;

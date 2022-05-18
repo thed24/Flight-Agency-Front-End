@@ -1,8 +1,9 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import { TabPanel } from 'common/components';
+import { List, TabPanel } from 'common/components';
 import { Trip } from 'common/types';
-import { ConfirmationList } from 'modules/createTrip/components';
+import { Entry } from 'common/types/misc';
 import * as React from 'react';
+import { useMemo, useState } from 'react';
 
 interface Props {
     trips: Trip[];
@@ -16,18 +17,37 @@ function propGenerator(index: number) {
 }
 
 export const ScrollableTrips = ({ trips }: Props) => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
+    const entries = useMemo(
+        () =>
+            trips[value].stops.map((stop) => [
+                {
+                    id: stop.id,
+                    header: `${stop.name}`,
+                    content: `${new Date(
+                        stop.time.start
+                    ).toLocaleTimeString()} to ${new Date(
+                        stop.time.end
+                    ).toLocaleTimeString()}`,
+                } as Entry,
+            ]),
+        [trips, value]
+    );
+
     return (
-        <Box
-            sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}
-        >
+        <Box sx={{ height: '65vh', maxWidth: '50%' }}>
             <Box
-                sx={{ borderBottom: 1, borderColor: 'divider', margin: 'auto' }}
+                sx={{
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    margin: 'auto',
+                    width: '50%',
+                }}
             >
                 <Tabs
                     value={value}
@@ -49,7 +69,7 @@ export const ScrollableTrips = ({ trips }: Props) => {
 
             {trips.map((trip, i) => (
                 <TabPanel key={trip.id} value={value} index={i}>
-                    <ConfirmationList key={trip.id} trip={trip} />
+                    <List title={`${trip.destination}`} entries={entries} />
                 </TabPanel>
             ))}
         </Box>

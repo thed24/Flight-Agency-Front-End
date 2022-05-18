@@ -3,8 +3,10 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { memo, ReactNode, useMemo, useRef } from 'react';
 
 const mapContainerStyle = {
-    height: '600px',
-    width: '800px',
+    height: '50vh',
+    width: '80vh',
+    boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.4)',
+    border: '3px solid #558dd6',
 };
 interface Props {
     center: { latitude: number; longitude: number };
