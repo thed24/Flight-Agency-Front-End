@@ -1,13 +1,14 @@
-import styled from '@emotion/styled';
+import { IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export const ListTitle = styled.h1`
+export const ListTitle = styled('h1')`
     justify-content: center;
     flex-direction: column;
     text-align: center;
     font-weight: 100;
 `;
 
-export const ListContainer = styled.div`
+export const ListContainer = styled('h1')`
     display: flex;
     flex-direction: row;
     padding: 15px;
@@ -15,7 +16,7 @@ export const ListContainer = styled.div`
     margin: 0 auto 0 auto;
 `;
 
-export const SubListContainer = styled.div`
+export const SubListContainer = styled('h1')`
     text-align: center;
     align-items: center;
     margin: 0 auto 0 auto;
@@ -27,11 +28,11 @@ export const SubListContainer = styled.div`
     gap: 10px;
 `;
 
-export const RemoveButton = styled.button`
+export const RemoveButton = styled(IconButton)`
     float: right;
     border: none;
     background-color: transparent;
-    color: blue;
+    color: #6a6af8;
     font-size: 1em;
     cursor: pointer;
 `;

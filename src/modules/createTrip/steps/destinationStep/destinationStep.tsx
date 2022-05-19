@@ -29,7 +29,6 @@ export const DestinationStep = () => {
                 <Select
                     label="Select a country"
                     value={trip.destination}
-                    sx={{ backgroundColor: 'primary' }}
                     onChange={handleOnChange}
                 >
                     {LoadCountries().map((c) => (

@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 
-export const MarkerContainer = styled.div`
+export const MarkerContainer = styled('div')`
     border-radius: 5px;
     border: 1px solid #ccc;
     border-color: #ccc;

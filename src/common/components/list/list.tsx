@@ -1,3 +1,4 @@
+import { HighlightOff } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import { Entries } from 'common/types';
 import { Entry } from 'common/types/misc';
@@ -21,7 +22,7 @@ export const List = ({ title, entries, removeOnClick }: LayoutProps) => {
         <div
             style={{
                 textAlign: 'center',
-                maxHeight: '60vh',
+                maxHeight: '40vh',
                 overflow: 'auto',
             }}
         >
@@ -49,7 +50,7 @@ export const List = ({ title, entries, removeOnClick }: LayoutProps) => {
                                 <SC.RemoveButton
                                     onClick={removeOnClickForEntry(subEntry)}
                                 >
-                                    X
+                                    <HighlightOff />
                                 </SC.RemoveButton>
                             )}
                         </SC.SubListContainer>

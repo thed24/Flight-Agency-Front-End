@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 
-export const FormContainer = styled.form`
+export const FormContainer = styled('form')`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -9,7 +9,7 @@ export const FormContainer = styled.form`
     margin: auto;
 `;
 
-export const AuthButton = styled.input`
+export const AuthButton = styled('input')`
     background-color: #d0e8fb;
     border: 1px solid #bababa;
     border-radius: 4px;

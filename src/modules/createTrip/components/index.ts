@@ -1,3 +1,4 @@
+export { AutoComplete } from './autoComplete/autoComplete';
 export { default as GoogleMap } from './map/map';
 export { Marker } from './marker/marker';
 export { ScrollableStops } from './scrollableStops/scrollableStops';

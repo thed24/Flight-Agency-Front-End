@@ -1,13 +1,14 @@
-import { Button } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { Trip } from 'common/types';
 import { CreateTripEndpoint } from 'common/utilities';
-import { id } from 'date-fns/locale';
 import { useTrip, useTripFlow } from 'modules/createTrip/context';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect } from 'react';
 import Swal from 'sweetalert2';
+
+import * as SC from './stepButton.style';
 
 export const StepButton = () => {
     const router = useRouter();
@@ -19,11 +20,6 @@ export const StepButton = () => {
         CreateTripEndpoint(session?.user?.id ?? ''),
         { manual: true }
     );
-
-    const style = {
-        margin: 'auto',
-        display: 'block',
-    };
 
     const submitOnClick = useCallback(() => {
         createTrip({ data: trip, method: 'post' });
@@ -42,49 +38,47 @@ export const StepButton = () => {
     }, [createdTrip, router]);
 
     const stepOneButton = (
-        <Button
-            style={style}
+        <SC.RightButton
             disabled={trip.destination === ''}
             onClick={increaseStep}
         >
-            Next Step
-        </Button>
+            <ArrowForwardIos />
+        </SC.RightButton>
     );
 
     const stepTwoButtons = (
         <>
-            <Button style={style} onClick={decreaseStep}>
-                Previous Step
-            </Button>
-            <Button
+            <SC.LeftButton onClick={decreaseStep}>
+                <ArrowBackIos />
+            </SC.LeftButton>
+            <SC.RightButton
                 disabled={trip.stops.length === 0}
-                style={style}
                 onClick={increaseStep}
             >
-                Next Step
-            </Button>
+                <ArrowForwardIos />
+            </SC.RightButton>
         </>
     );
 
     const stepThreeButtons = (
         <>
-            <Button style={style} onClick={decreaseStep}>
-                Previous Step
-            </Button>
-            <Button style={style} onClick={increaseStep}>
-                Next Step
-            </Button>
+            <SC.LeftButton onClick={decreaseStep}>
+                <ArrowBackIos />
+            </SC.LeftButton>
+            <SC.RightButton onClick={increaseStep}>
+                <ArrowForwardIos />
+            </SC.RightButton>
         </>
     );
 
     const stepFourButtons = (
         <>
-            <Button style={style} onClick={decreaseStep}>
-                Previous Step
-            </Button>
-            <Button style={style} onClick={submitOnClick}>
-                Confirm
-            </Button>
+            <SC.LeftButton onClick={decreaseStep}>
+                <ArrowBackIos />
+            </SC.LeftButton>
+            <SC.RightButton onClick={submitOnClick}>
+                <ArrowForwardIos />
+            </SC.RightButton>
         </>
     );
 

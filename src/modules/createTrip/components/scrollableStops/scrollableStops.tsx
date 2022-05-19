@@ -37,7 +37,7 @@ export const ScrollableStops = ({
     const stopsForCurrentDay = Object.values(dayToStopsMap)[index];
 
     return (
-        <Box sx={{ height: '65vh', maxWidth: '50%' }}>
+        <Box sx={{ height: '50vh', width: '25%' }}>
             <Box
                 sx={{
                     borderBottom: 1,

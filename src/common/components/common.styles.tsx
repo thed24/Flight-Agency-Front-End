@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 
-export const Container = styled.div`
+export const Container = styled('div')`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,7 +8,7 @@ export const Container = styled.div`
     gap: 10px;
 `;
 
-export const MiddleContainer = styled.div`
+export const MiddleContainer = styled('div')`
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -19,14 +19,14 @@ export const MiddleContainer = styled.div`
     min-height: 500px;
 `;
 
-export const SubTitle = styled.h3`
+export const SubTitle = styled('h3')`
     display: flex;
     font-weight: 300;
     justify-content: center;
     padding-bottom: 20px;
 `;
 
-export const Title = styled.h1`
+export const Title = styled('h1')`
     justify-content: center;
     flex-direction: column;
     text-align: center;

@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 
-export const ModalContainer = styled.div`
+export const ModalContainer = styled('div')`
     background-color: #d0e8fb;
     position: absolute;
     top: 50%;

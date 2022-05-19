@@ -8,6 +8,7 @@ const mapContainerStyle = {
     boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.4)',
     border: '3px solid #558dd6',
 };
+
 interface Props {
     center: { latitude: number; longitude: number };
     zoom: number;
@@ -16,7 +17,12 @@ interface Props {
     onDrag: (lat: number, lng: number) => void;
     onZoom: (zoom: number) => void;
     onClick?: (e: google.maps.MapMouseEvent) => void;
+    setLoaded?: (loaded: boolean) => void;
 }
+
+const libs: [
+    'places' | 'drawing' | 'geometry' | 'localContext' | 'visualization'
+] = ['places'];
 
 const MapInternal = ({
     center,
@@ -26,9 +32,11 @@ const MapInternal = ({
     onDrag,
     onZoom,
     onClick,
+    setLoaded,
 }: Props) => {
     const { isLoaded, loadError } = useJsApiLoader({
         googleMapsApiKey: apiKey,
+        libraries: libs,
     });
 
     const mapRef = useRef<google.maps.Map | null>(null);
@@ -45,6 +53,7 @@ const MapInternal = ({
 
     const handleOnLoad = (map: google.maps.Map) => {
         mapRef.current = map;
+        if (setLoaded) setLoaded(true);
     };
 
     const handleZoom = () => {

@@ -1,10 +1,11 @@
-import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import useAxios from 'axios-hooks';
 import { SC } from 'common/components';
 import { Categories, LoadCountries, Place, PlacesRequest } from 'common/types';
 import { Entry } from 'common/types/misc';
 import { RequestLocationDataEndpoint } from 'common/utilities';
 import {
+    AutoComplete,
     GoogleMap,
     Marker,
     ScrollableStops,
@@ -29,6 +30,7 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
 
     const [index, setIndex] = React.useState<number>(0);
     const [category, setCategory] = React.useState<string>('Food');
+    const [mapLoaded, setMapLoaded] = React.useState<boolean>(false);
 
     const days = Object.keys(dayToStopMap);
 
@@ -109,6 +111,7 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
                     onDrag={setCenter}
                     onZoom={setZoom}
                     apiKey={apiKey}
+                    setLoaded={setMapLoaded}
                 >
                     {markers}
                 </GoogleMap>
@@ -124,18 +127,31 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
                 )}
             </MapContainer>
 
-            <Select
-                placeholder="Select a category"
-                value={category}
-                label="Category"
-                onChange={handleOnChangeCategory}
+            <div
+                style={{
+                    gap: '20px',
+                    display: 'grid',
+                    gridAutoFlow: 'column',
+                }}
             >
-                {Categories.map((cat) => (
-                    <MenuItem value={cat} key={cat}>
-                        {cat}
-                    </MenuItem>
-                ))}
-            </Select>
+                <Select
+                    value={category}
+                    label="Category"
+                    onChange={handleOnChangeCategory}
+                >
+                    {Categories.map((cat) => (
+                        <MenuItem value={cat} key={cat}>
+                            {cat}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <AutoComplete
+                    latitude={center.latitude}
+                    longitude={center.longitude}
+                    setCenter={setCenter}
+                    apiLoaded={mapLoaded}
+                />
+            </div>
         </SC.Container>
     );
 };
