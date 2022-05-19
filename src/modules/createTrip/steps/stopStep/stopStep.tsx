@@ -145,12 +145,7 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
                         </MenuItem>
                     ))}
                 </Select>
-                <AutoComplete
-                    latitude={center.latitude}
-                    longitude={center.longitude}
-                    setCenter={setCenter}
-                    apiLoaded={mapLoaded}
-                />
+                <AutoComplete setCenter={setCenter} apiLoaded={mapLoaded} />
             </div>
         </SC.Container>
     );

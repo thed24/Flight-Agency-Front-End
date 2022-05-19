@@ -7,8 +7,6 @@ import usePlacesAutocomplete, {
 } from 'use-places-autocomplete';
 
 interface Props {
-    latitude: number;
-    longitude: number;
     apiLoaded: boolean;
     setCenter: (lat: number, lng: number) => void;
 }
@@ -33,8 +31,6 @@ const AutoCompleteInternal = ({ setCenter, apiLoaded }: Props) => {
         e: SyntheticEvent,
         val: google.maps.places.AutocompletePrediction | null
     ) => {
-        console.log(val);
-
         if (val === null) return;
 
         setValue(val.description, false);
@@ -47,7 +43,9 @@ const AutoCompleteInternal = ({ setCenter, apiLoaded }: Props) => {
     };
 
     if (!apiLoaded && !ready) return <CircularProgress />;
-    if (apiLoaded && !ready) init();
+    if (apiLoaded && !ready) {
+        init();
+    }
 
     return (
         <div>
