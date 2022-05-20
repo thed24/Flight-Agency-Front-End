@@ -52,7 +52,7 @@ const AutoCompleteInternal = ({ setCenter, apiLoaded }: Props) => {
             {ready && (
                 <Autocomplete
                     getOptionLabel={(option) =>
-                        option.structured_formatting.main_text
+                        `${option.structured_formatting.main_text}, ${option.structured_formatting.secondary_text}`
                     }
                     sx={{ width: '500px' }}
                     options={data}
