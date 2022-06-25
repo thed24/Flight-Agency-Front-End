@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { List, TabPanel } from 'common/components';
-import { Trip } from 'common/types';
+import { DayToStopMap, Trip } from 'common/types';
 import { Entry } from 'common/types/misc';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
@@ -18,6 +18,7 @@ function propGenerator(index: number) {
 
 export const ScrollableTrips = ({ trips }: Props) => {
     const [value, setValue] = useState(0);
+    const stopsForDay = DayToStopMap(trips[value].stops);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -25,8 +26,13 @@ export const ScrollableTrips = ({ trips }: Props) => {
 
     const entries = useMemo(
         () =>
-            trips[value].stops.map((stop) => [
+            Object.entries(stopsForDay).map(([day, stops]) => [
                 {
+                    header: `Day ${parseInt(day, 10) + 1}`,
+                    content: '',
+                    id: 0,
+                },
+                ...stops.map((stop) => ({
                     id: stop.id,
                     header: `${stop.name}`,
                     content: `${new Date(
@@ -34,9 +40,9 @@ export const ScrollableTrips = ({ trips }: Props) => {
                     ).toLocaleTimeString()} to ${new Date(
                         stop.time.end
                     ).toLocaleTimeString()}`,
-                } as Entry,
+                })),
             ]),
-        [trips, value]
+        [stopsForDay]
     );
 
     return (
@@ -69,7 +75,11 @@ export const ScrollableTrips = ({ trips }: Props) => {
 
             {trips.map((trip, i) => (
                 <TabPanel key={trip.id} value={value} index={i}>
-                    <List title={`${trip.destination}`} entries={entries} />
+                    <List
+                        title={`${trip.destination}`}
+                        entries={entries}
+                        verticle
+                    />
                 </TabPanel>
             ))}
         </Box>

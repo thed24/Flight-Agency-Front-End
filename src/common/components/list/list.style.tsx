@@ -8,9 +8,13 @@ export const ListTitle = styled('h1')`
     font-weight: 100;
 `;
 
-export const ListContainer = styled('h1')`
+type ListContainerProps = {
+    verticle?: boolean;
+};
+
+export const ListContainer = styled('h1')<ListContainerProps>`
     display: flex;
-    flex-direction: row;
+    flex-direction: ${(props) => (props?.verticle ?? false ? 'column' : 'row')};
     padding: 15px;
     width: 100%;
     margin: 0 auto 0 auto;

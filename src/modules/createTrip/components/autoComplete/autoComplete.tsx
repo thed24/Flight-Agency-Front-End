@@ -1,21 +1,26 @@
-import { Autocomplete, CircularProgress, TextField } from '@mui/material';
-import { SyntheticEvent } from 'react';
-import useOnclickOutside from 'react-cool-onclickoutside';
+import { Autocomplete, TextField } from '@mui/material';
+import React, { SyntheticEvent, useCallback, useEffect } from 'react';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from 'use-places-autocomplete';
 
 interface Props {
+    defaultAddress: string;
     apiLoaded: boolean;
     setCenter: (lat: number, lng: number) => void;
 }
 
-const AutoCompleteInternal = ({ setCenter, apiLoaded }: Props) => {
+const AutoCompleteInternal = ({
+    setCenter,
+    apiLoaded,
+    defaultAddress,
+}: Props) => {
     const {
         init,
         ready,
         setValue,
+        value,
         suggestions: { status, data },
         clearSuggestions,
     } = usePlacesAutocomplete({
@@ -23,49 +28,67 @@ const AutoCompleteInternal = ({ setCenter, apiLoaded }: Props) => {
         initOnMount: false,
     });
 
-    const handleInput = (e: SyntheticEvent<Element, Event>, val: string) => {
-        setValue(val);
-    };
+    const [address, setAddress] =
+        React.useState<google.maps.places.AutocompletePrediction | null>(null);
 
-    const handleSelect = (
-        e: SyntheticEvent,
-        val: google.maps.places.AutocompletePrediction | null
-    ) => {
-        if (val === null) return;
+    const handleInput = useCallback(
+        (e: SyntheticEvent<Element, Event> | null, val: string) => {
+            setValue(val);
+        },
+        [setValue]
+    );
 
-        setValue(val.description, false);
-        clearSuggestions();
+    const handleSelect = useCallback(
+        (
+            e: SyntheticEvent<Element, Event> | null,
+            val: google.maps.places.AutocompletePrediction | null
+        ) => {
+            if (val === null) return;
 
-        getGeocode({ address: val.description }).then((results) => {
-            const { lat, lng } = getLatLng(results[0]);
-            setCenter(lat, lng);
-        });
-    };
+            setValue(val.description, false);
+            setAddress(val);
+            clearSuggestions();
 
-    if (!apiLoaded && !ready) return <CircularProgress />;
+            getGeocode({ address: val.description }).then((results) => {
+                const { lat, lng } = getLatLng(results[0]);
+                setCenter(lat, lng);
+            });
+        },
+        [setCenter, clearSuggestions, setValue]
+    );
+
+    useEffect(() => {
+        if (value === defaultAddress && data && data.length > 0) {
+            handleSelect(null, data[0]);
+        }
+    }, [defaultAddress, data, setValue, value, handleSelect, handleInput]);
+
     if (apiLoaded && !ready) {
         init();
     }
 
+    if (ready && value === '') {
+        handleInput(null, defaultAddress);
+    }
+
     return (
-        <div>
-            {ready && (
-                <Autocomplete
-                    getOptionLabel={(option) =>
-                        `${option.structured_formatting.main_text}, ${option.structured_formatting.secondary_text}`
-                    }
-                    sx={{ width: '500px' }}
-                    options={data}
-                    onInputChange={handleInput}
-                    onChange={handleSelect}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Search for a place!" />
-                    )}
-                />
+        <Autocomplete
+            getOptionLabel={(option) =>
+                `${option.structured_formatting.main_text}, ${option.structured_formatting.secondary_text}`
+            }
+            loading={!apiLoaded}
+            loadingText="Searching for places..."
+            sx={{ width: '500px' }}
+            options={data}
+            onInputChange={handleInput}
+            onChange={handleSelect}
+            value={address}
+            renderInput={(params) => (
+                <TextField {...params} label="Search for a place!" />
             )}
-        </div>
+        />
     );
 };
 
 AutoCompleteInternal.displayName = 'AutoComplete';
-export const AutoComplete = AutoCompleteInternal;
+export const AutoComplete = React.memo(AutoCompleteInternal);

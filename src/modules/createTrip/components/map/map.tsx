@@ -1,24 +1,30 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { Place } from 'common/types';
+import React from 'react';
 import { memo, ReactNode, useMemo, useRef } from 'react';
 
-const mapContainerStyle = {
-    height: '50vh',
-    width: '80vh',
-    boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.4)',
-    border: '3px solid #558dd6',
-};
+import * as SC from './map.styles';
 
 interface Props {
     center: { latitude: number; longitude: number };
     zoom: number;
     children: ReactNode[];
+    places: Place[];
     apiKey: string;
+    onClickPlace: (place: Place) => void;
     onDrag: (lat: number, lng: number) => void;
     onZoom: (zoom: number) => void;
     onClick?: (e: google.maps.MapMouseEvent) => void;
     setLoaded?: (loaded: boolean) => void;
 }
+
+const mapStyle = {
+    height: '50vh',
+    width: '80vh',
+    boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.4)',
+    border: '3px solid #558dd6',
+};
 
 const libs: [
     'places' | 'drawing' | 'geometry' | 'localContext' | 'visualization'
@@ -28,7 +34,9 @@ const MapInternal = ({
     center,
     zoom,
     children,
+    places,
     apiKey,
+    onClickPlace,
     onDrag,
     onZoom,
     onClick,
@@ -38,6 +46,8 @@ const MapInternal = ({
         googleMapsApiKey: apiKey,
         libraries: libs,
     });
+
+    const [showOverlay, setShowOverlay] = React.useState(true);
 
     const mapRef = useRef<google.maps.Map | null>(null);
 
@@ -84,6 +94,14 @@ const MapInternal = ({
         }
     };
 
+    const onClickPlaceHandler = (place: Place) => () => {
+        onClickPlace(place);
+    };
+
+    const toggleOverlay = () => {
+        setShowOverlay(!showOverlay);
+    };
+
     if (loadError) {
         return <div>Error loading maps</div>;
     }
@@ -93,27 +111,46 @@ const MapInternal = ({
     }
 
     return (
-        <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={centerOptions}
-            zoom={zoomOptions}
-            onLoad={handleOnLoad}
-            onDragEnd={handleDrag}
-            onZoomChanged={handleZoom}
-            onClick={onClick}
-            clickableIcons={false}
-            options={{
-                disableDefaultUI: true,
-                zoomControl: false,
-                mapTypeControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                rotateControl: false,
-                fullscreenControl: false,
-            }}
-        >
-            {children}
-        </GoogleMap>
+        <SC.RelativeContainer>
+            <SC.OverlayButton onClick={toggleOverlay}>
+                {showOverlay ? 'Hide' : 'Show'} Locations
+            </SC.OverlayButton>
+
+            {showOverlay && (
+                <SC.OverlayList>
+                    {places.map((place) => (
+                        <SC.OverlayListItem
+                            key={place.id}
+                            onClick={onClickPlaceHandler(place)}
+                        >
+                            <ListItemText primary={place.name} />
+                        </SC.OverlayListItem>
+                    ))}
+                </SC.OverlayList>
+            )}
+
+            <GoogleMap
+                mapContainerStyle={mapStyle}
+                center={centerOptions}
+                zoom={zoomOptions}
+                onLoad={handleOnLoad}
+                onDragEnd={handleDrag}
+                onZoomChanged={handleZoom}
+                onClick={onClick}
+                clickableIcons={false}
+                options={{
+                    disableDefaultUI: true,
+                    zoomControl: false,
+                    mapTypeControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false,
+                }}
+            >
+                {children}
+            </GoogleMap>
+        </SC.RelativeContainer>
     );
 };
 

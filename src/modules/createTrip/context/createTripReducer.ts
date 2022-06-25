@@ -45,7 +45,18 @@ export function createTripReducer(
                 ...state,
                 trip: {
                     ...state.trip,
-                    stops: [...state.trip.stops, action.payload],
+                    stops: [...state.trip.stops, action.payload].sort(
+                        (currStop, nextStop) => {
+                            const currTime = new Date(
+                                currStop.time.start
+                            ).getTime();
+                            const nextTime = new Date(
+                                nextStop.time.start
+                            ).getTime();
+
+                            return currTime - nextTime;
+                        }
+                    ),
                 },
             };
         case 'removeStop':
