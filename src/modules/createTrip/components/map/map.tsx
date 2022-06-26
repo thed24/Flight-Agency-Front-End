@@ -1,4 +1,4 @@
-import { CircularProgress, List, ListItem, ListItemText } from '@mui/material';
+import { CircularProgress, ListItemText } from '@mui/material';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { Place } from 'common/types';
 import React from 'react';

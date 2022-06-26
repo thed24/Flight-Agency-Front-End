@@ -8,7 +8,7 @@ import {
 } from '@storyofams/next-api-decorators';
 import { client, RequiresAuth } from 'common/server';
 import { logger } from 'common/server/logging';
-import { Trip, User } from 'common/types';
+import type { Trip, User } from 'common/types';
 import { CreateTripEndpoint, GetTripsEndpoint } from 'common/utilities';
 
 type GetTripResponse = Trip[];
