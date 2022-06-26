@@ -33,6 +33,7 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
     const [mapLoaded, setMapLoaded] = React.useState<boolean>(false);
 
     const days = Object.keys(dayToStopMap);
+    const day = days.length > 0 ? parseInt(days[index], 10) : 1;
 
     useEffect(() => {
         const currentCountry = LoadCountries().find(
@@ -59,8 +60,6 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
     const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
         setCategory(e.target.value);
     };
-
-    const day = days.length > 0 ? parseInt(days[index], 10) : 1;
 
     const markers = useMemo(() => {
         const handleOnClickMarker =
@@ -136,7 +135,9 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
 
                         {places && (
                             <AutoComplete
-                                defaultAddress={`${places[0].name}, ${trip.destination}`}
+                                defaultAddress={`${
+                                    places?.[0]?.name ?? 'McDonalds'
+                                } ${trip.destination}`}
                                 setCenter={setCenter}
                                 apiLoaded={mapLoaded}
                             />

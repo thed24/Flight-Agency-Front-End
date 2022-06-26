@@ -10,6 +10,7 @@ export interface User {
 export interface Trip {
     id: number;
     destination: string;
+    length: number;
     stops: Stop[];
 }
 
@@ -18,6 +19,7 @@ export type Trips = Trip[];
 export interface Stop {
     id: number;
     name: string;
+    day: number;
     time: DateRange;
     location: Location;
     address: string;

@@ -43,7 +43,7 @@ export const ScrollableStops = ({
                     borderBottom: 1,
                     borderColor: 'divider',
                     margin: 'auto',
-                    width: '50%',
+                    width: '80%',
                 }}
             >
                 <Tabs

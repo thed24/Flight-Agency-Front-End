@@ -16,27 +16,23 @@ import {
 import { NextPage } from 'next';
 import { ChangeEvent, useCallback, useState } from 'react';
 
+type ModalState = {
+    value: DateRange;
+    day: number;
+    place: Place;
+};
+
 const CreateTrip: NextPage = () => {
     const { step } = useTripFlow();
+
     const [apiKey, setApiKey] = useState<string>('');
+    const [modalState, setModalState] = useState<ModalState | null>(null);
 
-    const [modalPlace, setModalPlace] = useState<Place | null>(null);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalValue, setModalValue] = useState<DateRange>({
-        start: new Date(),
-        end: new Date(),
-    });
+    const closeModal = () => {
+        setModalState(null);
+    };
 
-    const modalConfirm = useCallback(() => {
-        setModalOpen(!modalOpen);
-    }, [modalOpen]);
-
-    const modalCancel = useCallback(() => {
-        setModalOpen(!modalOpen);
-        setModalPlace(null);
-    }, [modalOpen]);
-
-    const openModalWithPlace = (place: Place) => {
+    const openModal = (place: Place, day: number) => {
         const startDate = new Date();
         startDate.setDate(startDate.getDate());
         startDate.setHours(6, 0, 0, 0);
@@ -45,13 +41,23 @@ const CreateTrip: NextPage = () => {
         endDate.setDate(endDate.getDate());
         endDate.setHours(7, 0, 0, 0);
 
-        setModalValue({
-            start: startDate,
-            end: endDate,
+        setModalState({
+            value: {
+                start: startDate,
+                end: endDate,
+            },
+            day,
+            place,
         });
+    };
 
-        setModalPlace(place);
-        setModalOpen(true);
+    const setModalValue = (value: DateRange) => {
+        if (modalState) {
+            setModalState({
+                ...modalState,
+                value,
+            });
+        }
     };
 
     const onBlurApiKey = useCallback(
@@ -63,15 +69,15 @@ const CreateTrip: NextPage = () => {
 
     return (
         <>
-            <StopModal
-                place={modalPlace}
-                value={modalValue}
-                setValue={setModalValue}
-                open={modalOpen}
-                confirm={modalConfirm}
-                setOpen={modalCancel}
-                cancel={modalCancel}
-            />
+            {modalState && (
+                <StopModal
+                    place={modalState.place}
+                    value={modalState.value}
+                    day={modalState.day}
+                    setValue={setModalValue}
+                    close={closeModal}
+                />
+            )}
 
             <Layout title="Build Your Trip | Flight Agency">
                 <SC.Title> Welcome to the Flight Agency </SC.Title>
@@ -84,10 +90,7 @@ const CreateTrip: NextPage = () => {
                 {step === 0 && <DestinationStep />}
 
                 {step === 1 && (
-                    <StopStep
-                        onClickMarker={openModalWithPlace}
-                        apiKey={apiKey}
-                    />
+                    <StopStep onClickMarker={openModal} apiKey={apiKey} />
                 )}
 
                 {step === 2 && <FillerStep apiKey={apiKey} />}

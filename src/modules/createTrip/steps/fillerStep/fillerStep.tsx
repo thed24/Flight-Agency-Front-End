@@ -45,6 +45,9 @@ export const FillerStep = ({ apiKey }: Props) => {
 
     const isRouteMemoized = index in allRoutes;
     const route = allRoutes[index]?.routes[0] ?? null;
+
+    const days = Object.keys(dayToStopMap);
+    const day = days.length > 0 ? parseInt(days[index], 10) : 1;
     const stopsForDay = Object.values(dayToStopMap)[index];
 
     useEffect(() => {
@@ -63,6 +66,7 @@ export const FillerStep = ({ apiKey }: Props) => {
 
             const newStop: Stop = {
                 id: trip.stops.length,
+                day,
                 name: `Stop Over at ${address.formatted_address}`,
                 time: {
                     start: startDate,

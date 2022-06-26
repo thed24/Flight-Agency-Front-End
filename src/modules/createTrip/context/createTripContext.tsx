@@ -19,7 +19,7 @@ type CreateTripContextInterface = readonly [CreateTripState, Dispatcher];
 
 export const CreateTripContext = createContext<CreateTripContextInterface>([
     {
-        trip: { id: 0, destination: '', stops: [] },
+        trip: { length: 0, id: 0, destination: '', stops: [] },
         step: 0,
         zoom: 10,
         center: { latitude: 0, longitude: 0 },
@@ -34,7 +34,7 @@ export const CreateTripProvider = ({
     children: React.ReactNode;
 }) => {
     const [state, _dispatch] = useReducer(createTripReducer, {
-        trip: { id: 0, destination: '', stops: [] },
+        trip: { length: 0, id: 0, destination: '', stops: [] },
         step: 0,
         zoom: 17,
         center: { latitude: 0, longitude: 0 },

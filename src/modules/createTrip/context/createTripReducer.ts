@@ -57,6 +57,11 @@ export function createTripReducer(
                             return currTime - nextTime;
                         }
                     ),
+                    length: Math.max(
+                        ...[...state.trip.stops, action.payload].map(
+                            (stop) => stop.day
+                        )
+                    ),
                 },
             };
         case 'removeStop':

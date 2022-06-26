@@ -10,45 +10,34 @@ import { useCallback } from 'react';
 import * as SSC from './stopModal.styles';
 
 export interface Props {
-    place: Place | null;
+    place: Place;
+    day: number;
     value: DateRange;
-    open: boolean;
-    setOpen: (val: boolean) => void;
     setValue: (val: DateRange) => void;
-    confirm: () => void;
-    cancel: () => void;
+    close: () => void;
 }
 
-export const StopModal = ({
-    place,
-    value,
-    setValue,
-    confirm,
-    open,
-    setOpen,
-    cancel,
-}: Props) => {
+export const StopModal = ({ place, day, value, setValue, close }: Props) => {
     const { trip, addStop } = useTrip();
 
     const handleConfirm = useCallback(() => {
-        if (place) {
-            const newStop = {
-                id: trip.stops.length,
-                name: place.name,
-                time: value,
-                address: place.vicinity,
-                category: place.category ?? 'Food',
-                location: {
-                    latitude: place.geometry.location.lat,
-                    longitude: place.geometry.location.lng,
-                },
-            };
+        const newStop = {
+            id: trip.stops.length,
+            name: place.name,
+            time: value,
+            address: place.vicinity,
+            day,
+            category: place.category ?? 'Food',
+            location: {
+                latitude: place.geometry.location.lat,
+                longitude: place.geometry.location.lng,
+            },
+        };
 
-            addStop(newStop);
-        }
+        addStop(newStop);
 
-        confirm();
-    }, [addStop, confirm, place, trip.stops.length, value]);
+        close();
+    }, [addStop, close, day, place, trip.stops.length, value]);
 
     const handleChangeStart = useCallback(
         (event: string | null) => {
@@ -72,7 +61,7 @@ export const StopModal = ({
 
     return (
         place && (
-            <Modal open={open} onClose={setOpen}>
+            <Modal open>
                 <SSC.ModalContainer>
                     <SC.Title> {place.name} </SC.Title>
                     <SC.SubTitle> {place.vicinity} </SC.SubTitle>
@@ -101,7 +90,7 @@ export const StopModal = ({
                     </LocalizationProvider>
 
                     <Button onClick={handleConfirm}>Save Stop</Button>
-                    <Button onClick={cancel}>Cancel</Button>
+                    <Button onClick={close}>Cancel</Button>
                 </SSC.ModalContainer>
             </Modal>
         )
