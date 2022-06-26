@@ -12,7 +12,7 @@ import {
 import { RequestAddressEndpoint } from 'common/utilities';
 import { GoogleMap, ScrollableStops } from 'modules/createTrip/components';
 import { useMap, useTrip } from 'modules/createTrip/context';
-import { MapContainer } from 'modules/createTrip/steps';
+import { SCC } from 'modules/createTrip/steps';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 interface Props {
@@ -219,11 +219,14 @@ export const FillerStep = ({ apiKey }: Props) => {
 
     return (
         <SC.Container>
-            <MapContainer>
+            <SCC.MapContainer>
                 <GoogleMap
                     key={index * stopsForDay.length}
                     center={center}
                     zoom={zoom}
+                    places={[]}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    onClickPlace={() => {}}
                     onDrag={setCenter}
                     onZoom={setZoom}
                     apiKey={apiKey}
@@ -241,7 +244,7 @@ export const FillerStep = ({ apiKey }: Props) => {
                         entries={entries}
                     />
                 )}
-            </MapContainer>
+            </SCC.MapContainer>
         </SC.Container>
     );
 };

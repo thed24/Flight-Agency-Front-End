@@ -112,11 +112,13 @@ const MapInternal = ({
 
     return (
         <SC.RelativeContainer>
-            <SC.OverlayButton onClick={toggleOverlay}>
-                {showOverlay ? 'Hide' : 'Show'} Locations
-            </SC.OverlayButton>
+            {places.length > 0 && (
+                <SC.OverlayButton onClick={toggleOverlay}>
+                    {showOverlay ? 'Hide' : 'Show'} Locations
+                </SC.OverlayButton>
+            )}
 
-            {showOverlay && (
+            {places.length > 0 && showOverlay && (
                 <SC.OverlayList>
                     {places.map((place) => (
                         <SC.OverlayListItem
