@@ -47,7 +47,10 @@ const Register: NextPage = () => {
     }, [error, response]);
 
     const OnRegister = async ({ Name, Email, Password }: FormData) =>
-        requestRegister({ data: { Name, Email, Password }, method: 'post' });
+        requestRegister({
+            data: { Name, Email: Email.toLocaleLowerCase(), Password },
+            method: 'post',
+        });
 
     const OnCloseAlert = () => setAlert(null);
 

@@ -23,7 +23,7 @@ class userHandler {
             .then((result) => result.data)
             .catch((error) => {
                 logger.error(`Failed to call API: ${error.response?.data}`);
-                throw new BadRequestException(error);
+                throw new BadRequestException(error.response.data.message);
             });
     }
 

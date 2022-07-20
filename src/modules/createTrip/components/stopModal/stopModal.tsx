@@ -1,11 +1,10 @@
 import DateFnsUtils from '@date-io/date-fns';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Button, Modal, TextField } from '@mui/material';
+import { Button, Modal, TextField, TextFieldProps } from '@mui/material';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { SC } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import { useTrip } from 'modules/createTrip/context';
-import { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import * as SSC from './stopModal.styles';
 
@@ -13,18 +12,21 @@ export interface Props {
     place: Place;
     day: number;
     value: DateRange;
-    setValue: (val: DateRange) => void;
     close: () => void;
 }
 
-export const StopModal = ({ place, day, value, setValue, close }: Props) => {
+const StopModalInternal = ({ place, day, value, close }: Props) => {
+    const [startDate, setStartDate] = useState<Date | null>(value.start);
+    const [endDate, setEndDate] = useState<Date | null>(value.end);
     const { trip, addStop } = useTrip();
 
     const handleConfirm = useCallback(() => {
+        if (!startDate || !endDate) return;
+
         const newStop = {
             id: trip.stops.length,
             name: place.name,
-            time: value,
+            time: { start: startDate, end: endDate },
             address: place.vicinity,
             day,
             category: place.category ?? 'Food',
@@ -37,26 +39,42 @@ export const StopModal = ({ place, day, value, setValue, close }: Props) => {
         addStop(newStop);
 
         close();
-    }, [addStop, close, day, place, trip.stops.length, value]);
+    }, [addStop, close, startDate, endDate, day, place, trip.stops.length]);
 
     const handleChangeStart = useCallback(
         (event: string | null) => {
-            setValue({
-                start: event === null ? new Date() : new Date(event),
-                end: value.end,
-            });
+            if (!event || Number.isNaN(event?.valueOf()) || !endDate) {
+                return;
+            }
+
+            const newStartDate = new Date(event);
+            const newEndDate =
+                endDate.getHours() > newStartDate.getHours()
+                    ? endDate
+                    : new Date(newStartDate.getTime() + 1 * 60 * 60 * 1000);
+
+            setStartDate(newStartDate);
+            setEndDate(newEndDate);
         },
-        [setValue, value.end]
+        [endDate]
     );
 
     const handleChangeEnd = useCallback(
         (event: string | null) => {
-            setValue({
-                start: value.start,
-                end: event === null ? new Date() : new Date(event),
-            });
+            if (!event || Number.isNaN(event?.valueOf()) || !startDate) {
+                return;
+            }
+
+            const newEndDate = new Date(event);
+            const newStartDate =
+                startDate.getHours() < newEndDate.getHours()
+                    ? startDate
+                    : new Date(newEndDate.getTime() - 1 * 60 * 60 * 1000);
+
+            setStartDate(newStartDate);
+            setEndDate(newEndDate);
         },
-        [setValue, value.start]
+        [startDate]
     );
 
     return (
@@ -72,9 +90,11 @@ export const StopModal = ({ place, day, value, setValue, close }: Props) => {
                     <LocalizationProvider dateAdapter={DateFnsUtils}>
                         <DateTimePicker
                             label="Start Time"
-                            value={value.start}
+                            value={startDate}
                             onChange={handleChangeStart}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(
+                                params: JSX.IntrinsicAttributes & TextFieldProps
+                            ) => <TextField {...params} />}
                             minDate={new Date().toISOString()}
                         />
                     </LocalizationProvider>
@@ -82,17 +102,27 @@ export const StopModal = ({ place, day, value, setValue, close }: Props) => {
                     <LocalizationProvider dateAdapter={DateFnsUtils}>
                         <DateTimePicker
                             label="Stop Time"
-                            value={value.end}
+                            value={endDate}
                             onChange={handleChangeEnd}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(
+                                params: JSX.IntrinsicAttributes & TextFieldProps
+                            ) => <TextField {...params} />}
                             minDate={new Date().toISOString()}
                         />
                     </LocalizationProvider>
 
-                    <Button onClick={handleConfirm}>Save Stop</Button>
+                    <Button
+                        disabled={!startDate || !endDate}
+                        onClick={handleConfirm}
+                    >
+                        Save Stop
+                    </Button>
                     <Button onClick={close}>Cancel</Button>
                 </SSC.ModalContainer>
             </Modal>
         )
     );
 };
+
+StopModalInternal.displayName = 'StopModal';
+export const StopModal = React.memo(StopModalInternal);

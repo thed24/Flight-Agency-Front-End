@@ -5,7 +5,7 @@ import {
     Query,
 } from '@storyofams/next-api-decorators';
 import axios from 'axios';
-import { readApiKey, RequiresAuth } from 'common/server';
+import { readApiKey } from 'common/server';
 import { Cache } from 'common/server/cache';
 import { logger } from 'common/server/logging';
 import { Place } from 'common/types';
@@ -19,7 +19,6 @@ type IntermediatePlacesResponse = {
 
 class nearByHandler {
     @Get()
-    @RequiresAuth()
     async login(
         @Query('lat') lat: string,
         @Query('lng') lng: string,

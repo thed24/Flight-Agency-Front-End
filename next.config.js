@@ -1,14 +1,17 @@
+const withPWA = require('next-pwa');
+
+const isProd = process.env.NODE_ENV === 'production';
+
 /**
  * @type {import('next').NextConfig}
  * */
-module.exports = {
+module.exports = withPWA({
     reactStrictMode: true,
     compiler: {
         styledComponents: true,
-        outputStandalone: true,
     },
     pwa: {
         dest: 'public',
-        swSrc: 'src/service-worker.js',
+        disable: !isProd,
     },
-};
+});

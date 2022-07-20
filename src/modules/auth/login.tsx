@@ -27,7 +27,7 @@ const Login: NextPage = () => {
         setLoading(true);
         const response = await signIn<'credentials'>('credentials', {
             redirect: false,
-            Email,
+            Email: Email.toLocaleLowerCase(),
             Password,
             callbackUrl: `${window.location.origin}`,
         });

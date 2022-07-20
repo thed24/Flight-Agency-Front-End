@@ -6,7 +6,7 @@ import {
     StopModal,
     TripStepper,
 } from 'modules/createTrip/components';
-import { useTripFlow } from 'modules/createTrip/context';
+import { useTrip, useTripFlow } from 'modules/createTrip/context';
 import {
     ConfirmationStep,
     DestinationStep,
@@ -24,6 +24,7 @@ type ModalState = {
 
 const CreateTrip: NextPage = () => {
     const { step } = useTripFlow();
+    const { trip } = useTrip();
 
     const [apiKey, setApiKey] = useState<string>('');
     const [modalState, setModalState] = useState<ModalState | null>(null);
@@ -33,13 +34,17 @@ const CreateTrip: NextPage = () => {
     };
 
     const openModal = (place: Place, day: number) => {
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate());
-        startDate.setHours(6, 0, 0, 0);
+        const latestStop = trip.stops[trip.stops.length - 1];
+        const startDate = new Date(
+            (latestStop?.time?.end ?? new Date()).getTime() + 1 * 60 * 60 * 1000
+        );
 
-        const endDate = new Date();
-        endDate.setDate(endDate.getDate());
-        endDate.setHours(7, 0, 0, 0);
+        startDate.setHours(
+            startDate.getHours() + Math.round(startDate.getMinutes() / 60)
+        );
+        startDate.setMinutes(0, 0, 0);
+
+        const endDate = new Date(startDate.getTime() + 1 * 60 * 60 * 1000);
 
         setModalState({
             value: {
@@ -49,15 +54,6 @@ const CreateTrip: NextPage = () => {
             day,
             place,
         });
-    };
-
-    const setModalValue = (value: DateRange) => {
-        if (modalState) {
-            setModalState({
-                ...modalState,
-                value,
-            });
-        }
     };
 
     const onBlurApiKey = useCallback(
@@ -74,7 +70,6 @@ const CreateTrip: NextPage = () => {
                     place={modalState.place}
                     value={modalState.value}
                     day={modalState.day}
-                    setValue={setModalValue}
                     close={closeModal}
                 />
             )}

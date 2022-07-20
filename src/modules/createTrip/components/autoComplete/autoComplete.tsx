@@ -21,35 +21,33 @@ const AutoCompleteInternal = ({
         ready,
         setValue,
         value,
-        suggestions: { status, data },
+        suggestions: { data },
         clearSuggestions,
     } = usePlacesAutocomplete({
         debounce: 300,
         initOnMount: false,
     });
 
-    const [address, setAddress] =
-        React.useState<google.maps.places.AutocompletePrediction | null>(null);
-
     const handleInput = useCallback(
         (e: SyntheticEvent<Element, Event> | null, val: string) => {
+            if (e === null) return;
+
             setValue(val);
         },
         [setValue]
     );
 
     const handleSelect = useCallback(
-        (
-            e: SyntheticEvent<Element, Event> | null,
-            val: google.maps.places.AutocompletePrediction | null
-        ) => {
-            if (val === null) return;
+        (e: SyntheticEvent<Element, Event> | null, val: string | null) => {
+            if (e === null || val === null) {
+                setValue('');
+                return;
+            }
 
-            setValue(val.description, false);
-            setAddress(val);
+            setValue(val, false);
             clearSuggestions();
 
-            getGeocode({ address: val.description }).then((results) => {
+            getGeocode({ address: val }).then((results) => {
                 const { lat, lng } = getLatLng(results[0]);
                 setCenter(lat, lng);
             });
@@ -59,7 +57,7 @@ const AutoCompleteInternal = ({
 
     useEffect(() => {
         if (value === defaultAddress && data && data.length > 0) {
-            handleSelect(null, data[0]);
+            handleSelect(null, data[0].description);
         }
     }, [defaultAddress, data, setValue, value, handleSelect, handleInput]);
 
@@ -73,16 +71,13 @@ const AutoCompleteInternal = ({
 
     return (
         <Autocomplete
-            getOptionLabel={(option) =>
-                `${option.structured_formatting.main_text}, ${option.structured_formatting.secondary_text}`
-            }
             loading={!apiLoaded}
             loadingText="Searching for places..."
             sx={{ width: '500px' }}
-            options={data}
+            options={data.map((option) => option.description)}
             onInputChange={handleInput}
             onChange={handleSelect}
-            value={address}
+            value={value}
             renderInput={(params) => (
                 <TextField {...params} label="Search for a place!" />
             )}
