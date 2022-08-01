@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
@@ -11,16 +11,13 @@ export const NavBar = () => {
     const buttons = useMemo(() => {
         if (session) {
             const logOut = async () => {
-                const redirectUrl = await signOut({
-                    redirect: false,
-                    callbackUrl: '/',
-                });
-                router.push(redirectUrl.url);
+                await signOut({ redirect: false });
+                router.push('/');
             };
 
             return (
-                <Typography onClick={logOut}>
-                    Log Out, {session.user?.name}
+                <Typography style={{ cursor: 'pointer' }} onClick={logOut}>
+                    Log out, {session.user?.name}
                 </Typography>
             );
         }
@@ -28,11 +25,13 @@ export const NavBar = () => {
         return (
             <>
                 <Link color="black" href="/auth/register" passHref>
-                    Register
+                    <Typography style={{ cursor: 'pointer' }}>
+                        Register
+                    </Typography>
                 </Link>
                 &ensp;
                 <Link color="black" href="/auth/login" passHref>
-                    Login
+                    <Typography style={{ cursor: 'pointer' }}>Login</Typography>
                 </Link>
             </>
         );

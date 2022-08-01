@@ -10,14 +10,15 @@ export const FormContainer = styled('form')`
 `;
 
 export const AuthButton = styled('input')`
-    background-color: #d0e8fb;
-    border: 1px solid #bababa;
-    border-radius: 4px;
+    border: 2px solid #6ca7ff;
+    &:hover {
+        background-image: linear-gradient(to right, #6ca7ff, #6ca7ff);
+        color: white;
+    }
     font: inherit;
     height: 40px;
     margin-top: 20px;
     padding: 0 20px;
-    text-transform: uppercase;
     width: 100%;
     cursor: pointer;
 `;
