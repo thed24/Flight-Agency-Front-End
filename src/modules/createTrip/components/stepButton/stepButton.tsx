@@ -76,9 +76,9 @@ export const StepButton = () => {
             <SC.LeftButton onClick={decreaseStep}>
                 <ArrowBackIos />
             </SC.LeftButton>
-            <SC.RightButton onClick={submitOnClick}>
-                <ArrowForwardIos />
-            </SC.RightButton>
+            <SC.ConfirmButton onClick={submitOnClick}>
+                Confirm Trip
+            </SC.ConfirmButton>
         </>
     );
 

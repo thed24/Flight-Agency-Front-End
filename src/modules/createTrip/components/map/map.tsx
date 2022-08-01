@@ -1,8 +1,7 @@
 import { CircularProgress, ListItemText } from '@mui/material';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { Place } from 'common/types';
-import React from 'react';
-import { memo, ReactNode, useMemo, useRef } from 'react';
+import React, { memo, ReactNode, useMemo, useRef } from 'react';
 
 import * as SC from './map.styles';
 

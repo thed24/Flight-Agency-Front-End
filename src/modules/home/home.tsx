@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import useAxios from 'axios-hooks';
 import { Divider, Layout, SC } from 'common/components';
 import { Trip } from 'common/types';
@@ -42,9 +41,9 @@ const Home: NextPage = () => {
                 {trips && trips.length > 0 && <ScrollableTrips trips={trips} />}
 
                 <Link href="createTrip" passHref>
-                    <Button variant="contained" style={{ margin: '25px' }}>
+                    <SC.Button style={{ margin: '25px' }}>
                         Create a new trip
-                    </Button>
+                    </SC.Button>
                 </Link>
             </SC.Container>
         </Layout>

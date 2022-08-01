@@ -1,3 +1,4 @@
+import { Button as ButtonMUI, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const Container = styled('div')`
@@ -19,17 +20,35 @@ export const MiddleContainer = styled('div')`
     min-height: 500px;
 `;
 
-export const SubTitle = styled('h3')`
-    display: flex;
-    font-weight: 300;
-    justify-content: center;
-    padding-bottom: 20px;
-`;
-
-export const Title = styled('h1')`
+export const SubTitle = styled(Typography)`
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-weight: 100;
+    padding-top: 10px;
+`;
+
+SubTitle.defaultProps = {
+    variant: 'subtitle1',
+    fontWeight: 300,
+};
+
+export const Title = styled(Typography)`
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
     padding-top: 40px;
+`;
+
+Title.defaultProps = {
+    variant: 'h4',
+    fontWeight: '300',
+};
+
+export const Button = styled(ButtonMUI)`
+    border: 2px solid #6ca7ff;
+    padding: 10px;
+    &:hover {
+        background-image: linear-gradient(to right, #6ca7ff, #6ca7ff);
+        color: white;
+    }
 `;

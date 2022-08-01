@@ -2,6 +2,7 @@ import { StepConnector, stepConnectorClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const Wrapper = styled('div')`
+    padding-top: 15px;
     padding-bottom: 25px;
 `;
 

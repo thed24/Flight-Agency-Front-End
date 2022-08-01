@@ -20,7 +20,9 @@ export const themeOptions: ThemeOptions = {
         MuiButton: {},
     },
     typography: {
-        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontFamily: 'Roboto, sans-serif',
+        fontSize: 18,
+        fontWeightRegular: 300,
     },
 };
 
