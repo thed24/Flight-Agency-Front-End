@@ -1,12 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { User } from 'common/types';
-import { RequestLoginEndpoint } from 'common/utilities';
+import { httpClient, RequestLoginEndpoint } from 'common/utilities';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-const httpClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_URL || 'http://localhost:8080',
-});
 
 export const authOptions: NextAuthOptions = {
     providers: [

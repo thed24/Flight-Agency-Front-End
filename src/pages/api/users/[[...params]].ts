@@ -9,7 +9,11 @@ import {
 import { client, RequiresAuth } from 'common/server';
 import { logger } from 'common/server/logging';
 import type { Trip, User } from 'common/types';
-import { CreateTripEndpoint, GetTripsEndpoint } from 'common/utilities';
+import {
+    CreateTripEndpoint,
+    DownloadTripEndpoint,
+    GetTripsEndpoint,
+} from 'common/utilities';
 
 type GetTripResponse = Trip[];
 type CreateTripResonse = User;
@@ -43,6 +47,18 @@ class userHandler {
 
         return client
             .post<CreateTripResonse>(CreateTripEndpoint(id), transformedRequest)
+            .then((result) => result.data)
+            .catch((error) => {
+                logger.error(`Failed to call API: ${error.response?.data}`);
+                throw new BadRequestException(error.response.data.message);
+            });
+    }
+
+    @Post('/:id/trips/:tripId/record')
+    @RequiresAuth()
+    downloadTrip(@Param('id') id: string, @Param('tripId') tripId: string) {
+        return client
+            .post(DownloadTripEndpoint(id, tripId))
             .then((result) => result.data)
             .catch((error) => {
                 logger.error(`Failed to call API: ${error.response?.data}`);

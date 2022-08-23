@@ -1,7 +1,10 @@
+/* eslint-disable no-empty-pattern */
 import { Box, Tab, Tabs } from '@mui/material';
 import { List, TabPanel } from 'common/components';
+import { Button } from 'common/components/common.styles';
 import { DayToStopMap, Trip } from 'common/types';
-import { Entry } from 'common/types/misc';
+import { DownloadTripEndpoint, localHttpClient } from 'common/utilities';
+import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 
@@ -18,8 +21,8 @@ function propGenerator(index: number) {
 
 export const ScrollableTrips = ({ trips }: Props) => {
     const [value, setValue] = useState(0);
+    const { data: session } = useSession();
     const stopsForDay = DayToStopMap(trips[value].stops);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -44,6 +47,20 @@ export const ScrollableTrips = ({ trips }: Props) => {
             ]),
         [stopsForDay]
     );
+
+    const downloadTrip = async (userId: string, tripId: string) => {
+        const { data } = await localHttpClient.post<string>(
+            DownloadTripEndpoint(userId, tripId)
+        );
+        const element = document.createElement('a');
+        const file = new Blob([data], {
+            type: 'text/plain',
+        });
+        element.href = URL.createObjectURL(file);
+        element.download = `trip-${tripId}.ics`;
+        document.body.appendChild(element);
+        element.click();
+    };
 
     return (
         <Box sx={{ height: '65vh', maxWidth: '50%' }}>
@@ -80,6 +97,17 @@ export const ScrollableTrips = ({ trips }: Props) => {
                         entries={entries}
                         verticle
                     />
+                    <Button
+                        onClick={() =>
+                            downloadTrip(
+                                session?.user?.id ?? '',
+                                trip.id.toString()
+                            )
+                        }
+                        style={{ marginLeft: '32%' }}
+                    >
+                        Save Trip
+                    </Button>
                 </TabPanel>
             ))}
         </Box>

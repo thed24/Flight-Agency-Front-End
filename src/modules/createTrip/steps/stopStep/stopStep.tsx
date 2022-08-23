@@ -1,9 +1,17 @@
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import {
+    CircularProgress,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from '@mui/material';
 import useAxios from 'axios-hooks';
 import { SC } from 'common/components';
 import { Categories, LoadCountries, Place, PlacesRequest } from 'common/types';
 import { Entry } from 'common/types/misc';
-import { RequestLocationDataEndpoint } from 'common/utilities';
+import {
+    GoogleKeyEndpoint,
+    RequestLocationDataEndpoint,
+} from 'common/utilities';
 import {
     AutoComplete,
     GoogleMap,
@@ -15,11 +23,12 @@ import { SCC } from 'modules/createTrip/steps';
 import React, { useEffect, useMemo } from 'react';
 
 interface Props {
-    apiKey: string;
     onClickMarker: (place: Place, day: number) => void;
 }
 
-export const StopStep = ({ onClickMarker, apiKey }: Props) => {
+export const StopStep = ({ onClickMarker }: Props) => {
+    const [{ data: apiKey, loading: apiKeyLoading }] =
+        useAxios<string>(GoogleKeyEndpoint);
     const [{ data: places }, fetchPlaces] = useAxios<Place[]>(
         RequestLocationDataEndpoint,
         { manual: true }
@@ -104,6 +113,14 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
         onClickMarker(place, day);
     };
 
+    if (apiKeyLoading) {
+        return (
+            <SC.Container>
+                <CircularProgress color="inherit" />
+            </SC.Container>
+        );
+    }
+
     return (
         <SC.Container>
             <SCC.MapContainer>
@@ -115,7 +132,7 @@ export const StopStep = ({ onClickMarker, apiKey }: Props) => {
                         onClickPlace={handleMapPlaceClick}
                         onDrag={setCenter}
                         onZoom={setZoom}
-                        apiKey={apiKey}
+                        apiKey={apiKey ?? ''}
                         setLoaded={setMapLoaded}
                     >
                         {markers}

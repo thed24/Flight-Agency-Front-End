@@ -1,4 +1,3 @@
-import { TextField } from '@mui/material';
 import { Layout, SC } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import {
@@ -13,8 +12,7 @@ import {
     FillerStep,
     StopStep,
 } from 'modules/createTrip/steps';
-import { NextPage } from 'next';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useState } from 'react';
 
 type ModalState = {
     value: DateRange;
@@ -22,11 +20,10 @@ type ModalState = {
     place: Place;
 };
 
-const CreateTrip: NextPage = () => {
+const CreateTrip = () => {
     const { step } = useTripFlow();
     const { trip } = useTrip();
 
-    const [apiKey, setApiKey] = useState<string>('');
     const [modalState, setModalState] = useState<ModalState | null>(null);
 
     const closeModal = () => {
@@ -56,13 +53,6 @@ const CreateTrip: NextPage = () => {
         });
     };
 
-    const onBlurApiKey = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setApiKey(e.target.value);
-        },
-        [setApiKey]
-    );
-
     return (
         <>
             {modalState && (
@@ -84,32 +74,13 @@ const CreateTrip: NextPage = () => {
 
                 {step === 0 && <DestinationStep />}
 
-                {step === 1 && (
-                    <StopStep onClickMarker={openModal} apiKey={apiKey} />
-                )}
+                {step === 1 && <StopStep onClickMarker={openModal} />}
 
-                {step === 2 && <FillerStep apiKey={apiKey} />}
+                {step === 2 && <FillerStep />}
 
                 {step === 3 && <ConfirmationStep />}
 
                 <StepButton />
-
-                {step === 0 && (
-                    <TextField
-                        placeholder="Enter Maps API Key"
-                        variant="outlined"
-                        value={apiKey}
-                        onChange={onBlurApiKey}
-                        style={{
-                            color: 'primary',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginTop: '25px',
-                            marginBottom: '25px',
-                        }}
-                    />
-                )}
             </Layout>
         </>
     );

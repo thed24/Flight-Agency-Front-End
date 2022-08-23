@@ -1,9 +1,1 @@
-export {
-    CreateTripEndpoint,
-    GetSuggestionsEndpoint,
-    GetTripsEndpoint,
-    RequestAddressEndpoint,
-    RequestLocationDataEndpoint,
-    RequestLoginEndpoint,
-    RequestRegisterEndpoint,
-} from './api';
+export * from './api';

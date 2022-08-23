@@ -9,15 +9,11 @@ import {
     Location,
     Stop,
 } from 'common/types';
-import { RequestAddressEndpoint } from 'common/utilities';
+import { GoogleKeyEndpoint, RequestAddressEndpoint } from 'common/utilities';
 import { GoogleMap, ScrollableStops } from 'modules/createTrip/components';
 import { useMap, useTrip } from 'modules/createTrip/context';
 import { SCC } from 'modules/createTrip/steps';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
-interface Props {
-    apiKey: string;
-}
 
 function arePointsNear(
     checkPoint: Location,
@@ -31,7 +27,9 @@ function arePointsNear(
     return Math.sqrt(dx * dx + dy * dy) <= km;
 }
 
-export const FillerStep = ({ apiKey }: Props) => {
+export const FillerStep = () => {
+    const [{ data: apiKey, loading: apiKeyLoading }] =
+        useAxios<string>(GoogleKeyEndpoint);
     const [{ data: addresses, loading: addressesLoading }, fetchAddresses] =
         useAxios<Addresses>(RequestAddressEndpoint, { manual: true });
 
@@ -213,7 +211,7 @@ export const FillerStep = ({ apiKey }: Props) => {
             })) ??
         [];
 
-    if (addressesLoading) {
+    if (addressesLoading || apiKeyLoading) {
         return (
             <SC.Container>
                 <CircularProgress color="inherit" />
@@ -233,7 +231,7 @@ export const FillerStep = ({ apiKey }: Props) => {
                     onClickPlace={() => {}}
                     onDrag={setCenter}
                     onZoom={setZoom}
-                    apiKey={apiKey}
+                    apiKey={apiKey ?? ''}
                     onClick={onClickRoute}
                 >
                     {DirectionsRendererAsAService()}
