@@ -42,10 +42,8 @@ module.exports = {
         'react/require-default-props': 'off',
         'class-methods-use-this': 'off',
         'import/prefer-default-export': 'off',
-        'react/function-component-definition': [
-            2,
-            { namedComponents: 'arrow-function' },
-        ],
+        'react/function-component-definition': 'off',
+        'react/display-name': 'off',
         'react/jsx-filename-extension': [
             2,
             { extensions: ['.js', '.jsx', '.ts', '.tsx'] },

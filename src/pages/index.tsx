@@ -1,6 +1,6 @@
-import Home from 'modules/home/home';
+import Landing from 'modules/landing/landing';
 import { NextPage } from 'next';
 
-const HomeRedirect: NextPage = () => <Home />;
+const LandingRedirect: NextPage = () => <Landing />;
 
-export default HomeRedirect;
+export default LandingRedirect;

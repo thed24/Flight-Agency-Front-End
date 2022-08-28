@@ -4,22 +4,13 @@ import {
     FlightTakeoff,
     ThumbsUpDown,
 } from '@mui/icons-material';
-import { Step, StepIconProps, StepLabel, Stepper } from '@mui/material';
-
-import * as SC from './tripStepper.style';
+import { Stepper } from 'common/components';
 
 interface Props {
     step: number;
 }
 
-interface StepData {
-    [index: string]: {
-        label: string;
-        icon: React.ReactElement;
-    };
-}
-
-const steps: StepData = {
+const steps = {
     1: {
         label: 'Choose a destination',
         icon: <FlightTakeoff />,
@@ -38,33 +29,6 @@ const steps: StepData = {
     },
 };
 
-const ColorlibStepIcon = (props: StepIconProps) => {
-    const { active, completed, className, icon } = props;
-
-    return (
-        <SC.StepperRoot
-            ownerState={{ completed, active }}
-            className={className}
-        >
-            {steps[String(icon)].icon}
-        </SC.StepperRoot>
-    );
-};
-
 export const TripStepper = ({ step }: Props) => (
-    <SC.Wrapper>
-        <Stepper
-            alternativeLabel
-            activeStep={step}
-            connector={<SC.StepperConnector />}
-        >
-            {Object.values(steps).map((currStep) => (
-                <Step key={currStep.label}>
-                    <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        {currStep.label}
-                    </StepLabel>
-                </Step>
-            ))}
-        </Stepper>
-    </SC.Wrapper>
+    <Stepper step={step} stepData={steps} />
 );

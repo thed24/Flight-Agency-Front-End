@@ -1,11 +1,11 @@
-export { AuthLayout } from '../layouts/authLayout';
+export { AuthMessage } from '../layouts/components/authMessage/authMessage';
+export { LoadingOverlayDynamic as LoadingOverlay } from '../layouts/components/loadingOverlay/loadingOverlay.dynamic';
 export { Layout } from '../layouts/layout';
 export type { AlertDetails } from './alertBar/alertBar';
 export { AlertBar } from './alertBar/alertBar';
-export { AuthMessage } from './authMessage/authMessage';
 export * as SC from './common.styles';
 export { Divider } from './divider/divider';
 export { List } from './list/list';
-export { LoadingOverlayDynamic as LoadingOverlay } from './loadingOverlay/loadingOverlay.dynamic';
 export { NavBarDynamic as NavBar } from './navbar/navbar.dynamic';
+export { Stepper } from './stepper/stepper';
 export { TabPanel } from './tabPanel/tabPanel';

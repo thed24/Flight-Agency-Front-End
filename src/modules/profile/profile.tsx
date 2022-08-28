@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 import { ScrollableTrips } from './components';
 
-const Home: NextPage = () => {
+const Profile: NextPage = () => {
     const { data: session, status } = useSession();
 
     const [{ data: trips, loading: tripsLoading }, requestTrips] = useAxios<
@@ -50,4 +50,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default Profile;

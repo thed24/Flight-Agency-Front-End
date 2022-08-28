@@ -43,9 +43,11 @@ export const NavBar = () => {
                 <Toolbar>
                     <Typography
                         variant="h5"
-                        sx={{ flexGrow: 1, fontWeight: 100 }}
+                        sx={{ flexGrow: 1, fontWeight: 300 }}
                     >
-                        <Link href="/">Flight Agency </Link>
+                        <Link href={session ? '/profile' : '/'}>
+                            Flight Agency
+                        </Link>
                     </Typography>
                     {buttons}
                 </Toolbar>

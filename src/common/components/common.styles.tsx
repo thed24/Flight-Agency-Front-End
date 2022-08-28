@@ -47,8 +47,21 @@ Title.defaultProps = {
 export const Button = styled(ButtonMUI)`
     border: 2px solid #6ca7ff;
     padding: 10px;
-    &:hover {
-        background-image: linear-gradient(to right, #6ca7ff, #6ca7ff);
-        color: white;
-    }
+    ${({ variant }) => {
+        if (variant === 'contained') {
+            return `
+                background-color: #6ca7ff;
+                color: white;
+                &:hover {
+                    background-color: #4186d4;
+                }
+            `;
+        }
+        return `
+            &:hover {
+                background-image: linear-gradient(to right, #6ca7ff, #6ca7ff);
+                color: white;
+            }
+        `;
+    }}
 `;

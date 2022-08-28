@@ -93,7 +93,9 @@ export const ScrollableTrips = ({ trips }: Props) => {
             {trips.map((trip, i) => (
                 <TabPanel key={trip.id} value={value} index={i}>
                     <List
-                        title={`${trip.destination}`}
+                        title={`${trip.destination}, ${new Date(
+                            trip.stops[0].time.start
+                        ).toLocaleDateString()}`}
                         entries={entries}
                         verticle
                     />
@@ -104,7 +106,6 @@ export const ScrollableTrips = ({ trips }: Props) => {
                                 trip.id.toString()
                             )
                         }
-                        style={{ marginLeft: '32%' }}
                     >
                         Save Trip
                     </Button>

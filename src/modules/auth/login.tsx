@@ -1,7 +1,8 @@
 import { TextField } from '@mui/material';
-import { AlertBar, AlertDetails, AuthLayout, SC } from 'common/components';
+import { AlertBar, AlertDetails, Layout, SC } from 'common/components';
 import { PasswordInput } from 'modules/auth/components';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,6 +20,7 @@ const Login: NextPage = () => {
         control,
         formState: { errors },
     } = useForm<FormData>();
+    const router = useRouter();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [alert, setAlert] = useState<AlertDetails | null>(null);
@@ -33,18 +35,18 @@ const Login: NextPage = () => {
         });
 
         if (response && response.ok) {
+            router.push('/profile');
             setLoading(false);
-            window.location.href = '/';
         } else {
-            setLoading(false);
             setAlert({ message: 'Login failed.', type: 'error' });
+            setLoading(false);
         }
     };
 
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <AuthLayout title="Login | Flight Agency" loading={loading}>
+        <Layout title="Login | Flight Agency" loading={loading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
             <SC.Title> Login </SC.Title>
@@ -103,9 +105,9 @@ const Login: NextPage = () => {
                         },
                     }}
                 />
-                <SSC.AuthButton type="submit" />
+                <SC.Button type="submit"> Login </SC.Button>
             </SSC.FormContainer>
-        </AuthLayout>
+        </Layout>
     );
 };
 

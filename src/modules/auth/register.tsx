@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import useAxios from 'axios-hooks';
-import { AlertBar, AlertDetails, AuthLayout, SC } from 'common/components';
+import { AlertBar, AlertDetails, Layout, SC } from 'common/components';
 import { User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
 import { PasswordInput } from 'modules/auth/components';
@@ -55,7 +55,7 @@ const Register: NextPage = () => {
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <AuthLayout title="Register | Flight Agency" loading={registerLoading}>
+        <Layout title="Register | Flight Agency" loading={registerLoading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
             <SC.Title> Register </SC.Title>
@@ -137,9 +137,9 @@ const Register: NextPage = () => {
                         },
                     }}
                 />
-                <SSC.AuthButton type="submit" />
+                <SC.Button type="submit"> Register </SC.Button>
             </SSC.FormContainer>
-        </AuthLayout>
+        </Layout>
     );
 };
 

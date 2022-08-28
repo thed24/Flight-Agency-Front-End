@@ -46,11 +46,11 @@ export const StepperRoot = styled('div')<{
     alignItems: 'center',
     ...(ownerState.active && {
         backgroundImage:
-            'linear-gradient( 136deg, #21b3f2 0%, #4057e9 50%, #238a75 100%)',
+            'linear-gradient( 136deg, #53b9e6 0%, #4097e9 50%, #4d97ab 100%)',
         boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     }),
     ...(ownerState.completed && {
         backgroundImage:
-            'linear-gradient( 136deg, #21b3f2 0%, #4057e9 50%, #238a75 100%)',
+            'linear-gradient( 136deg, #64c8f2 0%, #90c4f4 50%, #5aa9c3 100%)',
     }),
 }));
