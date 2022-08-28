@@ -32,7 +32,7 @@ export const StepButton = () => {
                 text: 'Youre trip has been planned successfuly',
                 icon: 'success',
             }).then(() => {
-                router.push('/');
+                router.push('/profile');
             });
         }
     }, [createdTrip, router]);
