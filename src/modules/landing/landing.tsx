@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { Button, Layout } from 'common/components';
 import { NextPage } from 'next';
 import Image from 'next/image';

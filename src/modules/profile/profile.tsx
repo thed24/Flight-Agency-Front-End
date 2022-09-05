@@ -3,7 +3,6 @@ import { Button, Container, Layout, SubTitle, Title } from 'common/components';
 import { Trip } from 'common/types';
 import { GetTripsEndpoint } from 'common/utilities';
 import { NextPage } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';

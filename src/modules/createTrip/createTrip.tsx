@@ -1,4 +1,4 @@
-import { Container, Layout, SubTitle, Title } from 'common/components';
+import { Container, Layout } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import {
     StepButton,
