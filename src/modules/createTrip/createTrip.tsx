@@ -1,4 +1,4 @@
-import { Layout, SC } from 'common/components';
+import { Container, Layout, SubTitle, Title } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import {
     StepButton,
@@ -64,13 +64,10 @@ const CreateTrip = () => {
                 />
             )}
 
-            <Layout title="Build Your Trip | Flight Agency">
-                <SC.Title> Welcome to the Flight Agency </SC.Title>
-                <SC.SubTitle> Build your trip below </SC.SubTitle>
-
-                <SC.Container>
+            <Layout title="Build Your Trip | Agai">
+                <Container sx={{ marginBottom: '2.5%' }}>
                     <TripStepper step={step} />
-                </SC.Container>
+                </Container>
 
                 {step === 0 && <DestinationStep />}
 

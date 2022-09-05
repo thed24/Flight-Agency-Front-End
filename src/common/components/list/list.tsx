@@ -3,10 +3,17 @@ import { Typography } from '@mui/material';
 import { Entries } from 'common/types';
 import { Entry } from 'common/types/misc';
 
-import * as SC from './list.style';
+import {
+    ListContainer,
+    ListSubTitle,
+    ListTitle,
+    RemoveButton,
+    SubListContainer,
+} from './list.style';
 
 export type LayoutProps = {
     title: string;
+    subTitle?: string;
     entries: Entries[];
     verticle?: boolean;
     removeOnClick?: (id: number) => void;
@@ -14,6 +21,7 @@ export type LayoutProps = {
 
 export const List = ({
     title,
+    subTitle,
     entries,
     verticle,
     removeOnClick,
@@ -32,39 +40,42 @@ export const List = ({
                 overflow: 'auto',
             }}
         >
-            <SC.ListTitle>{title}</SC.ListTitle>
+            <ListTitle>{title}</ListTitle>
+            {subTitle && <ListSubTitle>{subTitle}</ListSubTitle>}
             {entries.map((entry) => (
-                <SC.ListContainer
+                <ListContainer
                     verticle={verticle}
                     key={`${entry[0].header}-${entry[0].id}`}
                 >
                     {entry.map((subEntry) => (
-                        <SC.SubListContainer
+                        <SubListContainer
                             key={`${subEntry.header}-${subEntry.id}`}
                         >
                             <Typography
                                 key={`${subEntry.header}-${subEntry.id}`}
-                                style={{ fontWeight: 'bold' }}
+                                style={{ fontWeight: 500 }}
                             >
                                 {subEntry.header}
                             </Typography>
 
                             <Typography
+                                marginBottom={2}
+                                marginTop={-1}
                                 key={`${subEntry.content}-${subEntry.id}`}
                             >
                                 {subEntry.content}
                             </Typography>
 
                             {removeOnClick && (
-                                <SC.RemoveButton
+                                <RemoveButton
                                     onClick={removeOnClickForEntry(subEntry)}
                                 >
                                     <HighlightOff />
-                                </SC.RemoveButton>
+                                </RemoveButton>
                             )}
-                        </SC.SubListContainer>
+                        </SubListContainer>
                     ))}
-                </SC.ListContainer>
+                </ListContainer>
             ))}
         </div>
     );

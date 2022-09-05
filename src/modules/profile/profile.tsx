@@ -1,9 +1,10 @@
 import useAxios from 'axios-hooks';
-import { Divider, Layout, SC } from 'common/components';
+import { Button, Container, Layout, SubTitle, Title } from 'common/components';
 import { Trip } from 'common/types';
 import { GetTripsEndpoint } from 'common/utilities';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
@@ -11,6 +12,7 @@ import { ScrollableTrips } from './components';
 
 const Profile: NextPage = () => {
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     const [{ data: trips, loading: tripsLoading }, requestTrips] = useAxios<
         Trip[]
@@ -24,28 +26,20 @@ const Profile: NextPage = () => {
 
     return (
         <Layout
-            title="Home | Flight Agency"
+            title="Home | Agai"
             loading={tripsLoading || status === 'loading'}
         >
-            <SC.Title>
-                Welcome to the Flight Agency, {session?.user?.name}!
-            </SC.Title>
+            <Title>Welcome back to Agai, {session?.user?.name}!</Title>
+            <SubTitle marginBottom={4}>
+                View your existing trips, or plan a new one
+            </SubTitle>
 
-            <SC.SubTitle>
-                View your existing trip, or create a new one
-            </SC.SubTitle>
-
-            {trips && trips.length > 0 && <Divider />}
-
-            <SC.Container>
+            <Container>
                 {trips && trips.length > 0 && <ScrollableTrips trips={trips} />}
-
-                <Link href="createTrip" passHref>
-                    <SC.Button style={{ margin: '25px' }}>
-                        Create a new trip
-                    </SC.Button>
-                </Link>
-            </SC.Container>
+                <Button onClick={() => router.push('/createTrip')}>
+                    Create a new trip
+                </Button>
+            </Container>
         </Layout>
     );
 };

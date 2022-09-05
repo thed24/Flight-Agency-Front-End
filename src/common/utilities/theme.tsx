@@ -3,14 +3,24 @@ import { createTheme, ThemeOptions } from '@mui/material';
 export const themeOptions: ThemeOptions = {
     palette: {
         primary: {
-            main: '#4186d4',
+            main: '#4c91e0',
             100: '#6ca7ff',
+            200: '#4186d4',
+            300: '#1a6ab0',
+            400: '#0d4c8a',
+            500: '#003066',
         },
         secondary: {
             main: '#a4bcfe',
+            100: '#c6d7ff',
+            200: '#9eb5ff',
+        },
+        info: {
+            main: '#000000',
         },
         background: {
-            default: '#a3d5fa',
+            default: '#dceffd8e',
+            paper: '#ffffff',
         },
         text: {
             primary: '#000000',

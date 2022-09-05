@@ -5,7 +5,7 @@ import {
     SelectChangeEvent,
 } from '@mui/material';
 import useAxios from 'axios-hooks';
-import { SC } from 'common/components';
+import { Container } from 'common/components';
 import { Categories, LoadCountries, Place, PlacesRequest } from 'common/types';
 import { Entry } from 'common/types/misc';
 import {
@@ -19,8 +19,9 @@ import {
     ScrollableStops,
 } from 'modules/createTrip/components';
 import { useMap, useTrip } from 'modules/createTrip/context';
-import { SCC } from 'modules/createTrip/steps';
 import React, { useEffect, useMemo } from 'react';
+
+import { MapContainer, MapControls, MapSubContainer } from '../steps.styles';
 
 interface Props {
     onClickMarker: (place: Place, day: number) => void;
@@ -115,16 +116,16 @@ export const StopStep = ({ onClickMarker }: Props) => {
 
     if (apiKeyLoading) {
         return (
-            <SC.Container>
+            <Container>
                 <CircularProgress color="inherit" />
-            </SC.Container>
+            </Container>
         );
     }
 
     return (
-        <SC.Container>
-            <SCC.MapContainer>
-                <SCC.MapSubContainer>
+        <Container>
+            <MapContainer solo={trip.stops.length === 0}>
+                <MapSubContainer>
                     <GoogleMap
                         center={center}
                         zoom={zoom}
@@ -137,7 +138,7 @@ export const StopStep = ({ onClickMarker }: Props) => {
                     >
                         {markers}
                     </GoogleMap>
-                    <SCC.MapControls>
+                    <MapControls>
                         <Select
                             value={category}
                             label="Category"
@@ -159,8 +160,8 @@ export const StopStep = ({ onClickMarker }: Props) => {
                                 apiLoaded={mapLoaded}
                             />
                         )}
-                    </SCC.MapControls>
-                </SCC.MapSubContainer>
+                    </MapControls>
+                </MapSubContainer>
 
                 {trip.stops.length > 0 && (
                     <ScrollableStops
@@ -171,7 +172,7 @@ export const StopStep = ({ onClickMarker }: Props) => {
                         deletable
                     />
                 )}
-            </SCC.MapContainer>
-        </SC.Container>
+            </MapContainer>
+        </Container>
     );
 };

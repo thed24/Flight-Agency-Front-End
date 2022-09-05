@@ -15,7 +15,12 @@ export const AlertBar = ({ details, callback }: AlertBarProps) => {
 
     return (
         <Alert
-            style={{ marginTop: '20px' }}
+            style={{
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '25%',
+                marginTop: '20px',
+            }}
             severity={type}
             action={
                 <Button onClick={callback} color="inherit" size="small">

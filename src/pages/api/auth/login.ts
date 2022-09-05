@@ -5,7 +5,6 @@ import {
     Post,
 } from '@storyofams/next-api-decorators';
 import { client } from 'common/server';
-import { logger } from 'common/server/logging';
 import type { LoginRequest, User } from 'common/types';
 import { RequestLoginEndpoint } from 'common/utilities';
 
@@ -20,7 +19,6 @@ class loginHandler {
             .post<LoginResponse>(RequestLoginEndpoint, request)
             .then((result) => result.data)
             .catch((error) => {
-                logger.error(`Failed to call API: ${error.response?.data}`);
                 throw new BadRequestException(error.response.data);
             });
     }

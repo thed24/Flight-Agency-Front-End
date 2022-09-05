@@ -5,7 +5,14 @@ export const ListTitle = styled('h1')`
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-weight: 100;
+    font-weight: bold;
+`;
+
+export const ListSubTitle = styled('h2')`
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    font-weight: 300;
 `;
 
 type ListContainerProps = {
@@ -15,9 +22,8 @@ type ListContainerProps = {
 export const ListContainer = styled('h1')<ListContainerProps>`
     display: flex;
     flex-direction: ${(props) => (props?.verticle ?? false ? 'column' : 'row')};
-    padding: 15px;
+    padding-top: 10px;
     width: 100%;
-    margin: 0 auto 0 auto;
 `;
 
 export const SubListContainer = styled('h1')`
@@ -29,7 +35,7 @@ export const SubListContainer = styled('h1')`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 10px;
+    gap: 5px;
 `;
 
 export const RemoveButton = styled(IconButton)`

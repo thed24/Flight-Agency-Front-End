@@ -3,7 +3,12 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { Place } from 'common/types';
 import React, { memo, ReactNode, useMemo, useRef } from 'react';
 
-import * as SC from './map.styles';
+import {
+    OverlayButton,
+    OverlayList,
+    OverlayListItem,
+    RelativeContainer,
+} from './map.styles';
 
 interface Props {
     center: { latitude: number; longitude: number };
@@ -110,24 +115,24 @@ const MapInternal = ({
     }
 
     return (
-        <SC.RelativeContainer>
+        <RelativeContainer>
             {places.length > 0 && (
-                <SC.OverlayButton onClick={toggleOverlay}>
+                <OverlayButton onClick={toggleOverlay}>
                     {showOverlay ? 'Hide' : 'Show'} Locations
-                </SC.OverlayButton>
+                </OverlayButton>
             )}
 
             {places.length > 0 && showOverlay && (
-                <SC.OverlayList>
+                <OverlayList>
                     {places.map((place) => (
-                        <SC.OverlayListItem
+                        <OverlayListItem
                             key={place.id}
                             onClick={onClickPlaceHandler(place)}
                         >
                             <ListItemText primary={place.name} />
-                        </SC.OverlayListItem>
+                        </OverlayListItem>
                     ))}
-                </SC.OverlayList>
+                </OverlayList>
             )}
 
             <GoogleMap
@@ -151,7 +156,7 @@ const MapInternal = ({
             >
                 {children}
             </GoogleMap>
-        </SC.RelativeContainer>
+        </RelativeContainer>
     );
 };
 

@@ -1,13 +1,19 @@
 import { TextField } from '@mui/material';
-import { AlertBar, AlertDetails, Layout, SC } from 'common/components';
-import { PasswordInput } from 'modules/auth/components';
+import {
+    AlertBar,
+    AlertDetails,
+    Button,
+    Layout,
+    Title,
+} from 'common/components';
+import { PasswordInput } from 'modules/auth/components/passwordInput/passwordInput';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import * as SSC from './components/form.styles';
+import { FormContainer } from './components/form.styles';
 
 type FormData = {
     Email: string;
@@ -46,12 +52,12 @@ const Login: NextPage = () => {
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <Layout title="Login | Flight Agency" loading={loading}>
+        <Layout title="Login | Agai" loading={loading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
-            <SC.Title> Login </SC.Title>
+            <Title> Login </Title>
 
-            <SSC.FormContainer onSubmit={handleSubmit(OnLogin)}>
+            <FormContainer onSubmit={handleSubmit(OnLogin)}>
                 <Controller
                     name="Email"
                     render={({ field }) => (
@@ -105,8 +111,8 @@ const Login: NextPage = () => {
                         },
                     }}
                 />
-                <SC.Button type="submit"> Login </SC.Button>
-            </SSC.FormContainer>
+                <Button type="submit"> Login </Button>
+            </FormContainer>
         </Layout>
     );
 };

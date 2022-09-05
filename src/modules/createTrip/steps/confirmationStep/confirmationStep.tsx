@@ -1,4 +1,4 @@
-import { SC } from 'common/components';
+import { Container, SubTitle } from 'common/components';
 import { Entry } from 'common/types/misc';
 import { ScrollableStops } from 'modules/createTrip/components';
 import { useTrip } from 'modules/createTrip/context';
@@ -25,10 +25,10 @@ export const ConfirmationStep = () => {
     }, [dayToStopMap, index]);
 
     return (
-        <SC.Container>
-            <SC.SubTitle>
+        <Container>
+            <SubTitle marginBottom={2}>
                 Your current trip itinary for your trip to {trip.destination}
-            </SC.SubTitle>
+            </SubTitle>
 
             <ScrollableStops
                 setIndex={setIndex}
@@ -36,6 +36,6 @@ export const ConfirmationStep = () => {
                 dayToStopsMap={dayToStopMap}
                 entries={entries}
             />
-        </SC.Container>
+        </Container>
     );
 };

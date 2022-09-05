@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
-import * as SC from './stepButton.style';
+import { ConfirmButton, LeftButton, RightButton } from './stepButton.style';
 
 export const StepButton = () => {
     const router = useRouter();
@@ -38,47 +38,44 @@ export const StepButton = () => {
     }, [createdTrip, router]);
 
     const stepOneButton = (
-        <SC.RightButton
-            disabled={trip.destination === ''}
-            onClick={increaseStep}
-        >
+        <RightButton disabled={trip.destination === ''} onClick={increaseStep}>
             <ArrowForwardIos />
-        </SC.RightButton>
+        </RightButton>
     );
 
     const stepTwoButtons = (
         <>
-            <SC.LeftButton onClick={decreaseStep}>
+            <LeftButton onClick={decreaseStep}>
                 <ArrowBackIos />
-            </SC.LeftButton>
-            <SC.RightButton
+            </LeftButton>
+            <RightButton
                 disabled={trip.stops.length === 0}
                 onClick={increaseStep}
             >
                 <ArrowForwardIos />
-            </SC.RightButton>
+            </RightButton>
         </>
     );
 
     const stepThreeButtons = (
         <>
-            <SC.LeftButton onClick={decreaseStep}>
+            <LeftButton onClick={decreaseStep}>
                 <ArrowBackIos />
-            </SC.LeftButton>
-            <SC.RightButton onClick={increaseStep}>
+            </LeftButton>
+            <RightButton onClick={increaseStep}>
                 <ArrowForwardIos />
-            </SC.RightButton>
+            </RightButton>
         </>
     );
 
     const stepFourButtons = (
         <>
-            <SC.LeftButton onClick={decreaseStep}>
+            <LeftButton onClick={decreaseStep}>
                 <ArrowBackIos />
-            </SC.LeftButton>
-            <SC.ConfirmButton onClick={submitOnClick}>
+            </LeftButton>
+            <ConfirmButton variant="contained" onClick={submitOnClick}>
                 Confirm Trip
-            </SC.ConfirmButton>
+            </ConfirmButton>
         </>
     );
 

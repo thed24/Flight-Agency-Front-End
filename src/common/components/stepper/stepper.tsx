@@ -6,7 +6,7 @@ import {
     Stepper as MUIStepper,
 } from '@mui/material';
 
-import * as SC from './stepper.style';
+import { StepperConnector, StepperRoot, Wrapper } from './stepper.style';
 
 interface Props {
     step: number;
@@ -25,21 +25,18 @@ const ColorlibStepIcon = (steps: StepData) => (props: StepIconProps) => {
     const { active, completed, className, icon } = props;
 
     return (
-        <SC.StepperRoot
-            ownerState={{ completed, active }}
-            className={className}
-        >
+        <StepperRoot ownerState={{ completed, active }} className={className}>
             {steps[String(icon)].icon}
-        </SC.StepperRoot>
+        </StepperRoot>
     );
 };
 
 export const Stepper = ({ step, onClick, stepData }: Props) => (
-    <SC.Wrapper>
+    <Wrapper>
         <MUIStepper
             alternativeLabel
             activeStep={step}
-            connector={<SC.StepperConnector />}
+            connector={<StepperConnector />}
         >
             {Object.values(stepData).map((currStep, index) => (
                 <Step
@@ -52,5 +49,5 @@ export const Stepper = ({ step, onClick, stepData }: Props) => (
                 </Step>
             ))}
         </MUIStepper>
-    </SC.Wrapper>
+    </Wrapper>
 );

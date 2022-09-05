@@ -1,7 +1,5 @@
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 
-import { logger } from './logging';
-
 const client = new SecretManagerServiceClient({
     projectId: 'thinking-case-340611',
 });
@@ -20,7 +18,6 @@ export async function readApiKey(): Promise<string> {
     });
 
     if (!version || !version.payload || !version.payload.data) {
-        logger.error('Failed to read API key from secret manager.');
         return '';
     }
 

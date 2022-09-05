@@ -6,7 +6,6 @@ import {
 } from '@storyofams/next-api-decorators';
 import { AxiosError } from 'axios';
 import { client } from 'common/server';
-import { logger } from 'common/server/logging';
 import type { RegisterRequest, User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
 
@@ -18,7 +17,6 @@ class registerHandler {
             .post<RegisterResponse>(RequestRegisterEndpoint, request)
             .then((response) => response.data)
             .catch((error: AxiosError<string, string>) => {
-                logger.error(`Failed to call API: ${error.response?.data}`);
                 throw new BadRequestException(error.response?.data);
             });
     }

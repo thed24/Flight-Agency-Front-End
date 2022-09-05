@@ -1,7 +1,11 @@
-import { Button as ButtonMUI, Typography } from '@mui/material';
+import {
+    Button as ButtonMUI,
+    Container as ContainerMUI,
+    Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const Container = styled('div')`
+export const Container = styled(ContainerMUI)`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,7 +13,7 @@ export const Container = styled('div')`
     gap: 10px;
 `;
 
-export const MiddleContainer = styled('div')`
+export const MiddleContainer = styled(ContainerMUI)`
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -50,11 +54,15 @@ export const Button = styled(ButtonMUI)`
     ${({ variant }) => {
         if (variant === 'contained') {
             return `
-                background-color: #6ca7ff;
                 color: white;
                 &:hover {
                     background-color: #4186d4;
                 }
+            `;
+        }
+        if (variant === 'text') {
+            return `
+                border: none;
             `;
         }
         return `
@@ -65,3 +73,8 @@ export const Button = styled(ButtonMUI)`
         `;
     }}
 `;
+
+Button.defaultProps = {
+    variant: 'outlined',
+    color: 'primary',
+};

@@ -63,13 +63,12 @@ export const ScrollableTrips = ({ trips }: Props) => {
     };
 
     return (
-        <Box sx={{ height: '65vh', maxWidth: '50%' }}>
+        <Box sx={{ height: '64vh', maxWidth: '50vw' }}>
             <Box
                 sx={{
                     borderBottom: 1,
                     borderColor: 'divider',
                     margin: 'auto',
-                    width: '50%',
                 }}
             >
                 <Tabs
@@ -93,13 +92,16 @@ export const ScrollableTrips = ({ trips }: Props) => {
             {trips.map((trip, i) => (
                 <TabPanel key={trip.id} value={value} index={i}>
                     <List
-                        title={`${trip.destination}, ${new Date(
+                        title={`${trip.destination}`}
+                        subTitle={new Date(
                             trip.stops[0].time.start
-                        ).toLocaleDateString()}`}
+                        ).toLocaleDateString()}
                         entries={entries}
                         verticle
                     />
                     <Button
+                        variant="contained"
+                        sx={{ marginTop: '15px' }}
                         onClick={() =>
                             downloadTrip(
                                 session?.user?.id ?? '',

@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import * as SC from 'common/components/common.styles';
+import { Button } from 'common/components';
 
 export const LeftButton = styled(IconButton)`
     margin: auto;
@@ -29,7 +29,8 @@ export const RightButton = styled(IconButton)`
     }
 `;
 
-export const ConfirmButton = styled(SC.Button)`
+export const ConfirmButton = styled(Button)`
     margin: auto;
+    margin-top: 20px;
     display: block;
 `;

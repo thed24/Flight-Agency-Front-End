@@ -37,19 +37,18 @@ export const ScrollableStops = ({
     const stopsForCurrentDay = Object.values(dayToStopsMap)[index];
 
     return (
-        <Box sx={{ height: '50vh', width: '25%' }}>
+        <Box>
             <Box
                 sx={{
                     borderBottom: 1,
                     borderColor: 'divider',
                     margin: 'auto',
-                    width: '80%',
                 }}
             >
                 <Tabs
                     value={index}
                     onChange={handleIndexChange}
-                    variant="scrollable"
+                    variant="fullWidth"
                     scrollButtons
                     allowScrollButtonsMobile
                     aria-label="scrollable trip view"

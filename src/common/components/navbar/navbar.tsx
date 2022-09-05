@@ -1,4 +1,5 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { Button } from 'common/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
@@ -16,38 +17,42 @@ export const NavBar = () => {
             };
 
             return (
-                <Typography style={{ cursor: 'pointer' }} onClick={logOut}>
+                <Button color="info" variant="text" onClick={logOut}>
                     Log out, {session.user?.name}
-                </Typography>
+                </Button>
             );
         }
 
         return (
             <>
-                <Link color="black" href="/auth/register" passHref>
-                    <Typography style={{ cursor: 'pointer' }}>
-                        Register
-                    </Typography>
-                </Link>
-                &ensp;
-                <Link color="black" href="/auth/login" passHref>
-                    <Typography style={{ cursor: 'pointer' }}>Login</Typography>
-                </Link>
+                <Button
+                    color="info"
+                    variant="text"
+                    onClick={() => router.push('auth/register')}
+                >
+                    Register
+                </Button>
+                &ensp;&ensp;
+                <Button
+                    color="info"
+                    variant="text"
+                    onClick={() => router.push('auth/login')}
+                >
+                    Log In
+                </Button>
             </>
         );
     }, [router, session]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar elevation={0} position="static" color="transparent">
                 <Toolbar>
                     <Typography
-                        variant="h5"
-                        sx={{ flexGrow: 1, fontWeight: 300 }}
+                        variant="h4"
+                        sx={{ flexGrow: 1, fontWeight: 500, padding: 3 }}
                     >
-                        <Link href={session ? '/profile' : '/'}>
-                            Flight Agency
-                        </Link>
+                        <Link href={session ? '/profile' : '/'}>AGAI</Link>
                     </Typography>
                     {buttons}
                 </Toolbar>

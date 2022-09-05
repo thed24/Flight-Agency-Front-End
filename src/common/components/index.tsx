@@ -3,7 +3,7 @@ export { LoadingOverlayDynamic as LoadingOverlay } from '../layouts/components/l
 export { Layout } from '../layouts/layout';
 export type { AlertDetails } from './alertBar/alertBar';
 export { AlertBar } from './alertBar/alertBar';
-export * as SC from './common.styles';
+export * from './common.styles';
 export { Divider } from './divider/divider';
 export { List } from './list/list';
 export { NavBarDynamic as NavBar } from './navbar/navbar.dynamic';

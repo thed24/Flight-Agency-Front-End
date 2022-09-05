@@ -7,7 +7,6 @@ import {
     Post,
 } from '@storyofams/next-api-decorators';
 import { client, RequiresAuth } from 'common/server';
-import { logger } from 'common/server/logging';
 import type { Trip, User } from 'common/types';
 import {
     CreateTripEndpoint,
@@ -26,7 +25,6 @@ class userHandler {
             .get<GetTripResponse>(GetTripsEndpoint(id))
             .then((result) => result.data)
             .catch((error) => {
-                logger.error(`Failed to call API: ${error.response?.data}`);
                 throw new BadRequestException(error.response.data.message);
             });
     }
@@ -49,7 +47,6 @@ class userHandler {
             .post<CreateTripResonse>(CreateTripEndpoint(id), transformedRequest)
             .then((result) => result.data)
             .catch((error) => {
-                logger.error(`Failed to call API: ${error.response?.data}`);
                 throw new BadRequestException(error.response.data.message);
             });
     }
@@ -61,7 +58,6 @@ class userHandler {
             .post(DownloadTripEndpoint(id, tripId))
             .then((result) => result.data)
             .catch((error) => {
-                logger.error(`Failed to call API: ${error.response?.data}`);
                 throw new BadRequestException(error.response.data.message);
             });
     }

@@ -7,7 +7,6 @@ import {
 import axios from 'axios';
 import { readApiKey } from 'common/server';
 import { Cache } from 'common/server/cache';
-import { logger } from 'common/server/logging';
 import { Place } from 'common/types';
 
 const client = axios.create();
@@ -27,7 +26,6 @@ class nearByHandler {
         @Query('keyword') keyword: string
     ) {
         if (!lat || !lng || !zoom || !radius || !keyword) {
-            logger.error('Missing required query parameters.');
             throw new BadRequestException();
         }
 
@@ -53,7 +51,6 @@ class nearByHandler {
                 return result.data.results;
             })
             .catch((error) => {
-                logger.error(`Failed to call API: ${error}`);
                 throw new BadRequestException(error.response.data);
             });
     }

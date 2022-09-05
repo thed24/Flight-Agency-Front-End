@@ -1,14 +1,20 @@
 import { TextField } from '@mui/material';
 import useAxios from 'axios-hooks';
-import { AlertBar, AlertDetails, Layout, SC } from 'common/components';
+import {
+    AlertBar,
+    AlertDetails,
+    Button,
+    Layout,
+    Title,
+} from 'common/components';
 import { User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
-import { PasswordInput } from 'modules/auth/components';
+import { PasswordInput } from 'modules/auth/components/passwordInput/passwordInput';
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import * as SSC from './components/form.styles';
+import { FormContainer } from './components/form.styles';
 
 type FormData = {
     Name: string;
@@ -55,12 +61,12 @@ const Register: NextPage = () => {
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <Layout title="Register | Flight Agency" loading={registerLoading}>
+        <Layout title="Register | Agai" loading={registerLoading}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
-            <SC.Title> Register </SC.Title>
+            <Title> Register </Title>
 
-            <SSC.FormContainer onSubmit={handleSubmit(OnRegister)}>
+            <FormContainer onSubmit={handleSubmit(OnRegister)}>
                 <Controller
                     name="Name"
                     render={({ field }) => (
@@ -137,8 +143,8 @@ const Register: NextPage = () => {
                         },
                     }}
                 />
-                <SC.Button type="submit"> Register </SC.Button>
-            </SSC.FormContainer>
+                <Button type="submit"> Register </Button>
+            </FormContainer>
         </Layout>
     );
 };

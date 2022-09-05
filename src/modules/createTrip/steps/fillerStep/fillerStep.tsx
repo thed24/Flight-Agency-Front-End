@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material';
 import { DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
 import useAxios from 'axios-hooks';
-import { SC } from 'common/components';
+import { Container } from 'common/components';
 import {
     Addresses,
     AddressRequest,
@@ -12,8 +12,9 @@ import {
 import { GoogleKeyEndpoint, RequestAddressEndpoint } from 'common/utilities';
 import { GoogleMap, ScrollableStops } from 'modules/createTrip/components';
 import { useMap, useTrip } from 'modules/createTrip/context';
-import { SCC } from 'modules/createTrip/steps';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { MapContainer } from '../steps.styles';
 
 function arePointsNear(
     checkPoint: Location,
@@ -213,15 +214,15 @@ export const FillerStep = () => {
 
     if (addressesLoading || apiKeyLoading) {
         return (
-            <SC.Container>
+            <Container>
                 <CircularProgress color="inherit" />
-            </SC.Container>
+            </Container>
         );
     }
 
     return (
-        <SC.Container>
-            <SCC.MapContainer>
+        <Container>
+            <MapContainer solo={trip.stops.length === 0}>
                 <GoogleMap
                     key={index * stopsForDay.length}
                     center={center}
@@ -246,7 +247,7 @@ export const FillerStep = () => {
                         entries={entries}
                     />
                 )}
-            </SCC.MapContainer>
-        </SC.Container>
+            </MapContainer>
+        </Container>
     );
 };

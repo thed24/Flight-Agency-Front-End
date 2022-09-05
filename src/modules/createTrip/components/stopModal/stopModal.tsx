@@ -1,12 +1,12 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Button, Modal, TextField, TextFieldProps } from '@mui/material';
+import { Modal, TextField, TextFieldProps } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { SC } from 'common/components';
+import { Button, SubTitle, Title } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import { useTrip } from 'modules/createTrip/context';
 import React, { useCallback, useState } from 'react';
 
-import * as SSC from './stopModal.styles';
+import { ModalContainer } from './stopModal.styles';
 
 export interface Props {
     place: Place;
@@ -80,12 +80,12 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
     return (
         place && (
             <Modal open>
-                <SSC.ModalContainer>
-                    <SC.Title> {place.name} </SC.Title>
-                    <SC.SubTitle> {place.vicinity} </SC.SubTitle>
-                    <SC.SubTitle> Rated {place.rating} / 5</SC.SubTitle>
+                <ModalContainer>
+                    <Title> {place.name} </Title>
+                    <SubTitle> {place.vicinity} </SubTitle>
+                    <SubTitle> Rated {place.rating} / 5</SubTitle>
 
-                    <SC.SubTitle> Select a Time </SC.SubTitle>
+                    <SubTitle> Select a Time </SubTitle>
 
                     <LocalizationProvider dateAdapter={DateFnsUtils}>
                         <DateTimePicker
@@ -112,13 +112,14 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
                     </LocalizationProvider>
 
                     <Button
+                        variant="contained"
                         disabled={!startDate || !endDate}
                         onClick={handleConfirm}
                     >
                         Save Stop
                     </Button>
                     <Button onClick={close}>Cancel</Button>
-                </SSC.ModalContainer>
+                </ModalContainer>
             </Modal>
         )
     );

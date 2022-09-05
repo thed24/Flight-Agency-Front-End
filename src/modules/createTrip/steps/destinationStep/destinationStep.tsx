@@ -6,7 +6,7 @@ import {
     SelectChangeEvent,
     Typography,
 } from '@mui/material';
-import { SC } from 'common/components';
+import { Container } from 'common/components';
 import { LoadCountries } from 'common/types';
 import { useTrip } from 'modules/createTrip/context';
 import { useCallback } from 'react';
@@ -22,7 +22,7 @@ export const DestinationStep = () => {
     );
 
     return (
-        <SC.Container>
+        <Container>
             <Typography variant="h5">Please select your destination</Typography>
             <FormControl style={{ width: '20rem', margin: '30px' }}>
                 <InputLabel>Select a country</InputLabel>
@@ -38,6 +38,6 @@ export const DestinationStep = () => {
                     ))}
                 </Select>
             </FormControl>
-        </SC.Container>
+        </Container>
     );
 };

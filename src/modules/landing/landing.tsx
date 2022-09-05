@@ -1,5 +1,5 @@
-import { Box, Stack, Typography } from '@mui/material';
-import { Layout, SC } from 'common/components';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Button, Layout } from 'common/components';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -92,19 +92,16 @@ const Landing: NextPage = () => {
     }, [step]);
 
     return (
-        <Layout title="Home | Flight Agency">
-            <Box
-                flex={1}
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                marginLeft="5%"
-                gap="10%"
-            >
-                <Box width="30%" marginLeft={15}>
-                    <Typography fontSize={50} fontWeight={400}>
-                        With Flight Agency, planning your next trip has never
-                        been so easy!
+        <Layout title="Home | Agai">
+            <Grid container>
+                <Grid
+                    textAlign="left"
+                    justifyContent="center"
+                    marginLeft={30}
+                    xs={3}
+                >
+                    <Typography fontSize={47} fontWeight={400}>
+                        With Agai, planning your next trip has been so easy!
                     </Typography>
 
                     {content[0]}
@@ -112,14 +109,14 @@ const Landing: NextPage = () => {
                     <Stack width="85%" marginTop={5} gap={5} direction="row">
                         {session ? (
                             <>
-                                <SC.Button
+                                <Button
                                     onClick={() => router.push('profile')}
                                     variant="contained"
                                     fullWidth
                                 >
                                     Profile
-                                </SC.Button>
-                                <SC.Button
+                                </Button>
+                                <Button
                                     onClick={async () => {
                                         await signOut({ redirect: false });
                                         router.push('/');
@@ -127,36 +124,42 @@ const Landing: NextPage = () => {
                                     fullWidth
                                 >
                                     Sign Out
-                                </SC.Button>
+                                </Button>
                             </>
                         ) : (
                             <>
-                                <SC.Button
+                                <Button
                                     onClick={() => router.push('auth/login')}
                                     variant="contained"
                                     fullWidth
                                 >
                                     Login
-                                </SC.Button>
-                                <SC.Button
+                                </Button>
+                                <Button
                                     onClick={() => router.push('auth/register')}
                                     fullWidth
                                 >
                                     Sign Up
-                                </SC.Button>
+                                </Button>
                             </>
                         )}
                     </Stack>
-                </Box>
+                </Grid>
 
-                <Box alignItems="right" marginTop={10}>
+                <Grid
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    marginTop="-60px"
+                    xs
+                >
                     {content[1]}
-                </Box>
-            </Box>
+                </Grid>
 
-            <Box width="60%" margin="auto">
-                <LandingStepper step={step} onClick={(x) => setStep(x)} />
-            </Box>
+                <Grid xs={12}>
+                    <LandingStepper step={step} onClick={(x) => setStep(x)} />
+                </Grid>
+            </Grid>
         </Layout>
     );
 };
