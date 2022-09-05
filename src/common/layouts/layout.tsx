@@ -1,8 +1,8 @@
-import { AuthMessage, LoadingOverlay, NavBar } from 'common/components';
+import { LoadingOverlay, NavBar } from 'common/components';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -21,12 +21,14 @@ export const Layout = ({ title, children, loading }: LayoutProps) => {
         [loading, status]
     );
 
+    useEffect(() => {
+        if (session && guestPaths.includes(router.pathname)) {
+            router.push('/');
+        }
+    }, [router, session]);
+
     if (isLoading) {
         return <LoadingOverlay loading={isLoading} />;
-    }
-
-    if (!session && !guestPaths.some((path) => path === router.pathname)) {
-        return <AuthMessage />;
     }
 
     return (
