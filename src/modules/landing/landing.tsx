@@ -97,7 +97,10 @@ const Landing: NextPage = () => {
                 <Grid
                     textAlign="left"
                     justifyContent="center"
+                    alignItems="center"
+                    item
                     marginLeft={30}
+                    marginTop={15}
                     xs={3}
                 >
                     <Typography fontSize={47} fontWeight={400}>
@@ -150,13 +153,12 @@ const Landing: NextPage = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    marginTop="-60px"
                     xs
                 >
                     {content[1]}
                 </Grid>
 
-                <Grid xs={12}>
+                <Grid xs={12} marginTop={-5}>
                     <LandingStepper step={step} onClick={(x) => setStep(x)} />
                 </Grid>
             </Grid>
