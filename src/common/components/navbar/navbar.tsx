@@ -46,11 +46,23 @@ export const NavBar = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar elevation={0} position="static" color="transparent">
+            <AppBar
+                sx={{
+                    paddingLeft: 3,
+                    paddingTop: 2,
+                    marginBottom: -2,
+                }}
+                elevation={0}
+                position="static"
+                color="transparent"
+            >
                 <Toolbar>
                     <Typography
                         variant="h4"
-                        sx={{ flexGrow: 1, fontWeight: 500, padding: 3 }}
+                        sx={{
+                            flexGrow: 1,
+                            fontWeight: 500,
+                        }}
                     >
                         <Link href={session ? '/profile' : '/'}>AGAI</Link>
                     </Typography>
