@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
+        "target": "es5",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "baseUrl": "./src/",
-        "target": "es6",
+        "baseUrl": "./src",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
@@ -16,7 +16,8 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "incremental": true,
+        "jsxImportSource": "@emotion/react",
+        "incremental": true
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"],

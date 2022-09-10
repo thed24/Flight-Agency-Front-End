@@ -1,16 +1,19 @@
-const withPWA = require('next-pwa')({
-    dest: 'public'
-});
-
 /**
  * @type {import('next').NextConfig}
  * */
-module.exports = withPWA({
+module.exports = {
     reactStrictMode: true,
+    experimental: {
+        modularizeImports: {
+            '@mui/material': {
+                transform: '@mui/material/{{member}}',
+            },
+            '@mui/icons-material': {
+                transform: '@mui/icons-material/{{member}}',
+            },
+        },
+    },
     compiler: {
         styledComponents: true,
     },
-    experimental: {
-        optimizeFonts: true,
-    },
-});
+}

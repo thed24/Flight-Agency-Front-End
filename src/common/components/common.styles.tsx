@@ -4,6 +4,7 @@ import {
     Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { theme } from 'common/utilities/theme';
 
 export const Container = styled(ContainerMUI)`
     display: flex;
@@ -49,14 +50,15 @@ Title.defaultProps = {
 };
 
 export const Button = styled(ButtonMUI)`
-    border: 2px solid #6ca7ff;
+    border: 2px solid ${theme.palette.primary.main};
     padding: 10px;
+    text-align: center;
     ${({ variant }) => {
         if (variant === 'contained') {
             return `
                 color: white;
                 &:hover {
-                    background-color: #4186d4;
+                    background-color: ${theme.palette.primary.main};
                 }
             `;
         }
@@ -67,7 +69,7 @@ export const Button = styled(ButtonMUI)`
         }
         return `
             &:hover {
-                background-image: linear-gradient(to right, #6ca7ff, #6ca7ff);
+                background-image: linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.primary.main});
                 color: white;
             }
         `;

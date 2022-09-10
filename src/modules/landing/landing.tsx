@@ -153,12 +153,13 @@ const Landing: NextPage = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
+                    item
                     xs
                 >
                     {content[1]}
                 </Grid>
 
-                <Grid xs={12} marginTop={-5}>
+                <Grid xs={12} item marginTop={-5}>
                     <LandingStepper step={step} onClick={(x) => setStep(x)} />
                 </Grid>
             </Grid>

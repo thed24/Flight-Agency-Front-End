@@ -1,4 +1,3 @@
-export { AuthMessage } from '../layouts/components/authMessage/authMessage';
 export { LoadingOverlayDynamic as LoadingOverlay } from '../layouts/components/loadingOverlay/loadingOverlay.dynamic';
 export { Layout } from '../layouts/layout';
 export type { AlertDetails } from './alertBar/alertBar';

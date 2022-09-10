@@ -1,4 +1,5 @@
-import { StepConnector, stepConnectorClasses } from '@mui/material';
+import StepConnector from '@mui/material/StepConnector';
+import stepConnectorClasses from '@mui/material/StepConnector/stepConnectorClasses';
 import { styled } from '@mui/material/styles';
 
 export const Wrapper = styled('div')`

@@ -1,12 +1,10 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { Modal, TextField, TextFieldProps } from '@mui/material';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { Modal } from '@mui/material';
 import { Button, SubTitle, Title } from 'common/components';
 import { DateRange, Place } from 'common/types';
 import { useTrip } from 'modules/createTrip/context';
 import React, { useCallback, useState } from 'react';
 
-import { ModalContainer } from './stopModal.styles';
+import { DateTimePicker, ModalContainer } from './stopModal.styles';
 
 export interface Props {
     place: Place;
@@ -48,13 +46,7 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
             }
 
             const newStartDate = new Date(event);
-            const newEndDate =
-                endDate.getHours() > newStartDate.getHours()
-                    ? endDate
-                    : new Date(newStartDate.getTime() + 1 * 60 * 60 * 1000);
-
             setStartDate(newStartDate);
-            setEndDate(newEndDate);
         },
         [endDate]
     );
@@ -66,16 +58,23 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
             }
 
             const newEndDate = new Date(event);
-            const newStartDate =
-                startDate.getHours() < newEndDate.getHours()
-                    ? startDate
-                    : new Date(newEndDate.getTime() - 1 * 60 * 60 * 1000);
-
-            setStartDate(newStartDate);
             setEndDate(newEndDate);
         },
         [startDate]
     );
+
+    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    const startDateLocal = new Date(
+        startDate?.getTime() ?? new Date().getTime() - timezoneOffset
+    )
+        .toISOString()
+        .slice(0, -1);
+
+    const endDateLocal = new Date(
+        endDate?.getTime() ?? new Date().getTime() - timezoneOffset
+    )
+        .toISOString()
+        .slice(0, -1);
 
     return (
         place && (
@@ -87,29 +86,17 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
 
                     <SubTitle> Select a Time </SubTitle>
 
-                    <LocalizationProvider dateAdapter={DateFnsUtils}>
-                        <DateTimePicker
-                            label="Start Time"
-                            value={startDate}
-                            onChange={handleChangeStart}
-                            renderInput={(
-                                params: JSX.IntrinsicAttributes & TextFieldProps
-                            ) => <TextField {...params} />}
-                            minDate={new Date().toISOString()}
-                        />
-                    </LocalizationProvider>
+                    <DateTimePicker
+                        type="datetime-local"
+                        defaultValue={startDateLocal}
+                        onChange={(e) => handleChangeStart(e.target.value)}
+                    />
 
-                    <LocalizationProvider dateAdapter={DateFnsUtils}>
-                        <DateTimePicker
-                            label="Stop Time"
-                            value={endDate}
-                            onChange={handleChangeEnd}
-                            renderInput={(
-                                params: JSX.IntrinsicAttributes & TextFieldProps
-                            ) => <TextField {...params} />}
-                            minDate={new Date().toISOString()}
-                        />
-                    </LocalizationProvider>
+                    <DateTimePicker
+                        type="datetime-local"
+                        defaultValue={endDateLocal}
+                        onChange={(e) => handleChangeEnd(e.target.value)}
+                    />
 
                     <Button
                         variant="contained"

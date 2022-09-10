@@ -1,6 +1,6 @@
 import 'styles/globals.css';
 
-import { ThemeProvider } from '@mui/material';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { theme } from 'common/utilities/theme';
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';

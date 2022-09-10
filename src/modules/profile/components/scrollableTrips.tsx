@@ -101,7 +101,7 @@ export const ScrollableTrips = ({ trips }: Props) => {
                     />
                     <Button
                         variant="contained"
-                        sx={{ marginTop: '15px' }}
+                        sx={{ marginTop: '5px' }}
                         onClick={() =>
                             downloadTrip(
                                 session?.user?.id ?? '',

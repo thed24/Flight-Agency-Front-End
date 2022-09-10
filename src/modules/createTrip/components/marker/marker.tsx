@@ -3,7 +3,7 @@ import { InfoBox } from '@react-google-maps/api';
 import { Place } from 'common/types';
 import React, { MouseEventHandler } from 'react';
 
-import { MarkerContainer } from './marker.style';
+import { MarkerBottom, MarkerContainer, MarkerTop } from './marker.style';
 
 type LayoutProps = {
     lat: number;
@@ -16,15 +16,20 @@ type LayoutProps = {
 export const Marker = ({ lat, lng, place, name, onClick }: LayoutProps) => (
     <InfoBox position={new google.maps.LatLng(lat, lng)}>
         <MarkerContainer onClick={onClick}>
-            <Typography sx={{ fontWeight: 'bold' }} color="primary">
-                {name}
-            </Typography>
-            {place && (
-                <>
-                    <Typography color="primary"> {place.vicinity} </Typography>
-                    <Typography color="primary">{`Rated ${place.rating} / 5`}</Typography>
-                </>
-            )}
+            <MarkerTop>
+                <Typography sx={{ fontWeight: 'bold' }} color="primary">
+                    {name}
+                </Typography>
+            </MarkerTop>
+
+            <MarkerBottom>
+                {place && (
+                    <>
+                        <Typography color="white">{place.vicinity}</Typography>
+                        <Typography color="white">{`${place.rating} / 5 stars`}</Typography>
+                    </>
+                )}
+            </MarkerBottom>
         </MarkerContainer>
     </InfoBox>
 );
