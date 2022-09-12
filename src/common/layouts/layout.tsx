@@ -22,7 +22,7 @@ export const Layout = ({ title, children, loading }: LayoutProps) => {
     );
 
     useEffect(() => {
-        if (session && guestPaths.includes(router.pathname)) {
+        if (guestPaths.includes(router.pathname) && session) {
             router.push('/');
         }
     }, [router, session]);

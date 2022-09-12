@@ -65,13 +65,13 @@ const StopModalInternal = ({ place, day, value, close }: Props) => {
 
     const timezoneOffset = new Date().getTimezoneOffset() * 60000;
     const startDateLocal = new Date(
-        startDate?.getTime() ?? new Date().getTime() - timezoneOffset
+        (startDate?.getTime() ?? new Date().getTime()) - timezoneOffset
     )
         .toISOString()
         .slice(0, -1);
 
     const endDateLocal = new Date(
-        endDate?.getTime() ?? new Date().getTime() - timezoneOffset
+        (endDate?.getTime() ?? new Date().getTime()) - timezoneOffset
     )
         .toISOString()
         .slice(0, -1);

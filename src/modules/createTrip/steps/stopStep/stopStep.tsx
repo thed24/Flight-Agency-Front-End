@@ -30,6 +30,7 @@ interface Props {
 export const StopStep = ({ onClickMarker }: Props) => {
     const [{ data: apiKey, loading: apiKeyLoading }] =
         useAxios<string>(GoogleKeyEndpoint);
+
     const [{ data: places }, fetchPlaces] = useAxios<Place[]>(
         RequestLocationDataEndpoint,
         { manual: true }
@@ -65,7 +66,7 @@ export const StopStep = ({ onClickMarker }: Props) => {
         };
 
         fetchPlaces({ params: { ...request }, method: 'get' });
-    }, [category, center]);
+    }, [category, center, fetchPlaces, zoom]);
 
     const handleOnChangeCategory = (e: SelectChangeEvent<string>) => {
         setCategory(e.target.value);

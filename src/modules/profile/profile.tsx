@@ -17,11 +17,12 @@ const Profile: NextPage = () => {
         Trip[]
     >(GetTripsEndpoint(session?.user?.id ?? ''), {
         manual: true,
+        ssr: false,
     });
 
     useEffect(() => {
-        if (status === 'authenticated') requestTrips();
-    }, [session]);
+        if (status === 'authenticated' && !trips) requestTrips();
+    }, [requestTrips, session, status, trips]);
 
     return (
         <Layout
