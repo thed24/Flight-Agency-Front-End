@@ -38,6 +38,7 @@ export const List = ({
                 textAlign: 'center',
                 maxHeight: '40vh',
                 overflow: 'auto',
+                padding: '1rem',
             }}
         >
             <ListTitle>{title}</ListTitle>

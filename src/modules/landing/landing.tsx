@@ -93,16 +93,13 @@ const Landing: NextPage = () => {
 
     return (
         <Layout title="Home | Agai">
-            <Grid container>
-                <Grid
-                    textAlign="left"
-                    justifyContent="center"
-                    alignItems="center"
-                    item
-                    marginLeft={30}
-                    marginTop={15}
-                    xs={3}
-                >
+            <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                columnSpacing={25}
+            >
+                <Grid item mt={15} ml="18%" mb={20} xs={3}>
                     <Typography fontSize={47} fontWeight={400}>
                         With Agai, planning your next trip has been so easy!
                     </Typography>
@@ -149,13 +146,7 @@ const Landing: NextPage = () => {
                     </Stack>
                 </Grid>
 
-                <Grid
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    item
-                    xs
-                >
+                <Grid item xs justifyItems="center">
                     {content[1]}
                 </Grid>
 
