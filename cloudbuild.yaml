@@ -42,7 +42,7 @@ steps:
       - add-iam-policy-binding
       - $_SERVICE_NAME
       - --member="allUsers"
-      - --role="roles/run.invoker"
+      - "--role='roles/run.invoker'"
       - "--region=$_DEPLOY_REGION"
 timeout: "1200.0s"
 images:
