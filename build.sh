@@ -1,4 +1,4 @@
-REGION=asia-southeast2
+REGION=asia-southeast1
 PROJECT_ID=flight-agency-api
 
 API_URL=$(gcloud run services describe $PROJECT_ID --region $REGION --format 'value(status.url)')
