@@ -33,6 +33,16 @@ steps:
       - "--region=$_DEPLOY_REGION"
       - --update-secrets=GOOGLE_API_KEY=google-api-key:latest
       - "--quiet"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    id: Permissions
+    entrypoint: gcloud
+    args:
+      - run
+      - services
+      - add-iam-policy-binding
+      - $_SERVICE_NAME
+      - --member="allUsers"
+      - --role="roles/run.invoker"
 timeout: "1200.0s"
 images:
   - "$_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
