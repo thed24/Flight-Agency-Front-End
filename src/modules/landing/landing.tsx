@@ -6,6 +6,9 @@ import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
 import { useMemo, useState } from 'react';
 
+import navImage from '../../../public/undraw_navigation.svg';
+import spaceImage from '../../../public/undraw_planet.svg';
+import travelImage from '../../../public/undraw_travel.svg';
 import { LandingStepper } from './components/landingStepper';
 
 const Landing: NextPage = () => {
@@ -19,7 +22,7 @@ const Landing: NextPage = () => {
                 return [
                     <Typography
                         key={`${step}-text`}
-                        fontSize={35}
+                        fontSize="3vmin"
                         fontWeight={300}
                     >
                         Find exciting places to visit on your trip, with
@@ -28,17 +31,14 @@ const Landing: NextPage = () => {
                     <Image
                         alt="Space imagery"
                         key={`${step}-image`}
-                        src="/undraw_planet.svg"
-                        style={{ float: 'right' }}
-                        height={800}
-                        width={800}
+                        src={spaceImage}
                     />,
                 ];
             case 1:
                 return [
                     <Typography
                         key={`${step}-text`}
-                        fontSize={35}
+                        fontSize="3vmin"
                         fontWeight={300}
                     >
                         Add additional stops and configure your day to day
@@ -47,17 +47,14 @@ const Landing: NextPage = () => {
                     <Image
                         alt="Navigation imagery"
                         key={`${step}-image`}
-                        src="/undraw_navigation.svg"
-                        style={{ float: 'right' }}
-                        height={800}
-                        width={800}
+                        src={navImage}
                     />,
                 ];
             case 2:
                 return [
                     <Typography
                         key={`${step}-text`}
-                        fontSize={35}
+                        fontSize="3vmin"
                         fontWeight={300}
                     >
                         Save and export your trip to your favorite calendar app!
@@ -65,24 +62,21 @@ const Landing: NextPage = () => {
                     <Image
                         alt="Travel imagery"
                         key={`${step}-image`}
-                        src="/undraw_travel.svg"
-                        style={{ float: 'right' }}
-                        height={800}
-                        width={800}
+                        src={travelImage}
                     />,
                 ];
             default:
                 return [
                     <Typography
                         key={`${step}-text`}
-                        fontSize={35}
+                        fontSize="3vmin"
                         fontWeight={300}
                     >
                         Oops, something went wrong.
                     </Typography>,
                     <Typography
                         key={`${step}-image`}
-                        fontSize={35}
+                        fontSize="3vmin"
                         fontWeight={300}
                     >
                         Please try again later.
@@ -93,20 +87,15 @@ const Landing: NextPage = () => {
 
     return (
         <Layout title="Home | Agai">
-            <Grid
-                container
-                justifyContent="center"
-                alignItems="center"
-                columnSpacing={25}
-            >
-                <Grid item mt={15} ml="18%" mb={20} xs={3}>
-                    <Typography fontSize={47} fontWeight={400}>
+            <Grid gap={2} container justifyContent="center" alignItems="center">
+                <Grid item ml="18%" mt={15} mb={20} xs={3}>
+                    <Typography fontSize="4vmin" fontWeight={400}>
                         With Agai, planning your next trip has been so easy!
                     </Typography>
 
                     {content[0]}
 
-                    <Stack width="85%" marginTop={5} gap={5} direction="row">
+                    <Stack mt={5} mr={2} gap={5} direction="row">
                         {session ? (
                             <>
                                 <Button
@@ -150,7 +139,7 @@ const Landing: NextPage = () => {
                     {content[1]}
                 </Grid>
 
-                <Grid xs={12} item marginTop={-5}>
+                <Grid xs={12} item marginTop={5}>
                     <LandingStepper step={step} onClick={(x) => setStep(x)} />
                 </Grid>
             </Grid>
