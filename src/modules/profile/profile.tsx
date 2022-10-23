@@ -18,7 +18,7 @@ const Profile: NextPage = () => {
     >(GetTripsEndpoint(user?.id));
 
     useEffect(() => {
-        if (!trips) requestTrips();
+        if (!trips && user) requestTrips();
     }, [requestTrips, trips, user]);
 
     return (
