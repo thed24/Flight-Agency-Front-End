@@ -1,9 +1,9 @@
 import { Grid, Stack, Typography } from '@mui/material';
 import { Button, Layout } from 'common/components';
+import { useUser } from 'common/context';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { signOut, useSession } from 'next-auth/react';
 import { useMemo, useState } from 'react';
 
 import navImage from '../../../public/undraw_navigation.svg';
@@ -14,7 +14,7 @@ import { LandingStepper } from './components/landingStepper';
 const Landing: NextPage = () => {
     const [step, setStep] = useState(0);
     const router = useRouter();
-    const { data: session } = useSession();
+    const { user, logout } = useUser();
 
     const content = useMemo(() => {
         switch (step) {
@@ -96,7 +96,7 @@ const Landing: NextPage = () => {
                     {content[0]}
 
                     <Stack mt={5} mr={2} gap={5} direction="row">
-                        {session ? (
+                        {user ? (
                             <>
                                 <Button
                                     onClick={() => router.push('profile')}
@@ -107,7 +107,7 @@ const Landing: NextPage = () => {
                                 </Button>
                                 <Button
                                     onClick={async () => {
-                                        await signOut({ redirect: false });
+                                        logout();
                                         router.push('/');
                                     }}
                                     fullWidth

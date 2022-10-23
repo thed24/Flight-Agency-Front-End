@@ -1,24 +1,24 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import { Button } from 'common/components';
+import { useUser } from 'common/context';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { signOut, useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
 export const NavBar = () => {
-    const { data: session } = useSession();
+    const { user, logout } = useUser();
     const router = useRouter();
 
     const buttons = useMemo(() => {
-        if (session) {
+        if (user) {
             const logOut = async () => {
-                await signOut({ redirect: false });
+                logout();
                 router.push('/');
             };
 
             return (
                 <Button color="info" variant="text" onClick={logOut}>
-                    Log out, {session.user?.name}
+                    Log out, {user?.name}
                 </Button>
             );
         }
@@ -42,7 +42,7 @@ export const NavBar = () => {
                 </Button>
             </>
         );
-    }, [router, session]);
+    }, [user, logout]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -64,7 +64,7 @@ export const NavBar = () => {
                             fontWeight: 500,
                         }}
                     >
-                        <Link href={session ? '/profile' : '/'}>AGAI</Link>
+                        <Link href={user ? '/profile' : '/'}>AGAI</Link>
                     </Typography>
                     {buttons}
                 </Toolbar>

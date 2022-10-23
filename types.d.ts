@@ -1,21 +1,5 @@
 import type { NextComponentType, NextPageContext } from 'next';
 import type { Router } from 'next/router';
-import type { DefaultUser, Session } from 'next-auth';
-
-declare module 'next-auth' {
-    // eslint-disable-next-line no-shadow
-    interface Session {
-        user?: DefaultUser & {
-            id: string;
-        };
-    }
-}
-
-declare module 'next-auth/jwt/types' {
-    interface JWT {
-        uid: string;
-    }
-}
 
 declare module 'google-map-react' {
     interface Props {

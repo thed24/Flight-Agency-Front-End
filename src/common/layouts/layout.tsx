@@ -1,8 +1,8 @@
 import { LoadingOverlay, NavBar } from 'common/components';
+import { useUser } from 'common/context';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -13,22 +13,17 @@ type LayoutProps = {
 const guestPaths = ['/auth/login', '/auth/register', '/'];
 
 export const Layout = ({ title, children, loading }: LayoutProps) => {
-    const { data: session, status } = useSession();
+    const { user } = useUser();
     const router = useRouter();
 
-    const isLoading = useMemo(
-        () => loading || status === 'loading',
-        [loading, status]
-    );
-
     useEffect(() => {
-        if (guestPaths.includes(router.pathname) && session) {
+        if (guestPaths.includes(router.pathname) && user) {
             router.push('/');
         }
-    }, [router, session]);
+    }, [user]);
 
-    if (isLoading) {
-        return <LoadingOverlay loading={isLoading} />;
+    if (loading) {
+        return <LoadingOverlay loading={loading} />;
     }
 
     return (

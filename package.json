@@ -25,7 +25,6 @@
     "axios-hooks": "^4.0.0",
     "csv-string": "^4.1.0",
     "next": "^12.3.0",
-    "next-auth": "^4.10.3",
     "node-cache": "^5.1.2",
     "path-to-regexp": "^6.2.1",
     "react": "^18.2.0",

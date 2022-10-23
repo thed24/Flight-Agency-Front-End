@@ -14,8 +14,4 @@ export const CreateTripEndpoint = (userId: string) =>
 export const GetTripsEndpoint = (userId: string) =>
     `/api/users/${userId}/trips`;
 
-export const httpClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_URL || 'http://localhost:8080',
-});
-
-export const localHttpClient = axios.create();
+export const httpClient = axios.create();

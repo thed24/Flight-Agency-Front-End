@@ -1,35 +1,32 @@
 import useAxios from 'axios-hooks';
 import { Button, Container, Layout, SubTitle, Title } from 'common/components';
+import { useUser } from 'common/context';
 import { Trip } from 'common/types';
 import { GetTripsEndpoint } from 'common/utilities';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
 import { ScrollableTrips } from './components';
 
 const Profile: NextPage = () => {
-    const { data: session, status } = useSession();
+    const { user } = useUser();
     const router = useRouter();
 
     const [{ data: trips, loading: tripsLoading }, requestTrips] = useAxios<
         Trip[]
-    >(GetTripsEndpoint(session?.user?.id ?? ''), {
+    >(GetTripsEndpoint(user?.id ?? ''), {
         manual: true,
         ssr: false,
     });
 
     useEffect(() => {
-        if (status === 'authenticated' && !trips) requestTrips();
-    }, [requestTrips, session, status, trips]);
+        if (!user && !trips) requestTrips();
+    }, [requestTrips, trips, user]);
 
     return (
-        <Layout
-            title="Home | Agai"
-            loading={tripsLoading || status === 'loading'}
-        >
-            <Title>Welcome back to Agai, {session?.user?.name}!</Title>
+        <Layout title="Home | Agai" loading={tripsLoading}>
+            <Title>Welcome back to Agai, {user?.name}!</Title>
             <SubTitle marginBottom={4}>
                 View your existing trips, or plan a new one
             </SubTitle>

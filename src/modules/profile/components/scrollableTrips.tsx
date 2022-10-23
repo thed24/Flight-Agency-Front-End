@@ -2,9 +2,9 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { List, TabPanel } from 'common/components';
 import { Button } from 'common/components/common.styles';
+import { useUser } from 'common/context';
 import { DayToStopMap, Trip } from 'common/types';
-import { DownloadTripEndpoint, localHttpClient } from 'common/utilities';
-import { useSession } from 'next-auth/react';
+import { DownloadTripEndpoint, httpClient } from 'common/utilities';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 
@@ -21,7 +21,7 @@ function propGenerator(index: number) {
 
 export const ScrollableTrips = ({ trips }: Props) => {
     const [value, setValue] = useState(0);
-    const { data: session } = useSession();
+    const { user } = useUser();
     const stopsForDay = DayToStopMap(trips[value].stops);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -49,7 +49,7 @@ export const ScrollableTrips = ({ trips }: Props) => {
     );
 
     const downloadTrip = async (userId: string, tripId: string) => {
-        const { data } = await localHttpClient.post<string>(
+        const { data } = await httpClient.post<string>(
             DownloadTripEndpoint(userId, tripId)
         );
         const element = document.createElement('a');
@@ -103,10 +103,7 @@ export const ScrollableTrips = ({ trips }: Props) => {
                         variant="contained"
                         sx={{ marginTop: '5px' }}
                         onClick={() =>
-                            downloadTrip(
-                                session?.user?.id ?? '',
-                                trip.id.toString()
-                            )
+                            downloadTrip(user?.id ?? '', trip.id.toString())
                         }
                     >
                         Save Trip

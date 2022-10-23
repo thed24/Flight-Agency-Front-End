@@ -6,7 +6,6 @@ COPY . .
 
 ARG URL
 RUN echo "NEXT_PUBLIC_URL=${URL}" > .env
-RUN echo "NEXTAUTH_URL=${URL}" >> .env
 
 RUN yarn install
 RUN yarn run build

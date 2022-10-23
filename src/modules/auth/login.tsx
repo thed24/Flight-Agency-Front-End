@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import useAxios from 'axios-hooks';
 import {
     AlertBar,
     AlertDetails,
@@ -6,11 +7,13 @@ import {
     Layout,
     Title,
 } from 'common/components';
+import { useUser } from 'common/context';
+import { User } from 'common/types';
+import { RequestLoginEndpoint } from 'common/utilities';
 import { PasswordInput } from 'modules/auth/components/passwordInput/passwordInput';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { FormContainer } from './components/form.styles';
@@ -26,33 +29,42 @@ const Login: NextPage = () => {
         control,
         formState: { errors },
     } = useForm<FormData>();
-    const router = useRouter();
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [{ data: response, loading: loggingIn, error }, requestLogin] =
+        useAxios<User>(RequestLoginEndpoint, {
+            manual: true,
+        });
+
+    const router = useRouter();
+    const { login } = useUser();
+
     const [alert, setAlert] = useState<AlertDetails | null>(null);
 
     const OnLogin = async ({ Email, Password }: FormData) => {
-        setLoading(true);
-        const response = await signIn<'credentials'>('credentials', {
-            redirect: false,
-            Email: Email.toLocaleLowerCase(),
-            Password,
-            callbackUrl: `${window.location.origin}`,
+        await requestLogin({
+            data: { Email: Email.toLocaleLowerCase(), Password },
+            method: 'post',
         });
-
-        if (response && response.ok) {
-            router.push('/profile');
-            setLoading(false);
-        } else {
-            setAlert({ message: 'Login failed.', type: 'error' });
-            setLoading(false);
-        }
     };
+
+    useEffect(() => {
+        if (error) {
+            setAlert({
+                message: error?.response?.data?.message,
+                type: 'error',
+            });
+        }
+
+        if (response) {
+            login(response);
+            router.push('/');
+        }
+    }, [error, login, response, router]);
 
     const OnCloseAlert = () => setAlert(null);
 
     return (
-        <Layout title="Login | Agai" loading={loading}>
+        <Layout title="Login | Agai" loading={loggingIn}>
             {alert && <AlertBar callback={OnCloseAlert} details={alert} />}
 
             <Title> Login </Title>

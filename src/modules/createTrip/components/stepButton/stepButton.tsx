@@ -1,10 +1,10 @@
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
+import { useUser } from 'common/context';
 import { Trip } from 'common/types';
 import { CreateTripEndpoint } from 'common/utilities';
 import { useTrip, useTripFlow } from 'modules/createTrip/context';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { useCallback, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
@@ -12,12 +12,12 @@ import { ConfirmButton, LeftButton, RightButton } from './stepButton.style';
 
 export const StepButton = () => {
     const router = useRouter();
-    const { data: session } = useSession();
+    const { user } = useUser();
     const { step, increaseStep, decreaseStep } = useTripFlow();
     const { trip } = useTrip();
 
     const [{ data: createdTrip }, createTrip] = useAxios<Trip>(
-        CreateTripEndpoint(session?.user?.id ?? ''),
+        CreateTripEndpoint(user?.id ?? ''),
         { manual: true }
     );
 
