@@ -28,7 +28,7 @@ export const NavBar = () => {
                 <Button
                     color="info"
                     variant="text"
-                    onClick={() => router.push('/auth/register')}
+                    onClick={() => router.push('/authorization/register')}
                 >
                     Register
                 </Button>
@@ -36,7 +36,7 @@ export const NavBar = () => {
                 <Button
                     color="info"
                     variant="text"
-                    onClick={() => router.push('/auth/login')}
+                    onClick={() => router.push('/authorization/login')}
                 >
                     Log In
                 </Button>

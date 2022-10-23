@@ -20,14 +20,29 @@ export const UserContext = createContext<UserContextInterface>([
     () => {},
 ]);
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [state, _dispatch] = useReducer(userReducer, {
-        user: null,
-    });
+const getUserFromLocalStorage = (): UserState => {
+    // nextjs
+    if (typeof window !== 'undefined') {
+        const user = localStorage.getItem('user');
+        return user ? { user: JSON.parse(user) } : { user: null };
+    }
 
-    const dispatch: Dispatcher = useCallback((type, ...payload) => {
-        _dispatch({ type, payload: payload[0] } as Actions);
-    }, []);
+    return { user: null };
+};
+
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+    const [state, _dispatch] = useReducer(
+        userReducer,
+        getUserFromLocalStorage()
+    );
+
+    const dispatch: Dispatcher = useCallback(
+        (type, ...payload) => {
+            _dispatch({ type, payload: payload[0] } as Actions);
+            localStorage.setItem('user', JSON.stringify(state.user));
+        },
+        [state.user]
+    );
 
     const value = useMemo(
         () => [state, dispatch] as [UserState, Dispatcher],

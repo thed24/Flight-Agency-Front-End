@@ -15,13 +15,10 @@ const Profile: NextPage = () => {
 
     const [{ data: trips, loading: tripsLoading }, requestTrips] = useAxios<
         Trip[]
-    >(GetTripsEndpoint(user?.id ?? ''), {
-        manual: true,
-        ssr: false,
-    });
+    >(GetTripsEndpoint(user?.id));
 
     useEffect(() => {
-        if (!user && !trips) requestTrips();
+        if (!trips) requestTrips();
     }, [requestTrips, trips, user]);
 
     return (

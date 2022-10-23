@@ -10,7 +10,7 @@ type LayoutProps = {
     title?: string;
 };
 
-const guestPaths = ['/auth/login', '/auth/register', '/'];
+const guestPaths = ['/authorization/login', '/authorization/register', '/'];
 
 export const Layout = ({ title, children, loading }: LayoutProps) => {
     const { user } = useUser();

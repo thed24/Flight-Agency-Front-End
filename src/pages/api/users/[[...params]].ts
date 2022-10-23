@@ -1,11 +1,3 @@
-import {
-    BadRequestException,
-    Body,
-    createHandler,
-    Get,
-    Param,
-    Post,
-} from '@storyofams/next-api-decorators';
 import { client, RequiresAuth } from 'common/server';
 import type { Trip, User } from 'common/types';
 import {
@@ -13,6 +5,14 @@ import {
     DownloadTripEndpoint,
     GetTripsEndpoint,
 } from 'common/utilities';
+import {
+    BadRequestException,
+    Body,
+    createHandler,
+    Get,
+    Param,
+    Post,
+} from 'next-api-decorators';
 
 type GetTripResponse = Trip[];
 type CreateTripResonse = User;

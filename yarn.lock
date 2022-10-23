@@ -542,13 +542,6 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@storyofams/next-api-decorators@1.8.2":
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/@storyofams/next-api-decorators/-/next-api-decorators-1.8.2.tgz#f0d9a5697cf41f919cfbd756296f4e9fda710fb4"
-  integrity sha512-42K8xxwNd/cIOR5+t4OfRxXTATGlGzY2T/onlvVFLmKG9ci2Y/hvFnSepOE/7fiq4FnYrUA668064KxysXEUJA==
-  dependencies:
-    reflect-metadata "^0.1.13"
-
 "@swc/helpers@0.4.11":
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.4.11.tgz#db23a376761b3d31c26502122f349a21b592c8de"
@@ -2459,6 +2452,13 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
+
+next-api-decorators@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/next-api-decorators/-/next-api-decorators-2.0.0.tgz#ae193f6f820279f3f874ec956a08d9e589d50f4a"
+  integrity sha512-7JJzps6Ym46rkOyL0BsACMTX0WFh4NLFd0h10uAza4HO7o7W6lyDeINJ8jAOJNUcZnNucZVd6SxiKZsPIlnvBg==
+  dependencies:
+    reflect-metadata "^0.1.13"
 
 next@*, next@^12.3.1:
   version "12.3.1"

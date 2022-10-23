@@ -1,13 +1,13 @@
+import axios from 'axios';
+import { readApiKey, RequiresAuth } from 'common/server';
+import { Cache } from 'common/server/cache';
+import { Address, Place } from 'common/types';
 import {
     BadRequestException,
     createHandler,
     Get,
     Query,
-} from '@storyofams/next-api-decorators';
-import axios from 'axios';
-import { readApiKey } from 'common/server';
-import { Cache } from 'common/server/cache';
-import { Place } from 'common/types';
+} from 'next-api-decorators';
 
 const client = axios.create();
 
@@ -16,9 +16,14 @@ type IntermediatePlacesResponse = {
     status: string;
 };
 
-class nearByHandler {
-    @Get()
-    async login(
+type IntermediateReverseGeocodeResponse = {
+    results: Address[];
+    status: string;
+};
+
+class placesHandler {
+    @Get('/nearBy')
+    async nearBy(
         @Query('lat') lat: string,
         @Query('lng') lng: string,
         @Query('radius') radius: string,
@@ -54,6 +59,34 @@ class nearByHandler {
                 throw new BadRequestException(error.response.data);
             });
     }
+
+    @Get('/reverseGeocode')
+    @RequiresAuth()
+    async reverseGeocode(@Query('lat') lat: string, @Query('lng') lng: string) {
+        if (!lat || !lng) {
+            throw new BadRequestException();
+        }
+
+        const cachedAddress = Cache.get(`${lat}-${lng}`);
+
+        if (cachedAddress) {
+            return cachedAddress;
+        }
+
+        const key = await readApiKey();
+
+        return client
+            .post<IntermediateReverseGeocodeResponse>(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`
+            )
+            .then((result) => {
+                Cache.set(`${lat}-${lng}`, result.data);
+                return result.data;
+            })
+            .catch((error) => {
+                throw new BadRequestException(error.response.data);
+            });
+    }
 }
 
-export default createHandler(nearByHandler);
+export default createHandler(placesHandler);
