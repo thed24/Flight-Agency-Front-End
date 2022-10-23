@@ -7,7 +7,7 @@ import {
     Layout,
     Title,
 } from 'common/components';
-import { User } from 'common/types';
+import { RegisterRequest, User } from 'common/types';
 import { RequestRegisterEndpoint } from 'common/utilities';
 import { PasswordInput } from 'modules/auth/components/passwordInput/passwordInput';
 import { NextPage } from 'next';
@@ -34,7 +34,9 @@ const Register: NextPage = () => {
     const [
         { data: response, loading: registerLoading, error },
         requestRegister,
-    ] = useAxios<User>(RequestRegisterEndpoint, { manual: true });
+    ] = useAxios<User, RegisterRequest>(RequestRegisterEndpoint, {
+        manual: true,
+    });
 
     useEffect(() => {
         if (error) {
@@ -54,7 +56,11 @@ const Register: NextPage = () => {
 
     const OnRegister = async ({ Name, Email, Password }: FormData) =>
         requestRegister({
-            data: { Name, Email: Email.toLocaleLowerCase(), Password },
+            data: {
+                name: Name,
+                email: Email.toLocaleLowerCase(),
+                password: Password,
+            },
             method: 'post',
         });
 

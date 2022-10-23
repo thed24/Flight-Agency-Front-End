@@ -8,7 +8,7 @@ import {
     Title,
 } from 'common/components';
 import { useUser } from 'common/context';
-import { User } from 'common/types';
+import { LoginRequest, User } from 'common/types';
 import { RequestLoginEndpoint } from 'common/utilities';
 import { PasswordInput } from 'modules/auth/components/passwordInput/passwordInput';
 import { NextPage } from 'next';
@@ -31,7 +31,7 @@ const Login: NextPage = () => {
     } = useForm<FormData>();
 
     const [{ data: response, loading: loggingIn, error }, requestLogin] =
-        useAxios<User>(RequestLoginEndpoint, {
+        useAxios<User, LoginRequest>(RequestLoginEndpoint, {
             manual: true,
         });
 
@@ -42,7 +42,7 @@ const Login: NextPage = () => {
 
     const OnLogin = async ({ Email, Password }: FormData) => {
         await requestLogin({
-            data: { Email: Email.toLocaleLowerCase(), Password },
+            data: { email: Email.toLocaleLowerCase(), password: Password },
             method: 'post',
         });
     };

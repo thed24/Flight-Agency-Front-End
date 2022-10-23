@@ -12,9 +12,5 @@ export type { DateRange, Stop, Trip, User } from './user/models';
 
 // requests
 export type { AddressRequest, PlacesRequest } from './places/requests';
-export type {
-    CreateTripRequest,
-    LoginRequest,
-    RegisterRequest,
-} from './user/requests';
+export * from './user/requests';
 export { DayToStopMap } from './user/selectors';
