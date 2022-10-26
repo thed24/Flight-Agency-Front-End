@@ -118,14 +118,18 @@ const Landing: NextPage = () => {
                         ) : (
                             <>
                                 <Button
-                                    onClick={() => router.push('auth/login')}
+                                    onClick={() =>
+                                        router.push('authorization/login')
+                                    }
                                     variant="contained"
                                     fullWidth
                                 >
                                     Login
                                 </Button>
                                 <Button
-                                    onClick={() => router.push('auth/register')}
+                                    onClick={() =>
+                                        router.push('authorization/register')
+                                    }
                                     fullWidth
                                 >
                                     Sign Up
